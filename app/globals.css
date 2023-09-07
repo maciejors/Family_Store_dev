@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+	@apply bg-gray-200;
+}
+
 .main-container {
 	@apply flex flex-col justify-center items-center;
 	@apply w-full px-4 sm:px-16 md:px-36 lg:px-60 xl:px-80;

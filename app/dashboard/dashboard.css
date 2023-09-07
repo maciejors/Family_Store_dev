@@ -19,7 +19,7 @@ header {
 }
 
 .app-card {
-	@apply p-4 text-lg flex flex-row justify-start gap-6 transition-colors;
+	@apply p-4 text-lg flex flex-row justify-start gap-6 transition-colors bg-white;
 }
 
 .app-card:hover {
