@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Spinner from '../shared/Spinner';
 
 export default function AppCard({ app }) {
 	return (

@@ -27,7 +27,7 @@ export default async function Dashboard() {
 			<main className="w-full">
 				{brands.map((brand) => {
 					const apps = appsByBrands.get(brand.id);
-					return <AppList brandName={brand.name} apps={apps} />;
+					return <AppList brandName={brand.name} apps={apps} key={brand.id} />;
 				})}
 			</main>
 		</div>

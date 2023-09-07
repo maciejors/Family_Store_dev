@@ -7,7 +7,7 @@ export default function AppList({ brandName, apps }) {
 			<h5>{brandName}</h5>
 			<div className="apps-grid">
 				{apps.map((app) => (
-					<AppCard app={app} />
+					<AppCard app={app} key={app.id} />
 				))}
 			</div>
 		</div>
