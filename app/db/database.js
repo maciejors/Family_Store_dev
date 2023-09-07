@@ -1,17 +1,9 @@
-import { initializeApp } from 'firebase/app';
+import { getDatabase } from 'firebase/database';
+import { getStorage } from 'firebase/storage';
+import { app } from './firebase-setup';
 
-const firebaseConfig = {
-	apiKey: 'AIzaSyAWfUSo1UJ8JpdZUv8TLsTcvA-mxuBd6S0',
-	authDomain: 'family-store.firebaseapp.com',
-	databaseURL: 'https://family-store.firebaseio.com',
-	projectId: 'family-store',
-	storageBucket: 'family-store.appspot.com',
-	messagingSenderId: '1088252679631',
-	appId: '1:1088252679631:web:c621b3653385cd4e71aeba',
-	measurementId: 'G-C6KZ2ZK78Z',
-};
-
-const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const storage = getStorage(app);
 
 export async function getBrandsForUser(userId) {
 	const brandsRaw = {
