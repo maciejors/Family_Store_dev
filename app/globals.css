@@ -1,3 +1,49 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.main-container {
+	@apply flex flex-col justify-center items-center;
+	@apply w-full px-4 sm:px-16 md:px-36 lg:px-60 xl:px-80;
+}
+
+h1 {
+	@apply text-4xl;
+}
+
+h3 {
+	@apply text-2xl;
+}
+
+.card {
+	@apply shadow-lg rounded-md;
+}
+
+.btn {
+	@apply cursor-pointer inline-flex justify-center items-center w-fit h-fit;
+	@apply py-1 px-2 border-2 border-solid rounded-lg transition-colors;
+}
+
+.btn-primary {
+	@apply bg-primary border-primary text-white transition-colors;
+}
+
+.btn-primary:hover {
+	@apply bg-primary-hover border-primary-hover;
+}
+
+.btn-primary:active {
+	@apply bg-primary-active border-primary-active;
+}
+
+.btn-secondary {
+	@apply text-primary border-primary bg-white;
+}
+
+.btn-secondary:hover {
+	@apply text-primary-hover border-primary-hover bg-gray-50;
+}
+
+.btn-secondary:active {
+	@apply text-primary-active border-primary-active bg-gray-100;
+}
