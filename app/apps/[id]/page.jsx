@@ -3,6 +3,7 @@ import Icon from '@mdi/react';
 import { mdiDownload } from '@mdi/js';
 import { getAppDetails, getBrandById } from '@/app/db/database';
 import './app-details.css';
+import ImageViewer from './ImageViewer';
 
 export default async function AppDetails({ params }) {
 	const app = await getAppDetails(params.id);
@@ -47,7 +48,7 @@ export default async function AppDetails({ params }) {
 			</header>
 			<main>
 				<p>{app.description}</p>
-				<div className="bg-yellow-300">Images go here</div>
+				<ImageViewer images={app.pictureUrls} />
 				{app.changelog !== undefined && (
 					<div className="card changelog">
 						<h6>Lista zmian:</h6>
