@@ -30,10 +30,7 @@ header {
 	@apply bg-gray-100;
 }
 
-/* .app-card footer {
-	@apply flex flex-row justify-end gap-4;
+.app-card .version-label,
+.app-card .last-updated-label {
+	@apply text-sm text-gray-600;
 }
-
-.app-card footer button:hover {
-	@apply text-gray-700;
-} */

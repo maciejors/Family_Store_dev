@@ -19,10 +19,8 @@ a.download {
 	@apply sm:text-2xl sm:px-4 sm:py-2 w-full;
 }
 
-.last-update-label {
+.last-updated-label {
 	@apply text-gray-500 text-sm italic whitespace-nowrap;
-	@apply flex justify-start gap-1 sm:gap-0;
-	@apply sm:flex-col sm:items-center;
 }
 
 .logo-container {

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import LastUpdatedLabel from '../LastUpdatedLabel';
 
 export default function AppCard({ app }) {
 	return (
@@ -6,7 +7,8 @@ export default function AppCard({ app }) {
 			<Image src={app.logoUrl} alt={`${app.name} logo`} width={100} height={100} />
 			<div className="app-details">
 				<h3>{app.name}</h3>
-				<p>Wersja: {app.version}</p>
+				<p className="version-label">Wersja: {app.version}</p>
+				<LastUpdatedLabel lastUpdatedMillis={app.lastUpdated} prefix="Aktual. " />
 			</div>
 		</a>
 	);

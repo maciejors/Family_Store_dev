@@ -4,6 +4,7 @@ import { mdiDownload } from '@mdi/js';
 import { getAppDetails, getBrandById } from '@/app/db/database';
 import './app-details.css';
 import ImageViewer from './ImageViewer';
+import LastUpdatedLabel from '../../LastUpdatedLabel';
 
 export default async function AppDetails({ params }) {
 	const app = await getAppDetails(params.id);
@@ -40,10 +41,7 @@ export default async function AppDetails({ params }) {
 						<p>Pobierz</p>
 						<Icon path={mdiDownload} size={1} />
 					</a>
-					<div className="last-update-label">
-						<p>Ostatnia aktualizacja:</p>
-						<p>28 wrz 2021</p>
-					</div>
+					<LastUpdatedLabel lastUpdatedMillis={app.lastUpdated} prefix="Ostatnia aktualizacja: " />
 				</div>
 			</header>
 			<main>
