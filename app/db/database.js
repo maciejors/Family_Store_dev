@@ -208,6 +208,13 @@ export async function getAppDetails(appId) {
 			'- Nowy tryb "Wojna gangów"\n- Wsparcie do 6 botów w nowym trybie\n- Wprowadzono czat do komunikacji\n- Nowe frakcje: Tezcas, Synowie Ragnaroku oraz Chłopcy Cioci Shu\n- Dodano możliwość ustawienia rozmiaru list\n- Ogólne poprawki i ulepszania',
 		logoUrl:
 			'https://firebasestorage.googleapis.com/v0/b/family-store.appspot.com/o/Family%20Store%202%2FApps%2F1%2Flogo.png?alt=media&token=20125344-f624-46da-8961-38e6442ff29d',
-		pictureUrls: ['https://picsum.photos/200/300', 'https://picsum.photos/300/200'],
+		pictureUrls: [
+			'https://picsum.photos/800/1000',
+			'https://picsum.photos/1000/800',
+			'https://picsum.photos/300/300',
+			'https://picsum.photos/800/1000',
+			'https://picsum.photos/1000/800',
+			'https://picsum.photos/300/300',
+		],
 	};
 }
