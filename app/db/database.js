@@ -5,6 +5,34 @@ import { app } from './firebase-setup';
 const db = getDatabase(app);
 const storage = getStorage(app);
 
+/**
+ * @typedef Brand
+ * @property {string} id
+ * @property {string} name
+ *
+ * @typedef AppPreview
+ * @property {string} id
+ * @property {string} name
+ * @property {string} authorId
+ * @property {string} version
+ * @property {string} logoUrl
+ *
+ * @typedef AppDetails
+ * @property {string} id
+ * @property {string} name
+ * @property {string} authorId
+ * @property {string} version
+ * @property {string} logoUrl
+ * @property {string} description
+ * @property {string} changelog
+ * @property {string} downloadUrl
+ * @property {string[]} pictureUrls
+ */
+
+/**
+ * @param {string} userId
+ * @returns {Promise<Brand[]>}
+ */
 export async function getBrandsForUser(userId) {
 	const brandsRaw = {
 		1: {
@@ -19,6 +47,21 @@ export async function getBrandsForUser(userId) {
 	return Object.values(brandsRaw);
 }
 
+/**
+ * @param {string} brandId
+ * @returns {Promise<Brand>}
+ */
+export async function getBrandById(brandId) {
+	return {
+		id: '1',
+		name: 'Grisso',
+	};
+}
+
+/**
+ * @param {string} brandId
+ * @returns {Promise<AppPreview[]>}
+ */
 export async function getAppsForBrand(brandId) {
 	const apps = [
 		{
@@ -146,4 +189,24 @@ export async function getAppsForBrand(brandId) {
 	);
 	apps.reverse();
 	return apps.filter((app) => app.authorId === brandId);
+}
+
+/**
+ * @param {string} appId
+ * @returns {Promise<AppDetails>}
+ */
+export async function getAppDetails(appId) {
+	return {
+		authorId: '1',
+		description:
+			'Shooting to aplikacja symulująca strzelanie z broni. Użytkownik posiada do wyboru: Pistolet Shotgun Karabin maszynowy i wiele więcej. Sprawdź sam !',
+		id: '1',
+		name: 'Shooting',
+		version: '1.0',
+		downloadUrl: 'www.google.com',
+		changelog: 'Dodano nowe bronie',
+		logoUrl:
+			'https://firebasestorage.googleapis.com/v0/b/family-store.appspot.com/o/Family%20Store%202%2FApps%2F1%2Flogo.png?alt=media&token=20125344-f624-46da-8961-38e6442ff29d',
+		pictureUrls: ['https://picsum.photos/200/300', 'https://picsum.photos/300/200'],
+	};
 }
