@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import LastUpdatedLabel from '../LastUpdatedLabel';
+import LastUpdatedLabel from '../../LastUpdatedLabel';
 
 export default function AppCard({ app }) {
 	return (

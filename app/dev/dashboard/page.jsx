@@ -1,4 +1,4 @@
-import { getAppsForBrand, getBrandsForUser } from '../db/database';
+import { getAppsForBrand, getBrandsForUser } from '../../db/database';
 import AppList from './AppList';
 import './dashboard.css';
 
