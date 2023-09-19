@@ -1,0 +1,19 @@
+form {
+	@apply flex flex-col items-center gap-4 p-2 mt-4;
+}
+
+.input-container {
+	@apply flex flex-col items-start w-full;
+}
+
+/* input[type='file'] {
+	@apply opacity-0 absolute -z-10;
+} */
+
+.text-input {
+	@apply border-2 rounded shadow-inner bg-white w-full;
+}
+
+textarea {
+	@apply resize-y;
+}

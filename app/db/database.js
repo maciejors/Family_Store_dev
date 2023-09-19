@@ -29,6 +29,10 @@ const storage = getStorage(app);
  * @property {string} changelog
  * @property {string} downloadUrl
  * @property {string[]} pictureUrls
+ *
+ * @typedef AppUpdateDetails
+ * @property {string} version
+ * @property {string} changelog
  */
 
 /**
@@ -218,5 +222,17 @@ export async function getAppDetails(appId) {
 			'https://picsum.photos/1000/800',
 			'https://picsum.photos/300/300',
 		],
+	};
+}
+
+/**
+ * @param {string} appId
+ * @returns {Promise<AppUpdateDetails>}
+ */
+export async function getAppUpdateDetails(appId) {
+	return {
+		version: '1.0',
+		changelog:
+			'- Nowy tryb "Wojna gangów"\n- Wsparcie do 6 botów w nowym trybie\n- Wprowadzono czat do komunikacji\n- Nowe frakcje: Tezcas, Synowie Ragnaroku oraz Chłopcy Cioci Shu\n- Dodano możliwość ustawienia rozmiaru list\n- Ogólne poprawki i ulepszania',
 	};
 }

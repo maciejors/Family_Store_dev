@@ -15,11 +15,13 @@ export default function Dialog({ children, openButton, title }) {
 	function showDialog(e) {
 		e.preventDefault();
 		setVisible(true);
+		document.body.style.overflowY = 'hidden';
 	}
 
 	function hideDialog(e) {
 		e.preventDefault();
 		setVisible(false);
+		document.body.style.overflowY = 'auto';
 	}
 
 	return (
@@ -31,7 +33,7 @@ export default function Dialog({ children, openButton, title }) {
 						<header className="dialog-header">
 							<h3>{title}</h3>
 							<button onClick={hideDialog} className="close-btn">
-								<Icon path={mdiClose} size={1} />
+								<Icon path={mdiClose} size={1.2} />
 							</button>
 						</header>
 						{children}

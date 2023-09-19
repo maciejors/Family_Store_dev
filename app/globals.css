@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+	margin-right: calc(-1 * (100vw - 100%));
+}
+
 body {
 	@apply bg-gray-200;
 }

@@ -17,7 +17,7 @@ export default async function Dashboard() {
 
 	return (
 		<div className="main-container">
-			<header>
+			<header className="dashboard-header">
 				<h2>Moje aplikacje</h2>
 				<div className="header-buttons">
 					<button className="btn btn-secondary">Zarządzaj markami</button>

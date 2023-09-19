@@ -3,6 +3,7 @@ import LastUpdatedLabel from '../../LastUpdatedLabel';
 import Icon from '@mdi/react';
 import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
 import Dialog from './Dialog';
+import UpdateAppForm from './forms/UpdateAppForm';
 
 export default function AppCard({ app }) {
 	return (
@@ -21,11 +22,11 @@ export default function AppCard({ app }) {
 				<a href={`/apps/${app.id}`} target="_blank">
 					<Icon path={mdiLaunch} size={1} />
 				</a>
-				<Dialog openButton={<Icon path={mdiUpload} size={1} />}>
-					<span>HELLO PAWEL</span>
+				<Dialog openButton={<Icon path={mdiUpload} size={1} />} title="Dodaj aktualizację">
+					<UpdateAppForm />
 				</Dialog>
-				<Dialog openButton={<Icon path={mdiPencil} size={1} />}>
-					<span>HELLO PAWEL</span>
+				<Dialog openButton={<Icon path={mdiPencil} size={1} />} title="Edytuj aplikację">
+					<span>TODO</span>
 				</Dialog>
 			</footer>
 		</div>
