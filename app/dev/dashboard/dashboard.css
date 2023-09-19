@@ -59,7 +59,7 @@ header.dashboard-header {
 }
 
 .overlay .dialog {
-	@apply bg-gray-50 w-fit h-fit p-2;
+	@apply bg-gray-50 w-fit h-fit p-2 z-10;
 }
 
 header.dialog-header {

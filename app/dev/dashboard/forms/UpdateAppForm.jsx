@@ -9,6 +9,7 @@ export default function UpdateAppForm() {
 	const [version, setVersion] = useState('');
 	const [changelog, setChangelog] = useState('');
 	const [currentVersion, setCurrentVersion] = useState('');
+	const [fileInputLabel, setFileInputLabel] = useState('Dodaj plik');
 
 	useEffect(() => {
 		getAppUpdateDetails().then((defaults) => {
@@ -16,6 +17,13 @@ export default function UpdateAppForm() {
 			setCurrentVersion(defaults.version);
 		});
 	}, []);
+
+	function onFileChanged(e) {
+		const filePath = e.target.value;
+		setFile(filePath);
+		const filename = filePath.split('\\').pop();
+		setFileInputLabel(filename);
+	}
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -25,18 +33,12 @@ export default function UpdateAppForm() {
 	}
 
 	return (
-		<form action="" onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit}>
 			<div>
-				<label htmlFor="upload-apk">dsadsa</label>
-				{/*TODO: make this input work*/}
-				<input
-					id="upload-apk"
-					name="upload-apk"
-					required
-					type="file"
-					accept=".apk"
-					onChange={(e) => setFile(e.target.value)}
-				/>
+				<label className="file-input">
+					{fileInputLabel}
+					<input required type="file" accept=".apk" value={file} onChange={onFileChanged} />
+				</label>
 			</div>
 			<div className="input-container">
 				<label>Wersja:</label>
