@@ -1,17 +1,33 @@
 import Image from 'next/image';
 import LastUpdatedLabel from '../../LastUpdatedLabel';
+import Icon from '@mdi/react';
+import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
+import Dialog from './Dialog';
 
 export default function AppCard({ app }) {
 	return (
-		<a href={`/apps/${app.id}`} className="card app-card">
-			<Image src={app.logoUrl} alt={`${app.name} logo`} width={100} height={100} />
-			<div className="app-details">
-				<h3>{app.name}</h3>
-				<p className="version-label">Wersja: {app.version}</p>
-				<span className="last-updated-label">
-					<LastUpdatedLabel lastUpdatedMillis={app.lastUpdated} prefix="Aktual. " />
-				</span>
-			</div>
-		</a>
+		<div className="card app-card">
+			<main>
+				<Image src={app.logoUrl} alt={`${app.name} logo`} width={100} height={100} />
+				<div className="app-details">
+					<h3>{app.name}</h3>
+					<p className="version-label">Wersja: {app.version}</p>
+					<span className="last-updated-label">
+						<LastUpdatedLabel lastUpdatedMillis={app.lastUpdated} prefix="Aktual. " />
+					</span>
+				</div>
+			</main>
+			<footer>
+				<a href={`/apps/${app.id}`} target="_blank">
+					<Icon path={mdiLaunch} size={1} />
+				</a>
+				<Dialog openButton={<Icon path={mdiUpload} size={1} />}>
+					<span>HELLO PAWEL</span>
+				</Dialog>
+				<Dialog openButton={<Icon path={mdiPencil} size={1} />}>
+					<span>HELLO PAWEL</span>
+				</Dialog>
+			</footer>
+		</div>
 	);
 }
