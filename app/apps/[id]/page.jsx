@@ -41,7 +41,12 @@ export default async function AppDetails({ params }) {
 						<p>Pobierz</p>
 						<Icon path={mdiDownload} size={1} />
 					</a>
-					<LastUpdatedLabel lastUpdatedMillis={app.lastUpdated} prefix="Ostatnia aktualizacja: " />
+					<span className="last-updated-label">
+						<LastUpdatedLabel
+							lastUpdatedMillis={app.lastUpdated}
+							prefix="Ostatnia aktualizacja: "
+						/>
+					</span>
 				</div>
 			</header>
 			<main>

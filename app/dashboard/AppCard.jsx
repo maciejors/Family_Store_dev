@@ -8,7 +8,9 @@ export default function AppCard({ app }) {
 			<div className="app-details">
 				<h3>{app.name}</h3>
 				<p className="version-label">Wersja: {app.version}</p>
-				<LastUpdatedLabel lastUpdatedMillis={app.lastUpdated} prefix="Aktual. " />
+				<span className="last-updated-label">
+					<LastUpdatedLabel lastUpdatedMillis={app.lastUpdated} prefix="Aktual. " />
+				</span>
 			</div>
 		</a>
 	);

@@ -15,5 +15,5 @@ export default function LastUpdatedLabel({ lastUpdatedMillis, prefix }) {
 		setLabelToDisplay(`${prefix !== undefined ? prefix : ''}${formattedDate}`);
 	}, []);
 
-	return <p className="last-updated-label">{labelToDisplay}</p>;
+	return <p>{labelToDisplay}</p>;
 }
