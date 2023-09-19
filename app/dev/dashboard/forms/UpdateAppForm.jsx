@@ -45,7 +45,7 @@ export default function UpdateAppForm() {
 					type="text"
 					value={version}
 					onChange={(e) => setVersion(e.target.value)}
-					placeholder={currentVersion}
+					placeholder={`Obecna wersja: ${currentVersion}`}
 					className="text-input"
 				/>
 			</div>
