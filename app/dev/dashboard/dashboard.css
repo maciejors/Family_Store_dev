@@ -39,8 +39,7 @@ header.dashboard-header {
 	@apply flex flex-row justify-end gap-4;
 }
 
-.app-card footer button:hover,
-.app-card footer a:hover {
+.app-card .footer-btn:hover {
 	@apply text-gray-700;
 }
 
@@ -60,8 +59,13 @@ header.dashboard-header {
 
 .overlay .dialog {
 	@apply bg-gray-50 w-fit h-fit p-2 z-10;
+	@apply overflow-y-auto;
 }
 
 header.dialog-header {
 	@apply flex justify-between gap-4 items-start;
+}
+
+.dialog .close-btn {
+	@apply hover:text-gray-700;
 }

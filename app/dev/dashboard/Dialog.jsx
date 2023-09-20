@@ -22,12 +22,12 @@ export default function Dialog({ children, openButton, title }) {
 		<div>
 			<button onClick={showDialog}>{openButton}</button>
 			{visible && (
-				<div className="overlay">
+				<div className="overlay" onSubmit={hideDialog}>
 					<div className="card dialog">
 						<header className="dialog-header">
 							<h3>{title}</h3>
 							<button onClick={hideDialog} className="close-btn">
-								<Icon path={mdiClose} size={1.2} />
+								<Icon path={mdiClose} size={1.5} />
 							</button>
 						</header>
 						{children}

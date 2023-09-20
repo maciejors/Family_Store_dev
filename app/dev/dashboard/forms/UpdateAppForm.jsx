@@ -2,17 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import './forms.css';
-import { getAppUpdateDetails } from '@/app/db/database';
+import { getAppUpdateDetails, updateApp } from '@/app/db/database';
+import Icon from '@mdi/react';
+import { mdiCheck, mdiUpload } from '@mdi/js';
 
-export default function UpdateAppForm() {
-	const [file, setFile] = useState();
+export default function UpdateAppForm({ appId }) {
+	const defaultFileInputLabel = 'Dodaj plik';
+
+	const [file, setFile] = useState('');
 	const [version, setVersion] = useState('');
 	const [changelog, setChangelog] = useState('');
 	const [currentVersion, setCurrentVersion] = useState('');
-	const [fileInputLabel, setFileInputLabel] = useState('Dodaj plik');
+	const [fileInputLabel, setFileInputLabel] = useState(defaultFileInputLabel);
 
 	useEffect(() => {
-		getAppUpdateDetails().then((defaults) => {
+		getAppUpdateDetails(appId).then((defaults) => {
 			setChangelog(defaults.changelog);
 			setCurrentVersion(defaults.version);
 		});
@@ -22,26 +26,29 @@ export default function UpdateAppForm() {
 		const filePath = e.target.value;
 		setFile(filePath);
 		const filename = filePath.split('\\').pop();
-		setFileInputLabel(filename);
+		if (filename !== '') {
+			setFileInputLabel(filename);
+		} else {
+			setFileInputLabel(defaultFileInputLabel);
+		}
 	}
 
-	function handleSubmit(e) {
+	async function handleSubmit(e) {
 		e.preventDefault();
-		console.log(file);
-		console.log(version);
-		console.log(changelog);
+		await updateApp(appId, file, version, changelog);
 	}
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<div>
-				<label className="file-input">
-					{fileInputLabel}
-					<input required type="file" accept=".apk" value={file} onChange={onFileChanged} />
-				</label>
-			</div>
+			<label className="file-input">
+				<Icon path={file === '' ? mdiUpload : mdiCheck} size={1.5} />
+				<p>{fileInputLabel}</p>
+				<input required type="file" accept=".apk" value={file} onChange={onFileChanged} />
+			</label>
 			<div className="input-container">
-				<label>Wersja:</label>
+				<label>
+					Wersja: <span className="required-asterisk">*</span>
+				</label>
 				<input
 					required
 					type="text"
@@ -61,7 +68,10 @@ export default function UpdateAppForm() {
 					cols={70}
 				/>
 			</div>
-			<button type="submit"></button>
+			<p className="required-asterisk">* pole wymagane</p>
+			<button className="btn btn-primary" type="submit">
+				Wydaj aktualizację
+			</button>
 		</form>
 	);
 }

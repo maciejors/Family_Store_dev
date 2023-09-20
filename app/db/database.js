@@ -236,3 +236,11 @@ export async function getAppUpdateDetails(appId) {
 			'- Nowy tryb "Wojna gangów"\n- Wsparcie do 6 botów w nowym trybie\n- Wprowadzono czat do komunikacji\n- Nowe frakcje: Tezcas, Synowie Ragnaroku oraz Chłopcy Cioci Shu\n- Dodano możliwość ustawienia rozmiaru list\n- Ogólne poprawki i ulepszania',
 	};
 }
+
+/**
+ * @param {string} appId
+ * @param {string} filePath
+ * @param {string} newVersion
+ * @param {string} changelog
+ */
+export async function updateApp(appId, filePath, newVersion, changelog) {}
