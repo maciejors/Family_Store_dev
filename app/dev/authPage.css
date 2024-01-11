@@ -1,0 +1,39 @@
+.auth-container {
+  @apply items-center h-screen
+}
+
+.auth-form {
+	@apply p-10 shadow-md rounded bg-white
+}
+
+.auth-logo {
+  @apply mx-auto mb-5
+}
+
+.auth-main {
+ @apply flex flex-col
+}
+
+.auth-label {
+  @apply mt-3
+}
+
+.auth-input {
+	@apply bg-gray-100 border border-gray-300 rounded-md py-2 px-4 focus:outline-none 
+}
+
+.auth-link {
+  @apply mt-5 underline self-end
+}
+
+.auth-error {
+  @apply text-red-700;
+}
+
+.auth-btn {
+  @apply mt-3 w-full
+}
+
+.auth-btn-submit {
+  @apply mt-5
+}
