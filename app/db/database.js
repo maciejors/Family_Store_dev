@@ -40,17 +40,28 @@ const storage = getStorage(app);
  * @returns {Promise<Brand[]>}
  */
 export async function getBrandsForUser(userId) {
-	const brandsRaw = {
-		1: {
-			id: '1',
-			name: 'Grisso',
-		},
-		11: {
-			id: '11',
-			name: 'Grisso & lifi',
-		},
-	};
-	return Object.values(brandsRaw);
+	try {
+		const snapshot = await get(child(databaseRef(db), `Family Store 2/Users/${userId}/brands`));
+
+		if (!snapshot.exists()) {
+			throw new Error('Database No Data Error');
+		}
+		const brandsForUser = snapshot.val();
+
+		const promises = Object.values(brandsForUser).map(async (brandId) => {
+			const brandName = await get(child(databaseRef(db), `Family Store 2/Brands/${brandId}/name`));
+
+			return {
+				id: brandId,
+				name: brandName,
+			};
+		});
+
+		return Promise.all(promises);
+	} catch (error) {
+		console.error(error);
+		return {};
+	}
 }
 
 /**
