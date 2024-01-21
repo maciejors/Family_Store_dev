@@ -17,6 +17,8 @@ const storage = getStorage(app);
  * @property {string} version
  * @property {number} lastUpdated
  * @property {string} logoUrl
+ * @property {string} description
+ * @property {string} changelog
  *
  * @typedef AppDetails
  * @property {string} id
