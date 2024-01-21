@@ -49,7 +49,9 @@ export async function getBrandsForUser(userId) {
 		const brandsForUser = snapshot.val();
 
 		const promises = Object.values(brandsForUser).map(async (brandId) => {
-			const brandName = await get(child(databaseRef(db), `Family Store 2/Brands/${brandId}/name`));
+			const brandName = (
+				await get(child(databaseRef(db), `Family Store 2/Brands/${brandId}/name`))
+			).val();
 
 			return {
 				id: brandId,
