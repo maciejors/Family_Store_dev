@@ -54,7 +54,7 @@ header.dashboard-header {
 
 .overlay {
 	@apply bg-gray-600 bg-opacity-50;
-	@apply absolute top-0 left-0 w-full h-full;
+	@apply fixed top-0 left-0 w-full h-full;
 	@apply flex flex-col justify-center items-center;
 }
 
