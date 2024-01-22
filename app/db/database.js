@@ -64,7 +64,7 @@ export async function getBrandsForUser(userId) {
 		return Promise.all(promises);
 	} catch (error) {
 		console.error(error);
-		return {};
+		return [];
 	}
 }
 
@@ -135,7 +135,7 @@ export async function getAppDetails(appId) {
 		return app;
 	} catch (error) {
 		console.error(error);
-		return [];
+		return {};
 	}
 }
 
@@ -156,7 +156,7 @@ export async function getAppUpdateDetails(appId) {
 		return { version, changelog };
 	} catch (error) {
 		console.error(error);
-		return [];
+		return {};
 	}
 }
 
