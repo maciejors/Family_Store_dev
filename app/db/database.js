@@ -1,9 +1,20 @@
-import { getDatabase, ref as databaseRef, child, get } from 'firebase/database';
-import { getStorage, ref as storageRef, getDownloadURL, listAll } from 'firebase/storage';
+import { getDatabase, ref as databaseRef, child, get, update } from 'firebase/database';
+import {
+	getStorage,
+	ref as storageRef,
+	getDownloadURL,
+	listAll,
+	uploadBytes,
+} from 'firebase/storage';
 import { app } from './firebase-setup';
 
 const db = getDatabase(app);
 const storage = getStorage(app);
+
+const DB_PATH = 'Family Store 2';
+const APPS_PATH = `${DB_PATH}/Apps`;
+const BRANDS_PATH = `${DB_PATH}/Brands`;
+const USERS_PATH = `${DB_PATH}/Users`;
 
 /**
  * @typedef Brand
@@ -43,7 +54,7 @@ const storage = getStorage(app);
  */
 export async function getBrandsForUser(userId) {
 	try {
-		const snapshot = await get(child(databaseRef(db), `Family Store 2/Users/${userId}/brands`));
+		const snapshot = await get(child(databaseRef(db), `${USERS_PATH}/${userId}/brands`));
 
 		if (!snapshot.exists()) {
 			throw new Error('Database No Data Error');
@@ -51,9 +62,7 @@ export async function getBrandsForUser(userId) {
 		const brandsForUser = snapshot.val();
 
 		const promises = Object.values(brandsForUser).map(async (brandId) => {
-			const brandName = (
-				await get(child(databaseRef(db), `Family Store 2/Brands/${brandId}/name`))
-			).val();
+			const brandName = (await get(child(databaseRef(db), `${BRANDS_PATH}/${brandId}/name`))).val();
 
 			return {
 				id: brandId,
@@ -74,7 +83,7 @@ export async function getBrandsForUser(userId) {
  */
 export async function getBrandById(brandId) {
 	try {
-		const snapshot = await get(child(databaseRef(db), `Family Store 2/Brands/${brandId}`));
+		const snapshot = await get(child(databaseRef(db), `${BRANDS_PATH}/${brandId}`));
 
 		if (!snapshot.exists()) {
 			throw new Error('Database No Data Error');
@@ -93,7 +102,7 @@ export async function getBrandById(brandId) {
  */
 export async function getAppsForBrand(brandId) {
 	try {
-		const snapshot = await get(child(databaseRef(db), 'Family Store 2/Apps'));
+		const snapshot = await get(child(databaseRef(db), APPS_PATH));
 
 		if (!snapshot.exists()) {
 			throw new Error('Database No Data Error');
@@ -121,7 +130,7 @@ export async function getAppsForBrand(brandId) {
  */
 export async function getAppDetails(appId) {
 	try {
-		const snapshot = await get(child(databaseRef(db), `Family Store 2/Apps/${appId}`));
+		const snapshot = await get(child(databaseRef(db), `${APPS_PATH}/${appId}`));
 
 		if (!snapshot.exists()) {
 			throw new Error('Database No Data Error');
@@ -145,7 +154,7 @@ export async function getAppDetails(appId) {
  */
 export async function getAppUpdateDetails(appId) {
 	try {
-		const snapshot = await get(child(databaseRef(db), `Family Store 2/Apps/${appId}`));
+		const snapshot = await get(child(databaseRef(db), `${APPS_PATH}/${appId}`));
 
 		if (!snapshot.exists()) {
 			throw new Error('Database No Data Error');
@@ -161,20 +170,20 @@ export async function getAppUpdateDetails(appId) {
 }
 
 async function getLogoUrl(appId) {
-	const logoRef = storageRef(storage, `Family Store 2/Apps/${appId}/logo.png`);
+	const logoRef = storageRef(storage, `${APPS_PATH}/${appId}/logo.png`);
 	const logoUrl = await getDownloadURL(logoRef);
 	return logoUrl;
 }
 
 async function getAppDownloadUrl(appId) {
-	const apkRef = storageRef(storage, `Family Store 2/Apps/${appId}/latest.apk`);
+	const apkRef = storageRef(storage, `${APPS_PATH}/${appId}/latest.apk`);
 	const url = await getDownloadURL(apkRef);
 	return url;
 }
 
 async function getPictureUrls(appId) {
 	try {
-		const picturesRef = storageRef(storage, `Family Store 2/Apps/${appId}/pictures`);
+		const picturesRef = storageRef(storage, `${APPS_PATH}/${appId}/pictures`);
 		const fileList = await listAll(picturesRef);
 
 		const promises = Object.values(fileList.items).map(async (picture) => {
@@ -190,8 +199,16 @@ async function getPictureUrls(appId) {
 
 /**
  * @param {string} appId
- * @param {string} filePath
+ * @param {File} apkFile
  * @param {string} newVersion
  * @param {string} changelog
  */
-export async function updateApp(appId, filePath, newVersion, changelog) {}
+export async function updateApp(appId, apkFile, newVersion, changelog) {
+	// 1. upload the new apk file
+	const apkFileRef = storageRef(storage, `${APPS_PATH}/${appId}/latest.apk`);
+	await uploadBytes(apkFileRef, apkFile);
+
+	// 2. update app metadata
+	const appReference = databaseRef(db, `${APPS_PATH}/${appId}`);
+	await update(appReference, { version: newVersion, changelog });
+}
