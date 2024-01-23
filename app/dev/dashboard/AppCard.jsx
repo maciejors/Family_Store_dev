@@ -19,8 +19,8 @@ export default function AppCard({ app }) {
 				</div>
 			</main>
 			<footer>
-				<a className="footer-btn" href={`/apps/${app.id}`} target="_blank">
-					<Icon path={mdiLaunch} size={1} />
+				<a href={`/apps/${app.id}`} target="_blank">
+					<Icon className="footer-btn" path={mdiLaunch} size={1} />
 				</a>
 				<Dialog
 					openButton={<Icon className="footer-btn" path={mdiUpload} size={1} />}

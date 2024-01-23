@@ -12,7 +12,7 @@ async function getAppsByBrands(brands) {
 }
 
 export default async function Dashboard() {
-	const brands = await getBrandsForUser('user1');
+	const brands = await getBrandsForUser('1');
 	const appsByBrands = await getAppsByBrands(brands);
 
 	return (

@@ -19,7 +19,7 @@ export default function Dialog({ children, openButton, title }) {
 	}
 
 	return (
-		<div>
+		<>
 			<button onClick={showDialog}>{openButton}</button>
 			{visible && (
 				<div className="overlay" onSubmit={hideDialog}>
@@ -34,6 +34,6 @@ export default function Dialog({ children, openButton, title }) {
 					</div>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
