@@ -1,11 +1,11 @@
 import './authPage.css';
 
-export default function RegisterPage() {
-	function register() {}
+export default function LoginForm() {
+	function login() {}
 
 	return (
 		<>
-			<h3>Rejestracja</h3>
+			<h3>Logowanie</h3>
 			<label className="auth-label" htmlFor="email">
 				Email
 			</label>
@@ -14,12 +14,11 @@ export default function RegisterPage() {
 				Hasło
 			</label>
 			<input className="auth-input" id="password" type="password" required />
-			<label className="auth-label" htmlFor="repeat">
-				Powtórz hasło
-			</label>
-			<input className="auth-input" id="repeat" type="password" required />
-			<button onClick={register} className="btn btn-primary auth-btn auth-btn-submit">
-				Utwórz konto
+			<a className="auth-label auth-link" href="">
+				Nie pamiętasz hasła?
+			</a>
+			<button onClick={login} className="btn btn-primary auth-btn auth-btn-submit">
+				Zaloguj się
 			</button>
 		</>
 	);
