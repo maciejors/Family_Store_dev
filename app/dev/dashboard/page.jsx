@@ -1,4 +1,5 @@
 import { getAppsForBrand, getBrandsForUser } from '../../db/database';
+import { redirectIfNoPermissions } from '@/app/shared/authUtils';
 import AppList from './AppList';
 import './dashboard.css';
 
@@ -12,6 +13,10 @@ async function getAppsByBrands(brands) {
 }
 
 export default async function Dashboard() {
+	// TODO: fetch a user from some global state
+	const user = null;
+	await redirectIfNoPermissions(user);
+
 	const brands = await getBrandsForUser('user1');
 	const appsByBrands = await getAppsByBrands(brands);
 
