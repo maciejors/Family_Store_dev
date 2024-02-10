@@ -37,5 +37,6 @@ export async function signIn(email, password) {
  * @returns {Promise<boolean>}
  */
 export async function isUserDeveloper(user) {
-	return false;
+	const userClaims = await user.getIdTokenResult();
+	return userClaims.claims.dev === true;
 }
