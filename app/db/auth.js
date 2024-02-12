@@ -3,6 +3,7 @@ import {
 	User,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	onAuthStateChanged
 } from 'firebase/auth';
 import { app } from './firebase-setup';
 
@@ -38,4 +39,12 @@ export async function signIn(email, password) {
  */
 export async function isUserDeveloper(user) {
 	return false;
+}
+
+export function authStateListener(onChanged) {
+	const unsubscribe = onAuthStateChanged(auth, (user) => {
+		onChanged(user);
+	});
+
+	return unsubscribe;
 }
