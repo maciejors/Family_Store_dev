@@ -5,8 +5,12 @@ import Image from 'next/image';
 import './authPage.css';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+import useAuth from '@/lib/useAuth';
 
 export default function AuthPage() {
+
+	const user = useAuth();
+
 	const [authType, setAuthType] = useState('login');
 
 	function changeAuthType() {
