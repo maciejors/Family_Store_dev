@@ -1,22 +1,44 @@
-import { useEffect } from "react";
-import { authStateListener } from "@/app/db/auth";
-import { deleteUserFromLocalStorage, getUserFromLocalStorage, saveUserInLocalStorage } from "./userLocalStorage";
+import { useEffect, useState } from "react";
+import { authStateListener, createUser, signIn } from "@/app/db/auth";
 
 function useAuth() {
 
-  const currentUser = getUserFromLocalStorage();
+  const key = 'user';
+  const [currentUser, setCurrentUser] = useState(null);
+
+  function login(email, password) {
+    signIn(email, password);
+  }
+
+  function register(email, password) {
+    createUser(email, password);
+  }
 
   useEffect(() => {
+
+    setCurrentUser(JSON.parse(localStorage.getItem(key)) || {
+      uid: null,
+      email: null,
+      displayName: null,
+    });
+
     const unsubscribe = authStateListener((user) => {
       if (user) {
-        saveUserInLocalStorage({
+        const data = {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
-        });
+        };
+        setCurrentUser(data);
+        localStorage.setItem(key, JSON.stringify(data));
 
       } else {
-        deleteUserFromLocalStorage();
+        setCurrentUser({
+          uid: null,
+          email: null,
+          displayName: null,
+        });
+        localStorage.removeItem(key);
       }
     });
 
@@ -25,7 +47,11 @@ function useAuth() {
     }
   }, []);
 
-  return currentUser;
+  return {
+    currentUser,
+    login,
+    register
+  }
 }
 
 export default useAuth;

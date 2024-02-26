@@ -7,7 +7,7 @@
 }
 
 .auth-logo {
-  @apply mx-auto mb-5
+  @apply mx-auto mb-5 h-auto w-auto
 }
 
 .auth-main {
