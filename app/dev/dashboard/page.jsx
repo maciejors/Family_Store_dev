@@ -28,7 +28,7 @@ export default function Dashboard() {
 			checkPermissions(
 				currentUser,
 				() => push('/dev'),
-				() => push('/dev') // TODO: add a special page for non-developers
+				() => push('/dev/access-denied')
 			);
 			const fetchedBrands = await getBrandsForUser(currentUser.uid);
 			const fetchedAppsByBrands = await getAppsByBrands(fetchedBrands);
