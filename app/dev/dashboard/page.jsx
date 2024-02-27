@@ -21,7 +21,7 @@ export default function Dashboard() {
 	const { push } = useRouter();
 	let { currentUser } = useAuth();
 	const [brands, setBrands] = useState([]);
-	const [appsByBrands, setAppsByBrands] = useState(new Map());
+	const [appsByBrands, setAppsByBrands] = useState(null);
 
 	async function onUserChanged() {
 		if (currentUser !== null) {
@@ -30,8 +30,10 @@ export default function Dashboard() {
 				() => push('/dev'),
 				() => push('/dev') // TODO: add a special page for non-developers
 			);
-			setBrands(await getBrandsForUser('user1'));
-			setAppsByBrands(await getAppsByBrands(brands));
+			const fetchedBrands = await getBrandsForUser(currentUser.uid);
+			const fetchedAppsByBrands = await getAppsByBrands(fetchedBrands);
+			setBrands(fetchedBrands);
+			setAppsByBrands(fetchedAppsByBrands);
 		}
 	}
 
