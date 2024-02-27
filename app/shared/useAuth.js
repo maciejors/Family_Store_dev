@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { authStateListener, createUser, signIn } from '@/app/db/auth';
+import { authStateListener, createUser, isUserDeveloper, signIn } from '@/app/db/auth';
 
 function useAuth() {
 	const key = 'user';
@@ -19,15 +19,17 @@ function useAuth() {
 				uid: null,
 				email: null,
 				displayName: null,
+				isDev: false,
 			}
 		);
 
-		const unsubscribe = authStateListener((user) => {
+		const unsubscribe = authStateListener(async (user) => {
 			if (user) {
 				const data = {
 					uid: user.uid,
 					email: user.email,
 					displayName: user.displayName,
+					isDev: await isUserDeveloper(user),
 				};
 				setCurrentUser(data);
 				localStorage.setItem(key, JSON.stringify(data));
@@ -36,6 +38,7 @@ function useAuth() {
 					uid: null,
 					email: null,
 					displayName: null,
+					isDev: false,
 				});
 				localStorage.removeItem(key);
 			}
