@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import './authPage.css';
 import useAuth from '../shared/useAuth';
 
 export default function AuthPage() {
 	const { login, register } = useAuth();
+	const { push } = useRouter();
 
 	const [isLogin, setIsLogin] = useState(true);
 
@@ -22,23 +24,22 @@ export default function AuthPage() {
 	function submit(event) {
 		event.preventDefault();
 		try {
-			if (isLogin) 
-			{
+			if (isLogin) {
 				login(email, password);
-			}
-			else {
+				push('/dev/dashboard');
+			} else {
 				if (validateRegisterForm) {
 					register(email, password);
+					push('/dev/dashboard');
 				}
 			}
-			
 		} catch (error) {
 			console.error(Error, 'Submit auth form error');
 		}
 	}
 
 	function validateRegisterForm() {
-		return (password === repeatPassword);
+		return password === repeatPassword;
 	}
 
 	return (

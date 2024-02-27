@@ -1,25 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { authStateListener, createUser, signIn } from '@/app/db/auth';
 
 function useAuth() {
-	const { push } = useRouter();
-
-	function redirectToDashboard() {
-		push('/dev/dashboard');
-	}
-
 	const key = 'user';
 	const [currentUser, setCurrentUser] = useState(null);
 
 	async function login(email, password) {
 		await signIn(email, password);
-		redirectToDashboard();
 	}
 
 	async function register(email, password) {
 		await createUser(email, password);
-		redirectToDashboard();
 	}
 
 	useEffect(() => {
