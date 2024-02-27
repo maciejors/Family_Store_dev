@@ -38,14 +38,15 @@ export async function signOut() {
  * @param {User} user
  * @returns {Promise<boolean>}
  */
-export async function isUserDeveloper(user) {
+async function isUserDeveloper(user) {
 	const userClaims = await user.getIdTokenResult();
 	return userClaims.claims.dev === true;
 }
 
 export function authStateListener(onChanged) {
-	const unsubscribe = onAuthStateChanged(auth, (user) => {
-		onChanged(user);
+	const unsubscribe = onAuthStateChanged(auth, async (user) => {
+		const isDev = await isUserDeveloper(user);
+		onChanged(user, isDev);
 	});
 
 	return unsubscribe;

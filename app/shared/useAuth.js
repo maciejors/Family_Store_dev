@@ -23,13 +23,13 @@ function useAuth() {
 			}
 		);
 
-		const unsubscribe = authStateListener(async (user) => {
+		const unsubscribe = authStateListener((user, isDev) => {
 			if (user) {
 				const data = {
 					uid: user.uid,
 					email: user.email,
 					displayName: user.displayName,
-					isDev: await isUserDeveloper(user),
+					isDev,
 				};
 				setCurrentUser(data);
 				localStorage.setItem(key, JSON.stringify(data));
