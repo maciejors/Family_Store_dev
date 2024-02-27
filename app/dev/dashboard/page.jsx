@@ -1,7 +1,12 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { getAppsForBrand, getBrandsForUser } from '../../db/database';
-import { redirectIfNoPermissions } from '@/app/shared/authUtils';
 import AppList from './AppList';
 import './dashboard.css';
+import useAuth from '@/app/shared/useAuth';
+import checkPermissions from '@/app/shared/checkPermissions';
 
 async function getAppsByBrands(brands) {
 	const result = new Map();
@@ -12,13 +17,27 @@ async function getAppsByBrands(brands) {
 	return result;
 }
 
-export default async function Dashboard() {
-	// TODO: fetch a user from some global state
-	const user = null;
-	await redirectIfNoPermissions(user);
+export default function Dashboard() {
+	const { push } = useRouter();
+	let { currentUser } = useAuth();
+	const [brands, setBrands] = useState([]);
+	const [appsByBrands, setAppsByBrands] = useState(new Map());
 
-	const brands = await getBrandsForUser('user1');
-	const appsByBrands = await getAppsByBrands(brands);
+	async function onUserChanged() {
+		if (currentUser !== null) {
+			checkPermissions(
+				currentUser,
+				() => push('/dev'),
+				() => push('/dev') // TODO: add a special page for non-developers
+			);
+			setBrands(await getBrandsForUser('user1'));
+			setAppsByBrands(await getAppsByBrands(brands));
+		}
+	}
+
+	useEffect(() => {
+		onUserChanged();
+	}, [currentUser]);
 
 	return (
 		<div className="main-container">
@@ -31,7 +50,7 @@ export default async function Dashboard() {
 			</header>
 			<main className="w-full">
 				{brands.map((brand) => {
-					const apps = appsByBrands.get(brand.id);
+					const apps = appsByBrands.get(brand.id) ?? [];
 					return <AppList brandName={brand.name} apps={apps} key={brand.id} />;
 				})}
 			</main>

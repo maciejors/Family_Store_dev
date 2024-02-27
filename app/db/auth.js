@@ -3,6 +3,7 @@ import {
 	User,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	onAuthStateChanged,
 } from 'firebase/auth';
 import { app } from './firebase-setup';
 
@@ -12,7 +13,7 @@ const auth = getAuth(app);
  * This will raise an error when user's creation fails (user already exists or invalid password)
  * @param {string} email
  * @param {string} password
- * @returns {User}
+ * @returns {Promise<User>}
  */
 export async function createUser(email, password) {
 	// this line will throw an error when user's creation fails
@@ -24,7 +25,7 @@ export async function createUser(email, password) {
  * This will raise an error when sign-in fails (user does not exist or invalid password)
  * @param {string} email
  * @param {string} password
- * @returns {User}
+ * @returns {Promise<User>}
  */
 export async function signIn(email, password) {
 	// this line will throw an error when sign-in fails
@@ -39,4 +40,12 @@ export async function signIn(email, password) {
 export async function isUserDeveloper(user) {
 	const userClaims = await user.getIdTokenResult();
 	return userClaims.claims.dev === true;
+}
+
+export function authStateListener(onChanged) {
+	const unsubscribe = onAuthStateChanged(auth, (user) => {
+		onChanged(user);
+	});
+
+	return unsubscribe;
 }
