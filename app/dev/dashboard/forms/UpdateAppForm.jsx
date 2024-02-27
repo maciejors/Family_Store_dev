@@ -39,11 +39,18 @@ export default function UpdateAppForm({ appId }) {
 	}
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className="app-form">
 			<label className="file-input">
 				<Icon path={file === '' ? mdiUpload : mdiCheck} size={1.5} />
 				<p>{fileInputLabel}</p>
-				<input required type="file" accept=".apk" value={file} onChange={onFileChanged} />
+				<input
+					required
+					type="file"
+					accept=".apk"
+					value={file}
+					onChange={onFileChanged}
+					className="file-input"
+				/>
 			</label>
 			<div className="input-container">
 				<label>
