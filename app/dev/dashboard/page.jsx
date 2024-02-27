@@ -42,20 +42,23 @@ export default function Dashboard() {
 	}, [currentUser]);
 
 	return (
-		<div className="main-container">
-			<header className="dashboard-header">
-				<h2>Moje aplikacje</h2>
-				<div className="header-buttons">
-					<button className="btn btn-secondary">Zarządzaj markami</button>
-					<button className="btn btn-primary">Dodaj aplikację</button>
-				</div>
-			</header>
-			<main className="w-full">
-				{brands.map((brand) => {
-					const apps = appsByBrands.get(brand.id) ?? [];
-					return <AppList brandName={brand.name} apps={apps} key={brand.id} />;
-				})}
-			</main>
-		</div>
+		currentUser &&
+		currentUser.isDev && (
+			<div className="main-container">
+				<header className="dashboard-header">
+					<h2>Moje aplikacje</h2>
+					<div className="header-buttons">
+						<button className="btn btn-secondary">Zarządzaj markami</button>
+						<button className="btn btn-primary">Dodaj aplikację</button>
+					</div>
+				</header>
+				<main className="w-full">
+					{brands.map((brand) => {
+						const apps = appsByBrands.get(brand.id) ?? [];
+						return <AppList brandName={brand.name} apps={apps} key={brand.id} />;
+					})}
+				</main>
+			</div>
+		)
 	);
 }
