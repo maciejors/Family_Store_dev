@@ -45,7 +45,7 @@ async function isUserDeveloper(user) {
 
 export function authStateListener(onChanged) {
 	const unsubscribe = onAuthStateChanged(auth, async (user) => {
-		const isDev = await isUserDeveloper(user);
+		const isDev = user ? await isUserDeveloper(user) : false;
 		onChanged(user, isDev);
 	});
 
