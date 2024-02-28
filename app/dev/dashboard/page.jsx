@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAppsForBrand, getBrandsForUser } from '../../db/database';
+import { signOut } from '@/app/db/auth';
 import AppList from './AppList';
 import './dashboard.css';
 import useAuth from '@/app/shared/useAuth';
@@ -37,6 +38,11 @@ export default function Dashboard() {
 		}
 	}
 
+	async function logout() {
+		await signOut();
+		push('/dev');
+	}
+
 	useEffect(() => {
 		onUserChanged();
 	}, [currentUser]);
@@ -48,8 +54,11 @@ export default function Dashboard() {
 				<header className="dashboard-header">
 					<h2>Moje aplikacje</h2>
 					<div className="header-buttons">
-						<button className="btn btn-secondary">Zarządzaj markami</button>
+						<button className="btn btn-primary">Zarządzaj markami</button>
 						<button className="btn btn-primary">Dodaj aplikację</button>
+						<button className="btn btn-secondary" onClick={logout}>
+							Wyloguj się
+						</button>
 					</div>
 				</header>
 				<main className="w-full">
