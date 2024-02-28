@@ -1,0 +1,13 @@
+.message-container {
+	@apply flex flex-col items-center justify-center h-screen;
+}
+
+.message {
+	@apply p-10 shadow-md rounded bg-white mx-8 max-w-md;
+	@apply flex flex-col gap-4 items-center;
+}
+
+.message p,
+.message h2 {
+	@apply text-center;
+}

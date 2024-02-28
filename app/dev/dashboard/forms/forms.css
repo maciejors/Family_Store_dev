@@ -1,4 +1,4 @@
-form {
+form.app-form {
 	@apply flex flex-col items-center gap-4 p-2 mt-4;
 }
 
@@ -6,7 +6,7 @@ form {
 	@apply flex flex-col items-start w-full;
 }
 
-input[type='file'] {
+input[type='file'].file-input {
 	@apply opacity-0 absolute -z-10;
 }
 
@@ -31,6 +31,6 @@ p.required-asterisk {
 	@apply border-2 rounded shadow-inner bg-white w-full;
 }
 
-textarea {
+textarea.text-input {
 	@apply resize-y;
 }
