@@ -9,7 +9,8 @@ import { mdiCheck, mdiUpload } from '@mdi/js';
 export default function UpdateAppForm({ appId }) {
 	const defaultFileInputLabel = 'Dodaj plik';
 
-	const [file, setFile] = useState('');
+	const [file, setFile] = useState(undefined);
+	const [fileInput, setFileInput] = useState(''); // input needs a filename
 	const [version, setVersion] = useState('');
 	const [changelog, setChangelog] = useState('');
 	const [currentVersion, setCurrentVersion] = useState('');
@@ -17,31 +18,41 @@ export default function UpdateAppForm({ appId }) {
 
 	useEffect(() => {
 		getAppUpdateDetails(appId).then((defaults) => {
-			setChangelog(defaults.changelog);
+			setChangelog(defaults.changelog ?? '');
 			setCurrentVersion(defaults.version);
 		});
 	}, []);
 
 	function onFileChanged(e) {
-		const filePath = e.target.value;
-		setFile(filePath);
-		const filename = filePath.split('\\').pop();
-		if (filename !== '') {
-			setFileInputLabel(filename);
+		const newFile = e.target.files[0];
+		setFileInput(e.target.value);
+		setFile(newFile);
+		if (newFile !== undefined) {
+			setFileInputLabel(newFile.name);
 		} else {
 			setFileInputLabel(defaultFileInputLabel);
 		}
 	}
 
+	function onUploadStarted() {
+		console.log('file upload started!');
+	}
+
+	function onUploadFinished() {
+		console.log('file upload finished!');
+	}
+
 	async function handleSubmit(e) {
 		e.preventDefault();
+		onUploadStarted();
 		await updateApp(appId, file, version, changelog);
+		onUploadFinished();
 	}
 
 	return (
 		<form onSubmit={handleSubmit} className="app-form">
 			<label className="file-input">
-				<Icon path={file === '' ? mdiUpload : mdiCheck} size={1.5} />
+				<Icon path={file === undefined ? mdiUpload : mdiCheck} size={1.5} />
 				<p>{fileInputLabel}</p>
 				<input
 					required

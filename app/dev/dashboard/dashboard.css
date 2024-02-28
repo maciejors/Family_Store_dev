@@ -24,6 +24,7 @@ header.dashboard-header {
 
 .app-card {
 	@apply p-4 text-lg transition-colors bg-white;
+  @apply flex flex-col justify-between;
 }
 
 .app-card main {
@@ -53,7 +54,7 @@ header.dashboard-header {
 
 .overlay {
 	@apply bg-gray-600 bg-opacity-50;
-	@apply absolute top-0 left-0 w-full h-full;
+	@apply fixed top-0 left-0 w-full h-full;
 	@apply flex flex-col justify-center items-center;
 }
 
