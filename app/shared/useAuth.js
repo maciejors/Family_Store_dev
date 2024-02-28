@@ -7,11 +7,21 @@ function useAuth() {
 	const [currentUser, setCurrentUser] = useState(null);
 
 	async function login(email, password) {
-		await signIn(email, password);
+		try {
+			await signIn(email, password);
+			return true;
+		} catch (error) {
+			return false;
+		}
 	}
 
 	async function register(email, password) {
-		await createUser(email, password);
+		try {
+			await createUser(email, password);
+			return true;
+		} catch (error) {
+			return false;
+		}
 	}
 
 	useEffect(() => {

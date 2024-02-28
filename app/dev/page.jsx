@@ -6,12 +6,14 @@ import Image from 'next/image';
 import './authPage.css';
 import useAuth from '../shared/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '../shared/user';
+import validate from './validation';
 
 export default function AuthPage() {
 	const { currentUser, login, register } = useAuth();
 	const { push } = useRouter();
 
 	const [isLogin, setIsLogin] = useState(true);
+	const [alertMessage, setAlertMessage] = useState('');
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -20,25 +22,27 @@ export default function AuthPage() {
 	function changeAuthType(event) {
 		event.preventDefault();
 		setIsLogin(!isLogin);
+		setAlertMessage('');
 	}
 
-	function submit(event) {
+	async function submit(event) {
 		event.preventDefault();
 		try {
 			if (isLogin) {
-				login(email, password);
+				const isSucceed = await login(email, password);
+				if (!isSucceed) setAlertMessage('Dane logowania są niepoprawne');
 			} else {
-				if (validateRegisterForm) {
-					register(email, password);
+				const validation = validate(email, password, repeatPassword);
+				if (validation.isValid) {
+					const isSucceed = await register(email, password);
+					if (!isSucceed) setAlertMessage('Coś poszło nie tak');	
 				}
+				else
+					setAlertMessage(validation.message);	
 			}
 		} catch (error) {
 			console.error(Error, 'Submit auth form error');
 		}
-	}
-
-	function validateRegisterForm() {
-		return password === repeatPassword;
 	}
 
 	useEffect(() => {
@@ -71,6 +75,7 @@ export default function AuthPage() {
 					</header>
 					<main className="auth-main">
 						<h3>{isLogin ? 'Logowanie' : 'Rejestracja'}</h3>
+						{alertMessage ? <p className="auth-error">{alertMessage}</p> : ''}
 						<label className="auth-label" htmlFor="email">
 							Email
 						</label>

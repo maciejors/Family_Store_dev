@@ -27,7 +27,7 @@
 }
 
 .auth-error {
-	@apply text-red-700;
+	@apply text-red-700 mt-2;
 }
 
 .auth-btn {
