@@ -7,7 +7,7 @@ import { signOut } from '@/app/db/auth';
 import AppList from './AppList';
 import './dashboard.css';
 import useAuth from '@/app/shared/useAuth';
-import checkPermissions from '@/app/shared/checkPermissions';
+import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '@/app/shared/user';
 
 async function getAppsByBrands(brands) {
 	const result = new Map();
@@ -24,23 +24,25 @@ export default function Dashboard() {
 	const [brands, setBrands] = useState([]);
 	const [appsByBrands, setAppsByBrands] = useState(null);
 
+	async function logout() {
+		await signOut();
+	}
+
 	async function onUserChanged() {
 		if (currentUser !== null) {
-			checkPermissions(
-				currentUser,
-				() => push('/dev'),
-				() => push('/dev/access-denied')
-			);
+			if (isNotAuthenticated(currentUser)) {
+				push('/dev');
+				return;
+			}
+			if (isLoggedInRegular(currentUser)) {
+				push('/dev/access-denied');
+				return;
+			}
 			const fetchedBrands = await getBrandsForUser(currentUser.uid);
 			const fetchedAppsByBrands = await getAppsByBrands(fetchedBrands);
 			setBrands(fetchedBrands);
 			setAppsByBrands(fetchedAppsByBrands);
 		}
-	}
-
-	async function logout() {
-		await signOut();
-		push('/dev');
 	}
 
 	useEffect(() => {
@@ -49,7 +51,7 @@ export default function Dashboard() {
 
 	return (
 		currentUser &&
-		currentUser.isDev && (
+		isLoggedInDeveloper(currentUser) && (
 			<div className="main-container">
 				<header className="dashboard-header">
 					<h2>Moje aplikacje</h2>

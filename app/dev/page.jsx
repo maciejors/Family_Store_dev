@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import './authPage.css';
 import useAuth from '../shared/useAuth';
+import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '../shared/user';
 
 export default function AuthPage() {
 	const { currentUser, login, register } = useAuth();
@@ -41,19 +42,21 @@ export default function AuthPage() {
 	}
 
 	useEffect(() => {
-		if (currentUser === null || currentUser.uid === null) {
-			return;
-		}
-		if (currentUser.isDev) {
-			push('/dev/dashboard');
-		} else {
-			push('/dev/access-denied');
+		if (currentUser !== null) {
+			if (isLoggedInRegular(currentUser)) {
+				push('/dev/access-denied');
+				return;
+			}
+			if (isLoggedInDeveloper(currentUser)) {
+				push('/dev/dashboard');
+				return;
+			}
 		}
 	}, [currentUser]);
 
 	return (
 		currentUser &&
-		currentUser.uid === null && (
+		isNotAuthenticated(currentUser) && (
 			<div className="main-container auth-container">
 				<form className="auth-form">
 					<header>

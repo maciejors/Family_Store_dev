@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { authStateListener, createUser, isUserDeveloper, signIn } from '@/app/db/auth';
+import { authStateListener, createUser, signIn } from '@/app/db/auth';
+import { getAnonymousUser } from './user';
 
 function useAuth() {
 	const key = 'user';
@@ -14,14 +15,7 @@ function useAuth() {
 	}
 
 	useEffect(() => {
-		setCurrentUser(
-			JSON.parse(localStorage.getItem(key)) || {
-				uid: null,
-				email: null,
-				displayName: null,
-				isDev: false,
-			}
-		);
+		setCurrentUser(JSON.parse(localStorage.getItem(key)) || getAnonymousUser());
 
 		const unsubscribe = authStateListener((user, isDev) => {
 			if (user) {
@@ -34,12 +28,7 @@ function useAuth() {
 				setCurrentUser(data);
 				localStorage.setItem(key, JSON.stringify(data));
 			} else {
-				setCurrentUser({
-					uid: null,
-					email: null,
-					displayName: null,
-					isDev: false,
-				});
+				setCurrentUser(getAnonymousUser());
 				localStorage.removeItem(key);
 			}
 		});

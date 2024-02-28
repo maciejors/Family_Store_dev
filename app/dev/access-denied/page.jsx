@@ -6,6 +6,7 @@ import '../../globals.css';
 import './styles.css';
 import useAuth from '@/app/shared/useAuth';
 import { useEffect } from 'react';
+import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '@/app/shared/user';
 
 export default function page() {
 	const { currentUser } = useAuth();
@@ -17,22 +18,21 @@ export default function page() {
 	}
 
 	useEffect(() => {
-		if (currentUser === null) {
-			return;
-		}
-		if (currentUser.isDev) {
-			// logged in and developer
-			push('/dev/dashboard');
-		} else if (currentUser.uid === null) {
-			// not logged in
-			push('/dev');
+		if (currentUser !== null) {
+			if (isNotAuthenticated(currentUser)) {
+				push('/dev');
+				return;
+			}
+			if (isLoggedInDeveloper(currentUser)) {
+				push('/dev/dashboard');
+				return;
+			}
 		}
 	}, [currentUser]);
 
 	return (
 		currentUser &&
-		currentUser.uid &&
-		!currentUser.isDev && (
+		isLoggedInRegular(currentUser) && (
 			<div className="message-container">
 				<main className="message">
 					<h2>Access denied</h2>
