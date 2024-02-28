@@ -9,18 +9,18 @@ function useAuth() {
 	async function login(email, password) {
 		try {
 			await signIn(email, password);
-			return true;
+			return { success: true };
 		} catch (error) {
-			return false;
+			return { success: false, error };
 		}
 	}
 
 	async function register(email, password) {
 		try {
 			await createUser(email, password);
-			return true;
+			return { success: true };
 		} catch (error) {
-			return false;
+			return { success: false, error };
 		}
 	}
 

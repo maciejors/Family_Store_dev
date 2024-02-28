@@ -29,13 +29,18 @@ export default function AuthPage() {
 		event.preventDefault();
 		try {
 			if (isLogin) {
-				const isSucceed = await login(email, password);
-				if (!isSucceed) setAlertMessage('Dane logowania są niepoprawne');
+				const { success } = await login(email, password);
+				if (!success) setAlertMessage('Dane logowania są niepoprawne');
 			} else {
 				const validation = validate(email, password, repeatPassword);
 				if (validation.isValid) {
-					const isSucceed = await register(email, password);
-					if (!isSucceed) setAlertMessage('Coś poszło nie tak');	
+					const { success, error } = await register(email, password);
+					if (!success) {
+						if (error.code === 'auth/email-already-in-use')
+							setAlertMessage('Ten e-mail posiada już konto');
+						else
+							setAlertMessage('Coś poszło nie tak');	
+					}
 				}
 				else
 					setAlertMessage(validation.message);	
