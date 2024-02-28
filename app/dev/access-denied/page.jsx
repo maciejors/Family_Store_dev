@@ -8,7 +8,7 @@ import useAuth from '@/app/shared/useAuth';
 import { useEffect } from 'react';
 import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '@/app/shared/user';
 
-export default function page() {
+export default function AccessDeniedPage() {
 	const { currentUser } = useAuth();
 	const { push } = useRouter();
 
