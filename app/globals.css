@@ -37,7 +37,7 @@ h6 {
 }
 
 .btn {
-	@apply cursor-pointer inline-flex justify-center items-center w-fit h-fit;
+	@apply cursor-pointer inline-flex justify-center items-center;
 	@apply py-1 px-2 border-2 border-solid rounded-lg transition-colors;
 }
 
