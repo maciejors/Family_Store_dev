@@ -35,10 +35,10 @@ export default function AccessDeniedPage() {
 		isLoggedInRegular(currentUser) && (
 			<div className="message-container">
 				<main className="message">
-					<h2>Access denied</h2>
-					<p>This part of the website is only accessible to users with a developer account.</p>
+					<h2>Odmowa dostępu</h2>
+					<p>Ta część platformy jest dostępna jedynie dla użytkowników z kontem dewelopera.</p>
 					<button className="btn btn-primary" onClick={logout}>
-						Logout
+						Wyloguj się
 					</button>
 				</main>
 			</div>
