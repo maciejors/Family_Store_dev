@@ -6,6 +6,10 @@ header.dashboard-header {
 	@apply flex flex-row gap-4;
 }
 
+/*
+	APP LIST
+*/
+
 .apps-list {
 	@apply w-full;
 }
@@ -24,7 +28,7 @@ header.dashboard-header {
 
 .app-card {
 	@apply p-4 text-lg transition-colors bg-white;
-  @apply flex flex-col justify-between;
+	@apply flex flex-col justify-between;
 }
 
 .app-card main {
@@ -69,4 +73,13 @@ header.dialog-header {
 
 .dialog .close-btn {
 	@apply hover:text-gray-700;
+}
+
+/* 
+	NO BRANDS INFO
+*/
+
+.no-brands-info-container,
+.spinner-container {
+	@apply w-full pt-16 flex flex-col gap-2 items-center text-center;
 }
