@@ -125,6 +125,34 @@ export async function getAppsForBrand(brandId) {
 }
 
 /**
+ * @typedef AppsByBrand
+ * @property {Brand} brand
+ * @property {AppPreview[]} apps
+ *
+ * @param {string} userUid
+ * @returns {Promise<AppsByBrand[]>}
+ */
+export async function getUserAppsByBrands(userUid) {
+	try {
+		const snapshot = await get(child(databaseRef(db), APPS_PATH));
+
+		if (!snapshot.exists()) {
+			throw new Error('Database No Data Error');
+		}
+		const userBrands = await getBrandsForUser(userUid);
+		const result = [];
+		for (let brand of userBrands) {
+			const appsForBrand = await getAppsForBrand(brand.id);
+			result.push({ brand, apps: appsForBrand });
+		}
+		return result;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+/**
  * @param {string} appId
  * @returns {Promise<AppDetails>}
  */

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAppsForBrand, getBrandsForUser } from '../../db/database';
+import { getUserAppsByBrands } from '../../db/database';
 import { signOut } from '@/app/db/auth';
 import AppList from './AppList';
 import './dashboard.css';
@@ -10,15 +10,6 @@ import useAuth from '@/app/shared/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '@/app/shared/user';
 import NoAppsInfo from './NoAppsInfo';
 import Spinner from '@/app/shared/Spinner';
-
-async function getAppsByBrands(brands) {
-	const result = new Map();
-	for (let brand of brands) {
-		const apps = await getAppsForBrand(brand.id);
-		result.set(brand.id, apps);
-	}
-	return result;
-}
 
 export default function Dashboard() {
 	const { push } = useRouter();
@@ -40,16 +31,9 @@ export default function Dashboard() {
 				push('/dev/access-denied');
 				return;
 			}
-			const fetchedBrands = await getBrandsForUser(currentUser.uid);
-			const fetchedAppsByBrands = await getAppsByBrands(fetchedBrands);
-			const appsDataToDisplay = fetchedBrands
-				.map((brand) => {
-					// get app list for each brand
-					const apps = fetchedAppsByBrands.get(brand.id) ?? [];
-					return { brand, apps };
-				})
-				.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
-			setAppsData(appsDataToDisplay);
+			const fetchedData = await getUserAppsByBrands(currentUser.uid);
+			const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
+			setAppsData(dataToDisplay);
 		}
 	}
 
