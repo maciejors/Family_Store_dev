@@ -6,6 +6,10 @@ header.dashboard-header {
 	@apply flex flex-row gap-4;
 }
 
+.spinner-container {
+	@apply w-full flex flex-col items-center;
+}
+
 /*
 	APP LIST
 */
@@ -79,7 +83,6 @@ header.dialog-header {
 	NO BRANDS INFO
 */
 
-.no-brands-info-container,
-.spinner-container {
-	@apply w-full pt-16 flex flex-col gap-2 items-center text-center;
+.no-brands-info-container {
+	@apply w-full py-16 flex flex-col gap-2 items-center text-center;
 }

@@ -1,4 +1,4 @@
-import { getDatabase, ref as databaseRef, child, get, update } from 'firebase/database';
+import { getDatabase, ref as databaseRef, child, get, update, set } from 'firebase/database';
 import {
 	getStorage,
 	ref as storageRef,
@@ -19,6 +19,7 @@ const USERS_PATH = `${DB_PATH}/Users`;
 /**
  * @typedef Brand
  * @property {string} id
+ * @property {string} ownerUserId
  * @property {string} name
  *
  * @typedef AppPreview
@@ -222,6 +223,56 @@ async function getPictureUrls(appId) {
 	} catch (error) {
 		console.error(error);
 		return [];
+	}
+}
+
+/**
+ * @param {string} brandId
+ * @param {string} newBrandName
+ */
+export async function updateBrand(brandId, newBrandName) {
+	const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
+	await update(brandRef, { name: newBrandName });
+}
+
+/**
+ * @param {string} userId
+ * @param {string} newBrandName
+ */
+export async function addBrand(userId, newBrandName) {
+	try {
+		// prepare for new brand adding
+		const brandId = Date.now().toString();
+		const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
+		// prepare for user data updating
+		const userBrandsRef = databaseRef(db, `${USERS_PATH}/${userId}/brands`);
+		const userBrandsIds = (await get(userBrandsRef)).val();
+		userBrandsIds.push(brandId);
+		//
+		await set(brandRef, { id: brandId, ownerUserId: userId, name: newBrandName });
+		await set(userBrandsRef, userBrandsIds);
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+/**
+ * @param {string} brandId
+ */
+export async function deleteBrand(brandId) {
+	try {
+		// prepare for brand removal
+		const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
+		// prepare for user data updating
+		const brand = await getBrandById(brandId);
+		const userBrandsRef = databaseRef(db, `${USERS_PATH}/${brand.ownerUserId}/brands`);
+		let userBrandsIds = (await get(userBrandsRef)).val();
+		userBrandsIds = userBrandsIds.filter((b) => b !== brandId);
+		//
+		await set(brandRef, null);
+		await set(userBrandsRef, userBrandsIds);
+	} catch (error) {
+		console.error(error);
 	}
 }
 

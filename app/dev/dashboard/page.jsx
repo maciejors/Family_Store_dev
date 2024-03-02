@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { getUserAppsByBrands } from '../../db/database';
 import { signOut } from '@/app/db/auth';
 import AppList from './AppList';
+import Dialog from './Dialog';
 import './dashboard.css';
 import useAuth from '@/app/shared/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '@/app/shared/user';
 import NoAppsInfo from './NoAppsInfo';
 import Spinner from '@/app/shared/Spinner';
+import BrandsManager from './brands-manager/BrandsManager';
 
 export default function Dashboard() {
 	const { push } = useRouter();
@@ -48,7 +50,12 @@ export default function Dashboard() {
 				<header className="dashboard-header">
 					<h2>Moje aplikacje</h2>
 					<div className="header-buttons">
-						<button className="btn btn-primary">Zarządzaj markami</button>
+						<Dialog
+							openButton={<div className="btn btn-primary h-full">Zarządzaj markami</div>}
+							title="Zarządzanie markami"
+						>
+							<BrandsManager userUid={currentUser.uid} />
+						</Dialog>
 						<button className="btn btn-primary">Dodaj aplikację</button>
 						<button className="btn btn-secondary" onClick={logout}>
 							Wyloguj się
@@ -63,7 +70,7 @@ export default function Dashboard() {
 						))}
 					{appsData && appsData.length === 0 && <NoAppsInfo />}
 					{appsData === null && (
-						<div className="spinner-container">
+						<div className="spinner-container pt-16">
 							<Spinner size={64} width={6} />
 						</div>
 					)}
