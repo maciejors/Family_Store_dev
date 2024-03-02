@@ -16,7 +16,6 @@ export default function BrandsManager({ userUid }) {
 	const [brandsData, setBrandsData] = useState(null);
 
 	async function fetchBrandsData() {
-		setBrandsData(null);
 		const fetchedData = await getBrandsDataToDisplay(userUid);
 		setBrandsData(fetchedData);
 	}
@@ -26,16 +25,19 @@ export default function BrandsManager({ userUid }) {
 	}, []);
 
 	async function handleConfirmEditBrand(brandId, newBrandName) {
+		setBrandsData(null);
 		await updateBrand(brandId, newBrandName);
 		await fetchBrandsData();
 	}
 
 	async function handleDeleteBrand(brandId) {
+		setBrandsData(null);
 		await deleteBrand(brandId);
 		await fetchBrandsData();
 	}
 
 	async function handleConfirmAddBrand(brandName) {
+		setBrandsData(null);
 		await addBrand(userUid, brandName);
 		await fetchBrandsData();
 	}
