@@ -280,6 +280,7 @@ export async function updateApp(appId, apkFile, newVersion, changelog) {
 	await uploadBytes(apkFileRef, apkFile);
 
 	// 2. update app metadata
+	const lastUpdated = Date.now();
 	const appReference = databaseRef(db, `${APPS_PATH}/${appId}`);
-	await update(appReference, { version: newVersion, changelog });
+	await update(appReference, { version: newVersion, changelog, lastUpdated });
 }
