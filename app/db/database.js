@@ -58,7 +58,7 @@ export async function getBrandsForUser(userId) {
 		const snapshot = await get(child(databaseRef(db), `${USERS_PATH}/${userId}/brands`));
 
 		if (!snapshot.exists()) {
-			throw new Error('Database No Data Error');
+			return [];
 		}
 		const brandsForUser = snapshot.val();
 
@@ -138,7 +138,7 @@ export async function getUserAppsByBrands(userUid) {
 		const snapshot = await get(child(databaseRef(db), APPS_PATH));
 
 		if (!snapshot.exists()) {
-			throw new Error('Database No Data Error');
+			return [];
 		}
 		const userBrands = await getBrandsForUser(userUid);
 		const result = [];
@@ -240,40 +240,32 @@ export async function updateBrand(brandId, newBrandName) {
  * @param {string} newBrandName
  */
 export async function addBrand(userId, newBrandName) {
-	try {
-		// prepare for new brand adding
-		const brandId = Date.now().toString();
-		const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
-		// prepare for user data updating
-		const userBrandsRef = databaseRef(db, `${USERS_PATH}/${userId}/brands`);
-		const userBrandsIds = (await get(userBrandsRef)).val();
-		userBrandsIds.push(brandId);
-		//
-		await set(brandRef, { id: brandId, ownerUserId: userId, name: newBrandName });
-		await set(userBrandsRef, userBrandsIds);
-	} catch (error) {
-		console.error(error);
-	}
+	// prepare for new brand adding
+	const brandId = Date.now().toString();
+	const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
+	// prepare for user data updating
+	const userBrandsRef = databaseRef(db, `${USERS_PATH}/${userId}/brands`);
+	const userBrandsIds = (await get(userBrandsRef)).val();
+	userBrandsIds.push(brandId);
+	//
+	await set(brandRef, { id: brandId, ownerUserId: userId, name: newBrandName });
+	await set(userBrandsRef, userBrandsIds);
 }
 
 /**
  * @param {string} brandId
  */
 export async function deleteBrand(brandId) {
-	try {
-		// prepare for brand removal
-		const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
-		// prepare for user data updating
-		const brand = await getBrandById(brandId);
-		const userBrandsRef = databaseRef(db, `${USERS_PATH}/${brand.ownerUserId}/brands`);
-		let userBrandsIds = (await get(userBrandsRef)).val();
-		userBrandsIds = userBrandsIds.filter((b) => b !== brandId);
-		//
-		await set(brandRef, null);
-		await set(userBrandsRef, userBrandsIds);
-	} catch (error) {
-		console.error(error);
-	}
+	// prepare for brand removal
+	const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
+	// prepare for user data updating
+	const brand = await getBrandById(brandId);
+	const userBrandsRef = databaseRef(db, `${USERS_PATH}/${brand.ownerUserId}/brands`);
+	let userBrandsIds = (await get(userBrandsRef)).val();
+	userBrandsIds = userBrandsIds.filter((b) => b !== brandId);
+	//
+	await set(brandRef, null);
+	await set(userBrandsRef, userBrandsIds);
 }
 
 /**
