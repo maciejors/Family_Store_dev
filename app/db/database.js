@@ -245,7 +245,7 @@ export async function addBrand(userId, newBrandName) {
 	const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
 	// prepare for user data updating
 	const userBrandsRef = databaseRef(db, `${USERS_PATH}/${userId}/brands`);
-	const userBrandsIds = (await get(userBrandsRef)).val();
+	const userBrandsIds = (await get(userBrandsRef)).val() ?? [];
 	userBrandsIds.push(brandId);
 	//
 	await set(brandRef, { id: brandId, ownerUserId: userId, name: newBrandName });
