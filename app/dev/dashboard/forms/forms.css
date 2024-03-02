@@ -31,6 +31,10 @@ p.required-asterisk {
 	@apply border-2 rounded shadow-inner bg-white w-full;
 }
 
+.text-input-invalid {
+	@apply border-red-500;
+}
+
 textarea.text-input {
 	@apply resize-y;
 }

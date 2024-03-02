@@ -1,4 +1,4 @@
-import { getDatabase, ref as databaseRef, child, get, update } from 'firebase/database';
+import { getDatabase, ref as databaseRef, child, get, update, set } from 'firebase/database';
 import {
 	getStorage,
 	ref as storageRef,
@@ -19,6 +19,7 @@ const USERS_PATH = `${DB_PATH}/Users`;
 /**
  * @typedef Brand
  * @property {string} id
+ * @property {string} ownerUserId
  * @property {string} name
  *
  * @typedef AppPreview
@@ -57,7 +58,7 @@ export async function getBrandsForUser(userId) {
 		const snapshot = await get(child(databaseRef(db), `${USERS_PATH}/${userId}/brands`));
 
 		if (!snapshot.exists()) {
-			throw new Error('Database No Data Error');
+			return [];
 		}
 		const brandsForUser = snapshot.val();
 
@@ -118,6 +119,34 @@ export async function getAppsForBrand(brandId) {
 		});
 
 		return await Promise.all(promises);
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+/**
+ * @typedef AppsByBrand
+ * @property {Brand} brand
+ * @property {AppPreview[]} apps
+ *
+ * @param {string} userUid
+ * @returns {Promise<AppsByBrand[]>}
+ */
+export async function getUserAppsByBrands(userUid) {
+	try {
+		const snapshot = await get(child(databaseRef(db), APPS_PATH));
+
+		if (!snapshot.exists()) {
+			return [];
+		}
+		const userBrands = await getBrandsForUser(userUid);
+		const result = [];
+		for (let brand of userBrands) {
+			const appsForBrand = await getAppsForBrand(brand.id);
+			result.push({ brand, apps: appsForBrand });
+		}
+		return result;
 	} catch (error) {
 		console.error(error);
 		return [];
@@ -195,6 +224,48 @@ async function getPictureUrls(appId) {
 		console.error(error);
 		return [];
 	}
+}
+
+/**
+ * @param {string} brandId
+ * @param {string} newBrandName
+ */
+export async function updateBrand(brandId, newBrandName) {
+	const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
+	await update(brandRef, { name: newBrandName });
+}
+
+/**
+ * @param {string} userId
+ * @param {string} newBrandName
+ */
+export async function addBrand(userId, newBrandName) {
+	// prepare for new brand adding
+	const brandId = Date.now().toString();
+	const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
+	// prepare for user data updating
+	const userBrandsRef = databaseRef(db, `${USERS_PATH}/${userId}/brands`);
+	const userBrandsIds = (await get(userBrandsRef)).val() ?? [];
+	userBrandsIds.push(brandId);
+	//
+	await set(brandRef, { id: brandId, ownerUserId: userId, name: newBrandName });
+	await set(userBrandsRef, userBrandsIds);
+}
+
+/**
+ * @param {string} brandId
+ */
+export async function deleteBrand(brandId) {
+	// prepare for brand removal
+	const brandRef = databaseRef(db, `${BRANDS_PATH}/${brandId}`);
+	// prepare for user data updating
+	const brand = await getBrandById(brandId);
+	const userBrandsRef = databaseRef(db, `${USERS_PATH}/${brand.ownerUserId}/brands`);
+	let userBrandsIds = (await get(userBrandsRef)).val();
+	userBrandsIds = userBrandsIds.filter((b) => b !== brandId);
+	//
+	await set(brandRef, null);
+	await set(userBrandsRef, userBrandsIds);
 }
 
 /**

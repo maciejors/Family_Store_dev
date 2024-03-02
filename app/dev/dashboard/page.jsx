@@ -2,27 +2,22 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAppsForBrand, getBrandsForUser } from '../../db/database';
+import { getUserAppsByBrands } from '../../db/database';
 import { signOut } from '@/app/db/auth';
 import AppList from './AppList';
+import Dialog from './Dialog';
 import './dashboard.css';
 import useAuth from '@/app/shared/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '@/app/shared/user';
-
-async function getAppsByBrands(brands) {
-	const result = new Map();
-	for (let brand of brands) {
-		const apps = await getAppsForBrand(brand.id);
-		result.set(brand.id, apps);
-	}
-	return result;
-}
+import NoAppsInfo from './NoAppsInfo';
+import Spinner from '@/app/shared/Spinner';
+import BrandsManager from './brands-manager/BrandsManager';
 
 export default function Dashboard() {
 	const { push } = useRouter();
 	let { currentUser } = useAuth();
-	const [brands, setBrands] = useState([]);
-	const [appsByBrands, setAppsByBrands] = useState(null);
+	// appsDataToDisplay: a list of objects { brand, apps } where app count > 0
+	const [appsData, setAppsData] = useState(null);
 
 	async function logout() {
 		await signOut();
@@ -38,10 +33,9 @@ export default function Dashboard() {
 				push('/dev/access-denied');
 				return;
 			}
-			const fetchedBrands = await getBrandsForUser(currentUser.uid);
-			const fetchedAppsByBrands = await getAppsByBrands(fetchedBrands);
-			setBrands(fetchedBrands);
-			setAppsByBrands(fetchedAppsByBrands);
+			const fetchedData = await getUserAppsByBrands(currentUser.uid);
+			const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
+			setAppsData(dataToDisplay);
 		}
 	}
 
@@ -56,7 +50,12 @@ export default function Dashboard() {
 				<header className="dashboard-header">
 					<h2>Moje aplikacje</h2>
 					<div className="header-buttons">
-						<button className="btn btn-primary">Zarządzaj markami</button>
+						<Dialog
+							openButton={<div className="btn btn-primary h-full">Zarządzaj markami</div>}
+							title="Zarządzanie markami"
+						>
+							<BrandsManager userUid={currentUser.uid} />
+						</Dialog>
 						<button className="btn btn-primary">Dodaj aplikację</button>
 						<button className="btn btn-secondary" onClick={logout}>
 							Wyloguj się
@@ -64,10 +63,17 @@ export default function Dashboard() {
 					</div>
 				</header>
 				<main className="w-full">
-					{brands.map((brand) => {
-						const apps = appsByBrands.get(brand.id) ?? [];
-						return <AppList brandName={brand.name} apps={apps} key={brand.id} />;
-					})}
+					{appsData &&
+						appsData.length > 0 &&
+						appsData.map(({ brand, apps }) => (
+							<AppList brandName={brand.name} apps={apps} key={brand.id} />
+						))}
+					{appsData && appsData.length === 0 && <NoAppsInfo />}
+					{appsData === null && (
+						<div className="spinner-container pt-16">
+							<Spinner size={64} width={6} />
+						</div>
+					)}
 				</main>
 			</div>
 		)
