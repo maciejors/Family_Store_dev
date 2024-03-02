@@ -58,7 +58,7 @@ export default function UpdateAppForm({ appId }) {
 					required
 					type="file"
 					accept=".apk"
-					value={file}
+					value={fileInput}
 					onChange={onFileChanged}
 					className="file-input"
 				/>
