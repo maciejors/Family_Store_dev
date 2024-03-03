@@ -9,7 +9,13 @@ export default function AppCard({ app }) {
 	return (
 		<div className="card app-card">
 			<main>
-				<Image src={app.logoUrl} alt={`${app.name} logo`} width={100} height={100} />
+				<Image
+					src={app.logoUrl}
+					alt={`${app.name} logo`}
+					width={100}
+					height={100}
+					priority={true}
+				/>
 				<div className="app-details">
 					<h3>{app.name}</h3>
 					<p className="version-label">Wersja: {app.version}</p>
