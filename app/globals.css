@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-	margin-right: calc(-1 * (100vw - 100%));
+	padding-right: calc(-1 * (100vw - 100%));
 }
 
 body {
