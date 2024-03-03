@@ -284,3 +284,17 @@ export async function updateApp(appId, apkFile, newVersion, changelog) {
 	const appReference = databaseRef(db, `${APPS_PATH}/${appId}`);
 	await update(appReference, { version: newVersion, changelog, lastUpdated });
 }
+
+/**
+ * @param {string} appId
+ * @returns {Promise<string>} Current app version
+ */
+export async function getCurrentAppVersion(appId) {
+	const appVersionRef = databaseRef(db, `${APPS_PATH}/${appId}/version`);
+	const snapshot = await get(appVersionRef);
+
+	if (!snapshot.exists()) {
+		return '';
+	}
+	return snapshot.val();
+}
