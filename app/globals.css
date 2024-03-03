@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-	margin-right: calc(-1 * (100vw - 100%));
+	padding-right: calc(-1 * (100vw - 100%));
 }
 
 body {
@@ -13,7 +13,7 @@ body {
 
 .main-container {
 	@apply flex flex-col justify-center items-center;
-	@apply w-full px-2 sm:px-16 md:px-36 lg:px-60 xl:px-80;
+	@apply w-full px-2 sm:px-8 md:px-16 lg:px-24 xl:px-36 2xl:px-48;
 }
 
 h1 {
