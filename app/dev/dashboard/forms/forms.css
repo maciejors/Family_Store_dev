@@ -19,6 +19,14 @@ input[type='file'].file-input {
 	@apply flex flex-col justify-center items-center;
 }
 
+.file-container {
+	@apply flex flex-row;
+}
+
+.file-button {
+	@apply m-1
+}
+
 .required-asterisk {
 	@apply text-red-600;
 }
@@ -37,4 +45,21 @@ p.required-asterisk {
 
 textarea.text-input {
 	@apply resize-y;
+}
+
+.picture-list {
+	@apply flex flex-col;
+}
+
+.picture-list-item {
+	@apply m-2;
+	@apply flex flex-row items-center;
+}
+
+.picture-list-item-title {
+	@apply grow;
+}
+
+.file-button {
+
 }

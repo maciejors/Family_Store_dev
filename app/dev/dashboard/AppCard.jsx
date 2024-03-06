@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
 import Dialog from './Dialog';
 import UpdateAppForm from './forms/UpdateAppForm';
+import EditAppForm from './forms/EditAppForm';
 
 export default function AppCard({ app }) {
 	return (
@@ -38,7 +39,7 @@ export default function AppCard({ app }) {
 					openButton={<Icon className="footer-btn" path={mdiPencil} size={1} />}
 					title="Edytuj aplikację"
 				>
-					<span>TODO</span>
+					<EditAppForm appId={app.id} />
 				</Dialog>
 			</footer>
 		</div>
