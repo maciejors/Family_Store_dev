@@ -3,10 +3,8 @@
 import { useEffect, useState } from 'react';
 import './forms.css';
 import { getAppDetails, updateApp } from '@/app/db/database';
-import Icon from '@mdi/react';
-import { mdiCheck, mdiUpload } from '@mdi/js';
 
-export default function UpdateAppForm({ appId }) {
+export default function EditAppForm({ appId }) {
 	const defaultFileInputLabel = 'Dodaj plik';
 
 	const [file, setFile] = useState(undefined);
@@ -30,36 +28,13 @@ export default function UpdateAppForm({ appId }) {
 			setVersion(defaults.version);
 			setChangelog(defaults.changelog ?? '');
 			setDescription(defaults.description ?? '');
-			setPictureUrls([
-        'someurl', 'someurl', 'someurl'
-      ] );
+			setPictureUrls(defaults.pictureUrls ?? []);
 		});
 	}, []);
 
-	function onFileChanged(e) {
-		const newFile = e.target.files[0];
-		setFileInput(e.target.value);
-		setFile(newFile);
-		if (newFile !== undefined) {
-			setFileInputLabel(newFile.name);
-		} else {
-			setFileInputLabel(defaultFileInputLabel);
-		}
-	}
-
-	function onUploadStarted() {
-		console.log('file upload started!');
-	}
-
-	function onUploadFinished() {
-		console.log('file upload finished!');
-	}
-
 	async function handleSubmit(e) {
 		e.preventDefault();
-		// onUploadStarted();
-		// await updateApp(appId, file, version, changelog);
-		// onUploadFinished();
+		
 	}
 
 	function openUrl(url) {
