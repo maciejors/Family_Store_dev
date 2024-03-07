@@ -1,17 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Icon from '@mdi/react';
-import { mdiPencil, mdiCancel } from '@mdi/js';
 import './forms.css';
-import { editApp, getAppDetails, updateApp } from '@/app/db/database';
+import { editApp, getAppDetails } from '@/app/db/database';
 
 export default function EditAppForm({ appId }) {
-	const defaultLogoInputLabel = 'Dodaj nowe logo';
-	const defaultPicturesInputLabel = 'Dodaj zdjęcia';
+	// const defaultLogoInputLabel = 'Dodaj nowe logo';
+	// const defaultPicturesInputLabel = 'Dodaj zdjęcia';
 
-	const [logoInputLabel, setLogoInputLabel] = useState(defaultLogoInputLabel);
-	const [picturesInputLabel, setPicturesInputLabel] = useState(defaultPicturesInputLabel);
+	// const [logoInputLabel, setLogoInputLabel] = useState(defaultLogoInputLabel);
+	// const [picturesInputLabel, setPicturesInputLabel] = useState(defaultPicturesInputLabel);
 
 	// const [file, setFile] = useState(undefined);
 	// const [fileInput, setFileInput] = useState(''); // input needs a filename
@@ -19,7 +17,7 @@ export default function EditAppForm({ appId }) {
 	const [appName, setAppName] = useState('');
 
 	const [logoUrl, setLogoUrl] = useState('');
-	const [isChangingLogo, setIsChangingLogo] = useState(false);
+	// const [isChangingLogo, setIsChangingLogo] = useState(false);
 	const [changelog, setChangelog] = useState('');
 	const [description, setDescription] = useState('');
 	const [pictureUrls, setPictureUrls] = useState([]);
@@ -44,13 +42,13 @@ export default function EditAppForm({ appId }) {
 		await editApp(appId, appName, description, changelog);
 	}
 
-	function showLogoEditor() {
-		setIsChangingLogo(true);
-	}
+	// function showLogoEditor() {
+	// 	setIsChangingLogo(true);
+	// }
 
-	function hideLogoEditor() {
-		setIsChangingLogo(false);
-	}
+	// function hideLogoEditor() {
+	// 	setIsChangingLogo(false);
+	// }
 
 	return (
 		<form onSubmit={handleSubmit} className="app-form">
