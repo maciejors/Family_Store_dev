@@ -35,7 +35,7 @@ export default function EditAppForm({ appId }) {
 			// setDownloadUrl(defaults.downloadUrl);
 			// setVersion(defaults.version);
 		});
-	}, []);
+	}, [appId]);
 
 	async function handleSubmit(e) {
 		e.preventDefault();
@@ -66,7 +66,9 @@ export default function EditAppForm({ appId }) {
 			</div>
 
 			<div className="input-container">
-				<label>Logo aplikacji: *</label>
+				<label>
+					Logo aplikacji: <span className="required-asterisk">*</span>
+				</label>
 				<div className="img-file-container">
 					<a className="file-button" href={logoUrl} target="_blank">
 						logo.png {/* It is always named that in the database */}
@@ -126,7 +128,7 @@ export default function EditAppForm({ appId }) {
 				<label>Screenshoty:</label>
 				<ul className="picture-list">
 					{pictureUrls.map((url, index) => (
-						<li className="picture-list-item">
+						<li className="picture-list-item" key={index}>
 							<a className="picture-list-item-title" href={url} target="_blank">
 								Screenshot {index + 1}
 							</a>

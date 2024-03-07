@@ -21,7 +21,7 @@ export default function UpdateAppForm({ appId }) {
 			setChangelog(defaults.changelog ?? '');
 			setCurrentVersion(defaults.version);
 		});
-	}, []);
+	}, [appId]);
 
 	function onFileChanged(e) {
 		const newFile = e.target.files[0];
