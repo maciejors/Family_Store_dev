@@ -58,7 +58,7 @@ export default function UpdateAppForm({ appId }) {
 				<form onSubmit={handleSubmit} className="app-form">
 					<FileInput
 						defaultFileInputLabel="Dodaj plik"
-						inputFileAccept=""
+						inputFileAccept=".apk"
 						inputFileMultiple={false}
 						onFilesChanged={handleApkFileChanged}
 					/>
