@@ -3,18 +3,13 @@
 import { useEffect, useState } from 'react';
 import './forms.css';
 import { getAppUpdateDetails, updateApp } from '@/app/db/database';
-import Icon from '@mdi/react';
-import { mdiCheck, mdiUpload } from '@mdi/js';
+import FileInput from './FileInput';
 
 export default function UpdateAppForm({ appId }) {
-	const defaultFileInputLabel = 'Dodaj plik';
-
 	const [file, setFile] = useState(undefined);
-	const [fileInput, setFileInput] = useState(''); // input needs a filename
 	const [version, setVersion] = useState('');
 	const [changelog, setChangelog] = useState('');
 	const [currentVersion, setCurrentVersion] = useState('');
-	const [fileInputLabel, setFileInputLabel] = useState(defaultFileInputLabel);
 
 	useEffect(() => {
 		getAppUpdateDetails(appId).then((defaults) => {
@@ -23,15 +18,9 @@ export default function UpdateAppForm({ appId }) {
 		});
 	}, [appId]);
 
-	function onFileChanged(e) {
-		const newFile = e.target.files[0];
-		setFileInput(e.target.value);
-		setFile(newFile);
-		if (newFile !== undefined) {
-			setFileInputLabel(newFile.name);
-		} else {
-			setFileInputLabel(defaultFileInputLabel);
-		}
+	function handleApkFileChanged(files) {
+		const apkFile = files[0]; // could be undefined but that's fine
+		setFile(apkFile);
 	}
 
 	function onUploadStarted() {
@@ -51,18 +40,12 @@ export default function UpdateAppForm({ appId }) {
 
 	return (
 		<form onSubmit={handleSubmit} className="app-form">
-			<label className="file-input">
-				<Icon path={file === undefined ? mdiUpload : mdiCheck} size={1.5} />
-				<p>{fileInputLabel}</p>
-				<input
-					required
-					type="file"
-					accept=".apk"
-					value={fileInput}
-					onChange={onFileChanged}
-					className="file-input"
-				/>
-			</label>
+			<FileInput
+				defaultFileInputLabel="Dodaj plik"
+				inputFileAccept=".apk"
+				inputFileMultiple={false}
+				onFilesChanged={handleApkFileChanged}
+			/>
 			<div className="input-container">
 				<label>
 					Wersja: <span className="required-asterisk">*</span>
