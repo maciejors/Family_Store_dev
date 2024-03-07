@@ -37,19 +37,23 @@ h6 {
 }
 
 .btn {
-	@apply cursor-pointer inline-flex justify-center items-center;
+	@apply inline-flex justify-center items-center;
 	@apply py-1 px-2 border-2 border-solid rounded-lg transition-colors;
+}
+
+.btn:enabled {
+	@apply cursor-pointer;
 }
 
 .btn-primary {
 	@apply bg-primary border-primary text-white transition-colors;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:enabled {
 	@apply bg-primary-hover border-primary-hover;
 }
 
-.btn-primary:active {
+.btn-primary:active:enabled {
 	@apply bg-primary-active border-primary-active;
 }
 
@@ -57,10 +61,10 @@ h6 {
 	@apply text-primary border-primary bg-white;
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover:enabled {
 	@apply text-primary-hover border-primary-hover bg-gray-50;
 }
 
-.btn-secondary:active {
+.btn-secondary:active:enabled {
 	@apply text-primary-active border-primary-active bg-gray-100;
 }

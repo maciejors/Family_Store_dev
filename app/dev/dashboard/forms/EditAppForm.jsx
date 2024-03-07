@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import './forms.css';
 import { editApp, getAppDetails } from '@/app/db/database';
+import FormSubmitFeedback from './FormSubmitFeedback';
+import Spinner from '@/app/shared/Spinner';
 
 export default function EditAppForm({ appId }) {
 	// const defaultLogoInputLabel = 'Dodaj nowe logo';
@@ -25,6 +27,10 @@ export default function EditAppForm({ appId }) {
 	// const [downloadUrl, setDownloadUrl] = useState('');
 	// const [version, setVersion] = useState('');
 
+	const [isUploading, setIsUploading] = useState(false);
+	const [isUploadError, setIsUploadError] = useState(false);
+	const [wasSubmitted, setWasSubmitted] = useState(false);
+
 	useEffect(() => {
 		getAppDetails(appId).then((defaults) => {
 			setAppName(defaults.name);
@@ -39,7 +45,17 @@ export default function EditAppForm({ appId }) {
 
 	async function handleSubmit(e) {
 		e.preventDefault();
-		await editApp(appId, appName, description, changelog);
+		setIsUploading(true);
+		try {
+			await editApp(appId, appName, description, changelog);
+			setIsUploadError(false);
+		} catch (error) {
+			console.error(error);
+			setIsUploadError(true);
+		} finally {
+			setIsUploading(false);
+			setWasSubmitted(true);
+		}
 	}
 
 	// function showLogoEditor() {
@@ -140,9 +156,14 @@ export default function EditAppForm({ appId }) {
 
 			<p className="required-asterisk">* pole wymagane</p>
 
-			<button className="btn btn-primary" type="submit">
-				Zapisz zmiany
+			<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+				{isUploading ? <Spinner size={28} width={3} light /> : 'Zapisz zmiany'}
 			</button>
+			<FormSubmitFeedback
+				wasSubmitted={wasSubmitted}
+				isError={isUploadError}
+				isLoading={isUploading}
+			/>
 		</form>
 	);
 }

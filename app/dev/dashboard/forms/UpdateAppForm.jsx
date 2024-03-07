@@ -4,12 +4,18 @@ import { useEffect, useState } from 'react';
 import './forms.css';
 import { getAppUpdateDetails, updateApp } from '@/app/db/database';
 import FileInput from './FileInput';
+import FormSubmitFeedback from './FormSubmitFeedback';
+import Spinner from '@/app/shared/Spinner';
 
 export default function UpdateAppForm({ appId }) {
 	const [file, setFile] = useState(undefined);
 	const [version, setVersion] = useState('');
 	const [changelog, setChangelog] = useState('');
 	const [currentVersion, setCurrentVersion] = useState('');
+
+	const [isUploading, setIsUploading] = useState(false);
+	const [isUploadError, setIsUploadError] = useState(false);
+	const [wasSubmitted, setWasSubmitted] = useState(false);
 
 	useEffect(() => {
 		getAppUpdateDetails(appId).then((defaults) => {
@@ -23,26 +29,26 @@ export default function UpdateAppForm({ appId }) {
 		setFile(apkFile);
 	}
 
-	function onUploadStarted() {
-		console.log('file upload started!');
-	}
-
-	function onUploadFinished() {
-		console.log('file upload finished!');
-	}
-
 	async function handleSubmit(e) {
 		e.preventDefault();
-		onUploadStarted();
-		await updateApp(appId, file, version, changelog);
-		onUploadFinished();
+		setIsUploading(true);
+		try {
+			await updateApp(appId, file, version, changelog);
+			setIsUploadError(false);
+		} catch (error) {
+			console.error(error);
+			setIsUploadError(true);
+		} finally {
+			setIsUploading(false);
+			setWasSubmitted(true);
+		}
 	}
 
 	return (
 		<form onSubmit={handleSubmit} className="app-form">
 			<FileInput
 				defaultFileInputLabel="Dodaj plik"
-				inputFileAccept=".apk"
+				inputFileAccept=""
 				inputFileMultiple={false}
 				onFilesChanged={handleApkFileChanged}
 			/>
@@ -70,9 +76,14 @@ export default function UpdateAppForm({ appId }) {
 				/>
 			</div>
 			<p className="required-asterisk">* pole wymagane</p>
-			<button className="btn btn-primary" type="submit">
-				Wydaj aktualizację
+			<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+				{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
 			</button>
+			<FormSubmitFeedback
+				wasSubmitted={wasSubmitted}
+				isError={isUploadError}
+				isLoading={isUploading}
+			/>
 		</form>
 	);
 }

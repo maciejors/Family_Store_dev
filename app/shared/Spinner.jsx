@@ -1,7 +1,9 @@
-export default function Spinner({ size, width }) {
+export default function Spinner({ size, width, light }) {
 	return (
 		<span
-			className="block border-8 border-gray-600 rounded-[100%] border-b-transparent animate-spin"
+			className={`block border-8 rounded-[100%] border-b-transparent animate-spin ${
+				light ? 'border-white' : 'border-gray-600'
+			}`}
 			style={{ width: size, height: size, borderWidth: width + 'px' }}
 		/>
 	);

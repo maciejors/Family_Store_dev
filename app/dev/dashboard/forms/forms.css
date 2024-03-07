@@ -75,3 +75,19 @@ textarea.text-input {
 .coming-soon {
 	@apply text-gray-400 italic pl-1;
 }
+
+.submit-btn {
+	@apply w-64 h-12;
+}
+
+.submit-message-container {
+	@apply flex flex-row gap-1 items-center;
+}
+
+.submit-error {
+	@apply text-sm text-red-500;
+}
+
+.submit-success {
+	@apply text-sm text-green-500;
+}
