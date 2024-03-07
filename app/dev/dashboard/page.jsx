@@ -12,6 +12,7 @@ import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '@/ap
 import NoAppsInfo from './NoAppsInfo';
 import Spinner from '@/app/shared/Spinner';
 import BrandsManager from './brands-manager/BrandsManager';
+import ReplaceWithSpinnerIf from './ReplaceWithSpinnerIf';
 
 export default function Dashboard() {
 	const { push } = useRouter();
@@ -63,17 +64,14 @@ export default function Dashboard() {
 					</div>
 				</header>
 				<main className="w-full">
-					{appsData &&
-						appsData.length > 0 &&
-						appsData.map(({ brand, apps }) => (
-							<AppList brandName={brand.name} apps={apps} key={brand.id} />
-						))}
-					{appsData && appsData.length === 0 && <NoAppsInfo />}
-					{appsData === null && (
-						<div className="spinner-container pt-16">
-							<Spinner size={64} width={6} />
-						</div>
-					)}
+					<ReplaceWithSpinnerIf condition={appsData === null} extraSpinnerWrapperClasses="pt-16">
+						{appsData &&
+							appsData.length > 0 &&
+							appsData.map(({ brand, apps }) => (
+								<AppList brandName={brand.name} apps={apps} key={brand.id} />
+							))}
+						{appsData && appsData.length === 0 && <NoAppsInfo />}
+					</ReplaceWithSpinnerIf>
 				</main>
 			</div>
 		)

@@ -6,6 +6,7 @@ import { getAppUpdateDetails, updateApp } from '@/app/db/database';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/Spinner';
+import ReplaceWithSpinnerIf from '../ReplaceWithSpinnerIf';
 
 export default function UpdateAppForm({ appId }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
@@ -48,54 +49,47 @@ export default function UpdateAppForm({ appId }) {
 	}
 
 	return (
-		<>
-			{isDataFetching && (
-				<div className="spinner-container py-8">
-					<Spinner size={64} width={6} />
+		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
+			<form onSubmit={handleSubmit} className="app-form">
+				<FileInput
+					defaultFileInputLabel="Dodaj plik"
+					inputFileAccept=".apk"
+					inputFileMultiple={false}
+					onFilesChanged={handleApkFileChanged}
+				/>
+				<div className="input-container">
+					<label>
+						Wersja: <span className="required-asterisk">*</span>
+					</label>
+					<input
+						required
+						type="text"
+						value={version}
+						onChange={(e) => setVersion(e.target.value)}
+						placeholder={`Obecna wersja: ${currentVersion}`}
+						className="text-input"
+					/>
 				</div>
-			)}
-			{!isDataFetching && (
-				<form onSubmit={handleSubmit} className="app-form">
-					<FileInput
-						defaultFileInputLabel="Dodaj plik"
-						inputFileAccept=".apk"
-						inputFileMultiple={false}
-						onFilesChanged={handleApkFileChanged}
+				<div className="input-container">
+					<label>Lista zmian:</label>
+					<textarea
+						value={changelog}
+						onChange={(e) => setChangelog(e.target.value)}
+						className="text-input"
+						rows={10}
+						cols={70}
 					/>
-					<div className="input-container">
-						<label>
-							Wersja: <span className="required-asterisk">*</span>
-						</label>
-						<input
-							required
-							type="text"
-							value={version}
-							onChange={(e) => setVersion(e.target.value)}
-							placeholder={`Obecna wersja: ${currentVersion}`}
-							className="text-input"
-						/>
-					</div>
-					<div className="input-container">
-						<label>Lista zmian:</label>
-						<textarea
-							value={changelog}
-							onChange={(e) => setChangelog(e.target.value)}
-							className="text-input"
-							rows={10}
-							cols={70}
-						/>
-					</div>
-					<p className="required-asterisk">* pole wymagane</p>
-					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
-						{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
-					</button>
-					<FormSubmitFeedback
-						wasSubmitted={wasSubmitted}
-						isError={isUploadError}
-						isLoading={isUploading}
-					/>
-				</form>
-			)}
-		</>
+				</div>
+				<p className="required-asterisk">* pole wymagane</p>
+				<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+					{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
+				</button>
+				<FormSubmitFeedback
+					wasSubmitted={wasSubmitted}
+					isError={isUploadError}
+					isLoading={isUploading}
+				/>
+			</form>{' '}
+		</ReplaceWithSpinnerIf>
 	);
 }

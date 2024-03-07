@@ -5,6 +5,7 @@ import './forms.css';
 import { editApp, getAppDetails } from '@/app/db/database';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/Spinner';
+import ReplaceWithSpinnerIf from '../ReplaceWithSpinnerIf';
 
 export default function EditAppForm({ appId }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
@@ -70,40 +71,34 @@ export default function EditAppForm({ appId }) {
 	// }
 
 	return (
-		<>
-			{isDataFetching && (
-				<div className="spinner-container py-8">
-					<Spinner size={64} width={6} />
+		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
+			<form onSubmit={handleSubmit} className="app-form">
+				<div className="input-container">
+					<label>
+						Nazwa aplikacji: <span className="required-asterisk">*</span>
+					</label>
+					<input
+						required
+						type="text"
+						value={appName}
+						onChange={(e) => setAppName(e.target.value)}
+						className="text-input"
+					/>
 				</div>
-			)}
-			{!isDataFetching && (
-				<form onSubmit={handleSubmit} className="app-form">
-					<div className="input-container">
-						<label>
-							Nazwa aplikacji: <span className="required-asterisk">*</span>
-						</label>
-						<input
-							required
-							type="text"
-							value={appName}
-							onChange={(e) => setAppName(e.target.value)}
-							className="text-input"
-						/>
-					</div>
 
-					<div className="input-container">
-						<label>
-							Logo aplikacji: <span className="required-asterisk">*</span>
-						</label>
-						<div className="img-file-container">
-							<a className="file-button" href={logoUrl} target="_blank">
-								logo.png {/* It is always named that in the database */}
-							</a>
-							<p className="coming-soon">(Możliwość edycji będzie dostępna wkrótce)</p>
-						</div>
+				<div className="input-container">
+					<label>
+						Logo aplikacji: <span className="required-asterisk">*</span>
+					</label>
+					<div className="img-file-container">
+						<a className="file-button" href={logoUrl} target="_blank">
+							logo.png {/* It is always named that in the database */}
+						</a>
+						<p className="coming-soon">(Możliwość edycji będzie dostępna wkrótce)</p>
 					</div>
+				</div>
 
-					{/* <div className="input-container">
+				{/* <div className="input-container">
 				<label>
 					Wersja: <span className="required-asterisk">*</span>
 				</label>
@@ -128,54 +123,53 @@ export default function EditAppForm({ appId }) {
 				</div>
 			</div> */}
 
-					<div className="input-container">
-						<label>Opis:</label>
-						<textarea
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-							className="text-input"
-							rows={10}
-							cols={70}
-						/>
-					</div>
-
-					<div className="input-container">
-						<label>Lista zmian:</label>
-						<textarea
-							value={changelog}
-							onChange={(e) => setChangelog(e.target.value)}
-							className="text-input"
-							rows={10}
-							cols={70}
-						/>
-					</div>
-
-					<div className="input-container">
-						<label>Screenshoty:</label>
-						<ul className="picture-list">
-							{pictureUrls.map((url, index) => (
-								<li className="picture-list-item" key={index}>
-									<a className="picture-list-item-title" href={url} target="_blank">
-										Screenshot {index + 1}
-									</a>
-								</li>
-							))}
-						</ul>
-						<p className="coming-soon">(Możliwość edycji będzie dostępna wkrótce)</p>
-					</div>
-
-					<p className="required-asterisk">* pole wymagane</p>
-
-					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
-						{isUploading ? <Spinner size={28} width={3} light /> : 'Zapisz zmiany'}
-					</button>
-					<FormSubmitFeedback
-						wasSubmitted={wasSubmitted}
-						isError={isUploadError}
-						isLoading={isUploading}
+				<div className="input-container">
+					<label>Opis:</label>
+					<textarea
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
+						className="text-input"
+						rows={10}
+						cols={70}
 					/>
-				</form>
-			)}
-		</>
+				</div>
+
+				<div className="input-container">
+					<label>Lista zmian:</label>
+					<textarea
+						value={changelog}
+						onChange={(e) => setChangelog(e.target.value)}
+						className="text-input"
+						rows={10}
+						cols={70}
+					/>
+				</div>
+
+				<div className="input-container">
+					<label>Screenshoty:</label>
+					<ul className="picture-list">
+						{pictureUrls.map((url, index) => (
+							<li className="picture-list-item" key={index}>
+								<a className="picture-list-item-title" href={url} target="_blank">
+									Screenshot {index + 1}
+								</a>
+							</li>
+						))}
+					</ul>
+					<p className="coming-soon">(Możliwość edycji będzie dostępna wkrótce)</p>
+				</div>
+
+				<p className="required-asterisk">* pole wymagane</p>
+
+				<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+					{isUploading ? <Spinner size={28} width={3} light /> : 'Zapisz zmiany'}
+				</button>
+				<FormSubmitFeedback
+					wasSubmitted={wasSubmitted}
+					isError={isUploadError}
+					isLoading={isUploading}
+				/>
+			</form>
+		</ReplaceWithSpinnerIf>
 	);
 }
