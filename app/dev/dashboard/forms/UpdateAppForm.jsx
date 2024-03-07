@@ -8,6 +8,8 @@ import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/Spinner';
 
 export default function UpdateAppForm({ appId }) {
+	const [isDataFetching, setisDataFetching] = useState(true);
+
 	const [file, setFile] = useState(undefined);
 	const [version, setVersion] = useState('');
 	const [changelog, setChangelog] = useState('');
@@ -21,6 +23,7 @@ export default function UpdateAppForm({ appId }) {
 		getAppUpdateDetails(appId).then((defaults) => {
 			setChangelog(defaults.changelog ?? '');
 			setCurrentVersion(defaults.version);
+			setisDataFetching(false);
 		});
 	}, [appId]);
 
@@ -45,45 +48,54 @@ export default function UpdateAppForm({ appId }) {
 	}
 
 	return (
-		<form onSubmit={handleSubmit} className="app-form">
-			<FileInput
-				defaultFileInputLabel="Dodaj plik"
-				inputFileAccept=""
-				inputFileMultiple={false}
-				onFilesChanged={handleApkFileChanged}
-			/>
-			<div className="input-container">
-				<label>
-					Wersja: <span className="required-asterisk">*</span>
-				</label>
-				<input
-					required
-					type="text"
-					value={version}
-					onChange={(e) => setVersion(e.target.value)}
-					placeholder={`Obecna wersja: ${currentVersion}`}
-					className="text-input"
-				/>
-			</div>
-			<div className="input-container">
-				<label>Lista zmian:</label>
-				<textarea
-					value={changelog}
-					onChange={(e) => setChangelog(e.target.value)}
-					className="text-input"
-					rows={10}
-					cols={70}
-				/>
-			</div>
-			<p className="required-asterisk">* pole wymagane</p>
-			<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
-				{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
-			</button>
-			<FormSubmitFeedback
-				wasSubmitted={wasSubmitted}
-				isError={isUploadError}
-				isLoading={isUploading}
-			/>
-		</form>
+		<>
+			{isDataFetching && (
+				<div className="spinner-container py-8">
+					<Spinner size={64} width={6} />
+				</div>
+			)}
+			{!isDataFetching && (
+				<form onSubmit={handleSubmit} className="app-form">
+					<FileInput
+						defaultFileInputLabel="Dodaj plik"
+						inputFileAccept=""
+						inputFileMultiple={false}
+						onFilesChanged={handleApkFileChanged}
+					/>
+					<div className="input-container">
+						<label>
+							Wersja: <span className="required-asterisk">*</span>
+						</label>
+						<input
+							required
+							type="text"
+							value={version}
+							onChange={(e) => setVersion(e.target.value)}
+							placeholder={`Obecna wersja: ${currentVersion}`}
+							className="text-input"
+						/>
+					</div>
+					<div className="input-container">
+						<label>Lista zmian:</label>
+						<textarea
+							value={changelog}
+							onChange={(e) => setChangelog(e.target.value)}
+							className="text-input"
+							rows={10}
+							cols={70}
+						/>
+					</div>
+					<p className="required-asterisk">* pole wymagane</p>
+					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+						{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
+					</button>
+					<FormSubmitFeedback
+						wasSubmitted={wasSubmitted}
+						isError={isUploadError}
+						isLoading={isUploading}
+					/>
+				</form>
+			)}
+		</>
 	);
 }
