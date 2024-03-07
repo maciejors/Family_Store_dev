@@ -1,44 +1,55 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Icon from '@mdi/react';
+import { mdiPencil, mdiCancel } from '@mdi/js';
 import './forms.css';
-import { getAppDetails, updateApp } from '@/app/db/database';
+import { editApp, getAppDetails, updateApp } from '@/app/db/database';
 
 export default function EditAppForm({ appId }) {
-	const defaultFileInputLabel = 'Dodaj plik';
+	const defaultLogoInputLabel = 'Dodaj nowe logo';
+	const defaultPicturesInputLabel = 'Dodaj zdjęcia';
 
-	const [file, setFile] = useState(undefined);
-	const [fileInput, setFileInput] = useState(''); // input needs a filename
+	const [logoInputLabel, setLogoInputLabel] = useState(defaultLogoInputLabel);
+	const [picturesInputLabel, setPicturesInputLabel] = useState(defaultPicturesInputLabel);
+
+	// const [file, setFile] = useState(undefined);
+	// const [fileInput, setFileInput] = useState(''); // input needs a filename
 
 	const [appName, setAppName] = useState('');
-	const [downloadUrl, setDownloadUrl] = useState('');
+
 	const [logoUrl, setLogoUrl] = useState('');
-	const [version, setVersion] = useState('');
+	const [isChangingLogo, setIsChangingLogo] = useState(false);
 	const [changelog, setChangelog] = useState('');
 	const [description, setDescription] = useState('');
 	const [pictureUrls, setPictureUrls] = useState([]);
 
-	const [fileInputLabel, setFileInputLabel] = useState(defaultFileInputLabel);
+	// const [downloadUrl, setDownloadUrl] = useState('');
+	// const [version, setVersion] = useState('');
 
 	useEffect(() => {
 		getAppDetails(appId).then((defaults) => {
 			setAppName(defaults.name);
-			setDownloadUrl(defaults.downloadUrl);
 			setLogoUrl(defaults.logoUrl ?? '');
-			setVersion(defaults.version);
 			setChangelog(defaults.changelog ?? '');
 			setDescription(defaults.description ?? '');
 			setPictureUrls(defaults.pictureUrls ?? []);
+			// setDownloadUrl(defaults.downloadUrl);
+			// setVersion(defaults.version);
 		});
 	}, []);
 
 	async function handleSubmit(e) {
 		e.preventDefault();
-		
+		await editApp(appId, appName, description, changelog);
 	}
 
-	function openUrl(url) {
-		window.open(url, '_blank');
+	function showLogoEditor() {
+		setIsChangingLogo(true);
+	}
+
+	function hideLogoEditor() {
+		setIsChangingLogo(false);
 	}
 
 	return (
@@ -57,23 +68,16 @@ export default function EditAppForm({ appId }) {
 			</div>
 
 			<div className="input-container">
-				<label>Logo aplikacji:</label>
-				<div className="file-container">
-					<button
-						className="btn btn-primary file-button"
-						onClick={() => {
-							openUrl(logoUrl);
-						}}
-					>
-						Otwórz
-					</button>
-					<button className="btn btn-primary file-button" onClick={() => {}}>
-						Dodaj plik
-					</button>
+				<label>Logo aplikacji: *</label>
+				<div className="img-file-container">
+					<a className="file-button" href={logoUrl} target="_blank">
+						logo.png {/* It is always named that in the database */}
+					</a>
+					<p className="coming-soon">(Możliwość edycji będzie dostępna wkrótce)</p>
 				</div>
 			</div>
 
-			<div className="input-container">
+			{/* <div className="input-container">
 				<label>
 					Wersja: <span className="required-asterisk">*</span>
 				</label>
@@ -89,19 +93,14 @@ export default function EditAppForm({ appId }) {
 			<div className="input-container">
 				<label>Plik instalacyjny:</label>
 				<div className="file-container">
-					<button
-						className="btn btn-primary file-button"
-						onClick={() => {
-							openUrl(logoUrl);
-						}}
-					>
+					<a className="btn btn-primary file-button" href={logoUrl}>
 						Otwórz
-					</button>
-					<button className="btn btn-primary file-button" onClick={() => {}}>
+					</a>
+					<div className="btn btn-primary file-button" onClick={() => {}}>
 						Dodaj plik
-					</button>
+					</div>
 				</div>
-			</div>
+			</div> */}
 
 			<div className="input-container">
 				<label>Opis:</label>
@@ -130,18 +129,13 @@ export default function EditAppForm({ appId }) {
 				<ul className="picture-list">
 					{pictureUrls.map((url, index) => (
 						<li className="picture-list-item">
-							<span className="picture-list-item-title">Screenshot {index + 1}:</span>
-							<button
-								className="btn btn-primary file-button"
-								onClick={() => {
-									openUrl(url);
-								}}
-							> 
-								Otwórz
-							</button>
+							<a className="picture-list-item-title" href={url} target="_blank">
+								Screenshot {index + 1}
+							</a>
 						</li>
 					))}
 				</ul>
+				<p className="coming-soon">(Możliwość edycji będzie dostępna wkrótce)</p>
 			</div>
 
 			<p className="required-asterisk">* pole wymagane</p>

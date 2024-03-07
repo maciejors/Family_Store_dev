@@ -19,12 +19,12 @@ input[type='file'].file-input {
 	@apply flex flex-col justify-center items-center;
 }
 
-.file-container {
-	@apply flex flex-row;
+.img-file-container {
+	@apply flex flex-row items-center;
 }
 
 .file-button {
-	@apply m-1
+	@apply m-1;
 }
 
 .required-asterisk {
@@ -52,14 +52,26 @@ textarea.text-input {
 }
 
 .picture-list-item {
-	@apply m-2;
+	@apply ml-2;
 	@apply flex flex-row items-center;
 }
 
 .picture-list-item-title {
-	@apply grow;
+	@apply grow text-primary;
 }
 
 .file-button {
+	@apply text-primary hover:underline;
+}
 
+.fake-button:hover {
+	@apply cursor-pointer;
+}
+
+.icon-button:hover {
+	@apply text-gray-700;
+}
+
+.coming-soon {
+	@apply text-gray-400 italic pl-1;
 }

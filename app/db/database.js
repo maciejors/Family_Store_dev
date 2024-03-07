@@ -198,18 +198,30 @@ export async function getAppUpdateDetails(appId) {
 	}
 }
 
+/**
+ * @param {string} appId
+ * @returns {Promise<string>}
+ */
 async function getLogoUrl(appId) {
 	const logoRef = storageRef(storage, `${APPS_PATH}/${appId}/logo.png`);
 	const logoUrl = await getDownloadURL(logoRef);
 	return logoUrl;
 }
 
+/**
+ * @param {string} appId
+ * @returns {Promise<string>}
+ */
 async function getAppDownloadUrl(appId) {
 	const apkRef = storageRef(storage, `${APPS_PATH}/${appId}/latest.apk`);
 	const url = await getDownloadURL(apkRef);
 	return url;
 }
 
+/**
+ * @param {string} appId
+ * @returns {Promise<string[]>}
+ */
 async function getPictureUrls(appId) {
 	try {
 		const picturesRef = storageRef(storage, `${APPS_PATH}/${appId}/pictures`);
@@ -283,6 +295,21 @@ export async function updateApp(appId, apkFile, newVersion, changelog) {
 	const lastUpdated = Date.now();
 	const appReference = databaseRef(db, `${APPS_PATH}/${appId}`);
 	await update(appReference, { version: newVersion, changelog, lastUpdated });
+}
+
+/**
+ * @param {string} appId
+ * @param {string} newName
+ * @param {string} newDescription
+ * @param {string} newChangelog
+ */
+export async function editApp(appId, newName, newDescription, newChangelog) {
+	const appReference = databaseRef(db, `${APPS_PATH}/${appId}`);
+	await update(appReference, {
+		name: newName,
+		changelog: newChangelog,
+		description: newDescription,
+	});
 }
 
 /**

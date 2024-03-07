@@ -10,12 +10,11 @@
 	@apply text-xl;
 }
 
-.editable-brand-tile button:hover,
-.editable-brand-tile .fake-button:hover {
+.editable-brand-tile button:hover {
 	@apply text-gray-700;
 }
 
-.editable-brand-tile .fake-button:hover {
+.editable-brand-tile {
 	@apply cursor-pointer;
 }
 
