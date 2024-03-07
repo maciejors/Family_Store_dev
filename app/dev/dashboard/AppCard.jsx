@@ -30,13 +30,13 @@ export default function AppCard({ app }) {
 					<Icon className="footer-btn" path={mdiLaunch} size={1} />
 				</a>
 				<Dialog
-					openButton={<Icon className="footer-btn" path={mdiUpload} size={1} />}
+					openButton={<Icon className="icon-button" path={mdiUpload} size={1} />}
 					title="Dodaj aktualizację"
 				>
 					<UpdateAppForm appId={app.id} />
 				</Dialog>
 				<Dialog
-					openButton={<Icon className="footer-btn" path={mdiPencil} size={1} />}
+					openButton={<Icon className="icon-button" path={mdiPencil} size={1} />}
 					title="Edytuj aplikację"
 				>
 					<EditAppForm appId={app.id} />
