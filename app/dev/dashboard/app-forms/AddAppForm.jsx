@@ -115,13 +115,13 @@ export default function AddAppForm({ userUid }) {
 						</select>
 					</div>
 					<FileInput
-						defaultFileInputLabel="Dodaj plik instalacyjny"
+						defaultFileInputLabel="Dodaj plik instalacyjny *"
 						inputFileAccept=".apk"
 						inputFileMultiple={false}
 						onFilesChanged={handleApkFileChanged}
 					/>
 					<FileInput
-						defaultFileInputLabel="Dodaj logo (256x256 px)"
+						defaultFileInputLabel="Dodaj logo (256x256 px) *"
 						inputFileAccept=".png"
 						inputFileMultiple={false}
 						onFilesChanged={handleLogoFileChanged}

@@ -52,7 +52,7 @@ export default function UpdateAppForm({ appId }) {
 		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
 			<form onSubmit={handleSubmit} className="app-form">
 				<FileInput
-					defaultFileInputLabel="Dodaj plik instalacyjny"
+					defaultFileInputLabel="Dodaj plik instalacyjny *"
 					inputFileAccept=".apk"
 					inputFileMultiple={false}
 					onFilesChanged={handleApkFileChanged}
