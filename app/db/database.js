@@ -319,8 +319,17 @@ export async function editApp(appId, newName, newDescription, newChangelog) {
  * @param {File} logoFile
  * @param {string} version
  * @param {string} description
+ * @param {File[]} appPicturesFiles
  */
-export async function addApp(name, brandId, apkFile, logoFile, version, description) {
+export async function addApp(
+	name,
+	brandId,
+	apkFile,
+	logoFile,
+	version,
+	description,
+	appPicturesFiles
+) {
 	// 1. select appropriate app id
 	const allAppsSnapshot = await get(child(databaseRef(db), APPS_PATH));
 	if (!allAppsSnapshot.exists()) {
@@ -348,6 +357,13 @@ export async function addApp(name, brandId, apkFile, logoFile, version, descript
 		description,
 		lastUpdated,
 	});
+
+	// 5. upload app pictures
+	const picturesFolderRef = storageRef(storage, `${APPS_PATH}/${appId}/pictures`);
+	for (let pictureFile of appPicturesFiles) {
+		const pictureFileRef = storageRef(picturesFolderRef, pictureFile.name);
+		uploadBytes(pictureFileRef, pictureFile);
+	}
 }
 
 /**

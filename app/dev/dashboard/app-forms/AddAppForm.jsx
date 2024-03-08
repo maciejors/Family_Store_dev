@@ -14,6 +14,7 @@ export default function AddAppForm({ userUid }) {
 	const [appName, setAppName] = useState('');
 	const [apkFile, setApkFile] = useState(undefined);
 	const [logoFile, setLogoFile] = useState(undefined);
+	const [appPicturesFiles, setAppPicturesFiles] = useState([]);
 	const [version, setVersion] = useState('1.0.0');
 	const [description, setDescription] = useState('');
 	const [brandId, setBrandId] = useState(undefined);
@@ -41,11 +42,16 @@ export default function AddAppForm({ userUid }) {
 		setLogoFile(newLogoFile);
 	}
 
+	function handleAppPicturesFilesChanged(files) {
+		const newAppPicturesFiles = files;
+		setAppPicturesFiles(newAppPicturesFiles);
+	}
+
 	async function handleSubmit(e) {
 		e.preventDefault();
 		setIsUploading(true);
 		try {
-			await addApp(appName, brandId, apkFile, logoFile, version, description);
+			await addApp(appName, brandId, apkFile, logoFile, version, description, appPicturesFiles);
 			setIsUploadError(false);
 		} catch (error) {
 			console.error(error);
@@ -130,6 +136,13 @@ export default function AddAppForm({ userUid }) {
 							cols={70}
 						/>
 					</div>
+					<FileInput
+						defaultFileInputLabel="Dodaj screenshoty"
+						inputFileRequired={false}
+						inputFileAccept="image/png, image/gif, image/jpeg"
+						inputFileMultiple={true}
+						onFilesChanged={handleAppPicturesFilesChanged}
+					/>
 					<p className="required-asterisk">* pole wymagane</p>
 					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
 						{isUploading ? <Spinner size={28} width={3} light /> : 'Dodaj aplikację'}
