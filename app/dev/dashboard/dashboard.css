@@ -1,0 +1,85 @@
+header.dashboard-header {
+	@apply flex flex-row justify-between mt-4 mb-8 w-full;
+}
+
+.header-buttons {
+	@apply flex flex-row gap-4;
+}
+
+.header-buttons .btn {
+	@apply h-full;
+}
+
+.spinner-container {
+	@apply w-full flex flex-col items-center;
+}
+
+/*
+	APP LIST
+*/
+
+.apps-list {
+	@apply w-full;
+}
+
+.apps-list h5 {
+	@apply w-full border-b border-gray-700 text-gray-700;
+}
+
+.apps-grid {
+	@apply grid grid-flow-row gap-8 py-6 grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3;
+}
+
+/*
+	APP CARD
+*/
+
+.app-card {
+	@apply p-4 text-lg transition-colors bg-white;
+	@apply flex flex-col justify-between;
+}
+
+.app-card main {
+	@apply flex flex-row justify-start gap-6;
+}
+
+.app-card .version-label,
+.app-card .last-updated-label {
+	@apply text-base text-gray-600;
+}
+
+.app-card footer {
+	@apply flex flex-row justify-end gap-4;
+}
+
+/*
+	DIALOG
+*/
+
+.overlay {
+	@apply bg-gray-600 bg-opacity-50;
+	@apply fixed top-0 left-0 w-full h-full;
+	@apply flex flex-col justify-center items-center;
+	@apply p-4;
+}
+
+.overlay .dialog {
+	@apply bg-gray-50 w-fit h-fit p-2 z-10;
+	@apply overflow-y-auto;
+}
+
+header.dialog-header {
+	@apply flex justify-between gap-4 items-start;
+}
+
+.dialog .close-btn {
+	@apply hover:text-gray-700;
+}
+
+/* 
+	NO BRANDS INFO
+*/
+
+.no-apps-info-container {
+	@apply w-full py-16 flex flex-col gap-2 items-center text-center;
+}

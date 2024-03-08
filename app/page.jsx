@@ -1,7 +1,6 @@
+import { redirect } from 'next/navigation';
+
 export default function Home() {
-  return (
-    <main>
-      <h2>Family Store Dev</h2>
-    </main>
-  )
+	// in the future we might add app list here or something
+	redirect('/dev');
 }

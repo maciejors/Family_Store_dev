@@ -1,3 +1,78 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+	padding-right: calc(-1 * (100vw - 100%));
+}
+
+body {
+	@apply bg-gray-200;
+	@apply overflow-x-hidden;
+}
+
+.main-container {
+	@apply flex flex-col justify-center items-center;
+	@apply w-full px-2 sm:px-8 md:px-16 lg:px-24 xl:px-36 2xl:px-48;
+}
+
+h1 {
+	@apply text-5xl;
+}
+
+h2 {
+	@apply text-4xl;
+}
+
+h3 {
+	@apply text-2xl;
+}
+
+h6 {
+	@apply font-bold;
+}
+
+.card {
+	@apply shadow-lg rounded-md;
+}
+
+.btn {
+	@apply cursor-pointer inline-flex justify-center items-center;
+	@apply py-1 px-2 border-2 border-solid rounded-lg transition-colors;
+}
+
+.btn:disabled {
+	@apply cursor-default;
+}
+
+.btn-primary {
+	@apply bg-primary border-primary text-white transition-colors;
+}
+
+.btn-primary:hover {
+	@apply bg-primary-hover border-primary-hover;
+}
+
+.btn-primary:hover:disabled {
+	@apply bg-primary border-primary;
+}
+
+.btn-primary:active {
+	@apply bg-primary-active border-primary-active;
+}
+
+.btn-secondary {
+	@apply text-primary border-primary bg-white;
+}
+
+.btn-secondary:hover {
+	@apply text-primary-hover border-primary-hover bg-gray-50;
+}
+
+.btn-secondary:hover:disabled {
+	@apply text-primary border-primary bg-white;
+}
+
+.btn-secondary:active {
+	@apply text-primary-active border-primary-active bg-gray-100;
+}
