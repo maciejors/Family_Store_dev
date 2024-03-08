@@ -80,6 +80,6 @@ header.dialog-header {
 	NO BRANDS INFO
 */
 
-.no-brands-info-container {
+.no-apps-info-container {
 	@apply w-full py-16 flex flex-col gap-2 items-center text-center;
 }

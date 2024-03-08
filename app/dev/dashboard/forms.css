@@ -92,6 +92,6 @@ textarea.text-input {
 	@apply text-sm text-green-500;
 }
 
-.add-app-no-brands-info-container {
+.no-brands-info-container {
 	@apply flex flex-col items-center text-base p-4;
 }

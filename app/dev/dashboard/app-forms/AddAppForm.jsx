@@ -65,7 +65,7 @@ export default function AddAppForm({ userUid }) {
 	return (
 		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
 			{userBrands.length === 0 && (
-				<div className="add-app-no-brands-info-container">
+				<div className="no-brands-info-container">
 					<p>Brak marek powiązanych z tym kontem.</p>
 					<p>Aby dodać aplikację, należy posiadać przynajmniej jedną markę.</p>
 				</div>
