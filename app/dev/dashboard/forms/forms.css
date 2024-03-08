@@ -1,5 +1,5 @@
 form.app-form {
-	@apply flex flex-col items-center gap-4 p-2 mt-4;
+	@apply flex flex-col items-center gap-4 p-2 mt-4 text-lg;
 }
 
 .input-container {
@@ -90,4 +90,8 @@ textarea.text-input {
 
 .submit-success {
 	@apply text-sm text-green-500;
+}
+
+.add-app-no-brands-info-container {
+	@apply flex flex-col items-center text-base p-4;
 }

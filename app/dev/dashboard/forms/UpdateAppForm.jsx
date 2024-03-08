@@ -29,8 +29,8 @@ export default function UpdateAppForm({ appId }) {
 	}, [appId]);
 
 	function handleApkFileChanged(files) {
-		const apkFile = files[0]; // could be undefined but that's fine
-		setFile(apkFile);
+		const newApkFile = files[0]; // could be undefined but that's fine
+		setFile(newApkFile);
 	}
 
 	async function handleSubmit(e) {
@@ -52,7 +52,7 @@ export default function UpdateAppForm({ appId }) {
 		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
 			<form onSubmit={handleSubmit} className="app-form">
 				<FileInput
-					defaultFileInputLabel="Dodaj plik"
+					defaultFileInputLabel="Dodaj plik instalacyjny"
 					inputFileAccept=".apk"
 					inputFileMultiple={false}
 					onFilesChanged={handleApkFileChanged}
@@ -89,7 +89,7 @@ export default function UpdateAppForm({ appId }) {
 					isError={isUploadError}
 					isLoading={isUploading}
 				/>
-			</form>{' '}
+			</form>
 		</ReplaceWithSpinnerIf>
 	);
 }

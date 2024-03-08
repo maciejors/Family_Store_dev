@@ -313,6 +313,44 @@ export async function editApp(appId, newName, newDescription, newChangelog) {
 }
 
 /**
+ * @param {string} name
+ * @param {string} brandId
+ * @param {File} apkFile
+ * @param {File} logoFile
+ * @param {string} version
+ * @param {string} description
+ */
+export async function addApp(name, brandId, apkFile, logoFile, version, description) {
+	// 1. select appropriate app id
+	const allAppsSnapshot = await get(child(databaseRef(db), APPS_PATH));
+	if (!allAppsSnapshot.exists()) {
+		throw new Error('Database No Data Error');
+	}
+	const appCount = allAppsSnapshot.val().length.toString();
+	const appId = appCount.toString();
+
+	// 2. upload the apk file
+	const apkFileRef = storageRef(storage, `${APPS_PATH}/${appId}/latest.apk`);
+	await uploadBytes(apkFileRef, apkFile);
+
+	// 3. upload the logo
+	const logoFileRef = storageRef(storage, `${APPS_PATH}/${appId}/logo.png`);
+	await uploadBytes(logoFileRef, logoFile);
+
+	// 4. add app metadata
+	const appReference = databaseRef(db, `${APPS_PATH}/${appId}`);
+	const lastUpdated = Date.now();
+	await set(appReference, {
+		id: appId,
+		name,
+		authorId: brandId,
+		version,
+		description,
+		lastUpdated,
+	});
+}
+
+/**
  * @param {string} appId
  * @returns {Promise<string>} Current app version
  */
