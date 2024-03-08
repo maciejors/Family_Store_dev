@@ -1,5 +1,5 @@
 form.app-form {
-	@apply flex flex-col items-center gap-4 p-2 mt-4;
+	@apply flex flex-col items-center gap-4 p-2 mt-4 text-lg;
 }
 
 .input-container {
@@ -17,6 +17,14 @@ input[type='file'].file-input {
 	@apply hover:bg-gray-200 transition-colors;
 	@apply text-primary font-semibold text-xl;
 	@apply flex flex-col justify-center items-center;
+}
+
+.img-file-container {
+	@apply flex flex-row items-center;
+}
+
+.file-button {
+	@apply m-1;
 }
 
 .required-asterisk {
@@ -37,4 +45,53 @@ p.required-asterisk {
 
 textarea.text-input {
 	@apply resize-y;
+}
+
+.picture-list {
+	@apply flex flex-col;
+}
+
+.picture-list-item {
+	@apply ml-2;
+	@apply flex flex-row items-center;
+}
+
+.picture-list-item-title {
+	@apply grow text-primary;
+}
+
+.file-button {
+	@apply text-primary hover:underline;
+}
+
+.fake-button:hover {
+	@apply cursor-pointer;
+}
+
+.icon-button:hover {
+	@apply text-gray-700;
+}
+
+.coming-soon {
+	@apply text-gray-400 italic pl-1;
+}
+
+.submit-btn {
+	@apply w-64 h-12;
+}
+
+.submit-message-container {
+	@apply flex flex-row gap-1 items-center;
+}
+
+.submit-error {
+	@apply text-sm text-red-500;
+}
+
+.submit-success {
+	@apply text-sm text-green-500;
+}
+
+.add-app-no-brands-info-container {
+	@apply flex flex-col items-center text-base p-4;
 }

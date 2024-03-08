@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
 import Dialog from './Dialog';
 import UpdateAppForm from './forms/UpdateAppForm';
+import EditAppForm from './forms/EditAppForm';
 
 export default function AppCard({ app }) {
 	return (
@@ -29,16 +30,16 @@ export default function AppCard({ app }) {
 					<Icon className="footer-btn" path={mdiLaunch} size={1} />
 				</a>
 				<Dialog
-					openButton={<Icon className="footer-btn" path={mdiUpload} size={1} />}
+					openButton={<Icon className="icon-button" path={mdiUpload} size={1} />}
 					title="Dodaj aktualizację"
 				>
 					<UpdateAppForm appId={app.id} />
 				</Dialog>
 				<Dialog
-					openButton={<Icon className="footer-btn" path={mdiPencil} size={1} />}
+					openButton={<Icon className="icon-button" path={mdiPencil} size={1} />}
 					title="Edytuj aplikację"
 				>
-					<span>TODO</span>
+					<EditAppForm appId={app.id} />
 				</Dialog>
 			</footer>
 		</div>

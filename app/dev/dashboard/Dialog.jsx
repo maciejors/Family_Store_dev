@@ -22,7 +22,7 @@ export default function Dialog({ children, openButton, title }) {
 		<>
 			<button onClick={showDialog}>{openButton}</button>
 			{visible && (
-				<div className="overlay" onSubmit={hideDialog}>
+				<div className="overlay">
 					<div className="card dialog">
 						<header className="dialog-header">
 							<h3>{title}</h3>

@@ -41,12 +41,20 @@ h6 {
 	@apply py-1 px-2 border-2 border-solid rounded-lg transition-colors;
 }
 
+.btn:disabled {
+	@apply cursor-default;
+}
+
 .btn-primary {
 	@apply bg-primary border-primary text-white transition-colors;
 }
 
 .btn-primary:hover {
 	@apply bg-primary-hover border-primary-hover;
+}
+
+.btn-primary:hover:disabled {
+	@apply bg-primary border-primary;
 }
 
 .btn-primary:active {
@@ -59,6 +67,10 @@ h6 {
 
 .btn-secondary:hover {
 	@apply text-primary-hover border-primary-hover bg-gray-50;
+}
+
+.btn-secondary:hover:disabled {
+	@apply text-primary border-primary bg-white;
 }
 
 .btn-secondary:active {
