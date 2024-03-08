@@ -6,6 +6,10 @@ header.dashboard-header {
 	@apply flex flex-row gap-4;
 }
 
+.header-buttons .btn {
+	@apply h-full;
+}
+
 .spinner-container {
 	@apply w-full flex flex-col items-center;
 }
