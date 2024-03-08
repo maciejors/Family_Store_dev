@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
 import './brandsManager.css';
-import '../forms/forms.css';
+import '../forms.css';
 import EditBrandForm from './EditBrandForm';
 
 // brandData: { brand, appCount }

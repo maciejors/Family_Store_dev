@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiUpload } from '@mdi/js';
-import './forms.css';
+import '../forms.css';
 
 export default function FileInput({
 	defaultFileInputLabel,

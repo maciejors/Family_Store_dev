@@ -3,8 +3,8 @@ import LastUpdatedLabel from '../../LastUpdatedLabel';
 import Icon from '@mdi/react';
 import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
 import Dialog from './Dialog';
-import UpdateAppForm from './forms/UpdateAppForm';
-import EditAppForm from './forms/EditAppForm';
+import UpdateAppForm from './app-forms/UpdateAppForm';
+import EditAppForm from './app-forms/EditAppForm';
 
 export default function AppCard({ app }) {
 	return (

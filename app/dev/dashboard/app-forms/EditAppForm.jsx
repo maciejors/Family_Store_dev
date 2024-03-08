@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import './forms.css';
+import '../forms.css';
 import { editApp, getAppDetails } from '@/app/db/database';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/Spinner';

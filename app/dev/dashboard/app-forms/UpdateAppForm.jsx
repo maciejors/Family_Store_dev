@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import './forms.css';
+import '../forms.css';
 import { getAppUpdateDetails, updateApp } from '@/app/db/database';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';

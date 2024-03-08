@@ -10,10 +10,9 @@ import './dashboard.css';
 import useAuth from '@/app/shared/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular, isNotAuthenticated } from '@/app/shared/user';
 import NoAppsInfo from './NoAppsInfo';
-import Spinner from '@/app/shared/Spinner';
 import BrandsManager from './brands-manager/BrandsManager';
 import ReplaceWithSpinnerIf from './ReplaceWithSpinnerIf';
-import AddAppForm from './forms/AddAppForm';
+import AddAppForm from './app-forms/AddAppForm';
 
 export default function Dashboard() {
 	const { push } = useRouter();
