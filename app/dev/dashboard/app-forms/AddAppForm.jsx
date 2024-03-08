@@ -27,7 +27,9 @@ export default function AddAppForm({ userUid }) {
 	useEffect(() => {
 		getBrandsForUser(userUid).then((brands) => {
 			setUserBrands(brands);
-			setBrandId(brands[0].id);
+			if (brands.length > 0) {
+				setBrandId(brands[0].id);
+			}
 			setisDataFetching(false);
 		});
 	}, [userUid]);

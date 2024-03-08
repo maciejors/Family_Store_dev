@@ -16,7 +16,6 @@ export default function FileInput({
 	const [fileInputLabels, setFileInputLabels] = useState([defaultFileInputLabel]);
 
 	function handleFilesChanged(e) {
-		console.log(e);
 		const newFiles = Array.from(e.target.files);
 		setFileInput(e.target.value);
 		onFilesChanged(newFiles);
