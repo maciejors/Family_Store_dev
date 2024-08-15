@@ -51,7 +51,7 @@ a.download {
 /* main */
 
 main {
-	@apply w-full sm:text-lg whitespace-pre-line flex flex-col gap-2 sm:gap-4;
+	@apply w-full sm:text-lg whitespace-pre-line flex flex-col gap-2 sm:gap-4 mb-2;
 }
 
 div.changelog {
