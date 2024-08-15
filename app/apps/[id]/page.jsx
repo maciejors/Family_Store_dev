@@ -52,7 +52,7 @@ export default async function AppDetails({ params }) {
 			<main>
 				<p>{app.description}</p>
 				<ImageViewer images={app.pictureUrls} />
-				{app.changelog !== undefined && (
+				{app.changelog !== undefined && app.changelog !== '' && (
 					<div className="card changelog">
 						<h6>Lista zmian:</h6>
 						<p>{app.changelog}</p>

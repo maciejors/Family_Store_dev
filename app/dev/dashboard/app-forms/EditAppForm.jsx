@@ -1,34 +1,37 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Icon from '@mdi/react';
+import { mdiPencil, mdiDelete, mdiArrowULeftTop } from '@mdi/js';
 import '../forms.css';
 import { editApp, getAppDetails } from '@/app/db/database';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/Spinner';
 import ReplaceWithSpinnerIf from '../ReplaceWithSpinnerIf';
+import FileInput from './FileInput';
 
 export default function EditAppForm({ appId }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
 
-	// const defaultLogoInputLabel = 'Dodaj nowe logo';
-	// const defaultPicturesInputLabel = 'Dodaj zdjęcia';
+	const defaultLogoInputLabel = 'Dodaj nowe logo';
+	const defaultPicturesInputLabel = 'Dodaj zdjęcia';
 
-	// const [logoInputLabel, setLogoInputLabel] = useState(defaultLogoInputLabel);
-	// const [picturesInputLabel, setPicturesInputLabel] = useState(defaultPicturesInputLabel);
-
-	// const [file, setFile] = useState(undefined);
-	// const [fileInput, setFileInput] = useState(''); // input needs a filename
+	const [logoInputLabel, setLogoInputLabel] = useState(defaultLogoInputLabel);
+	const [picturesInputLabel, setPicturesInputLabel] = useState(defaultPicturesInputLabel);
 
 	const [appName, setAppName] = useState('');
 
 	const [logoUrl, setLogoUrl] = useState('');
-	// const [isChangingLogo, setIsChangingLogo] = useState(false);
+	const [isChangingLogo, setIsChangingLogo] = useState(false);
+	const [logoFile, setLogoFile] = useState(undefined);
+
 	const [changelog, setChangelog] = useState('');
 	const [description, setDescription] = useState('');
-	const [pictureUrls, setPictureUrls] = useState([]);
 
-	// const [downloadUrl, setDownloadUrl] = useState('');
-	// const [version, setVersion] = useState('');
+	const [pictureUrls, setPictureUrls] = useState([]);
+	const [pictureNames, setPictureNames] = useState([]);
+	const [picturesToDeleteFlags, setPicturesToDeleteFlags] = useState([]);
+	const [newAppPicturesFiles, setNewAppPicturesFiles] = useState([]);
 
 	const [isUploading, setIsUploading] = useState(false);
 	const [isUploadError, setIsUploadError] = useState(false);
@@ -40,9 +43,9 @@ export default function EditAppForm({ appId }) {
 			setLogoUrl(defaults.logoUrl ?? '');
 			setChangelog(defaults.changelog ?? '');
 			setDescription(defaults.description ?? '');
-			setPictureUrls(defaults.pictureUrls ?? []);
-			// setDownloadUrl(defaults.downloadUrl);
-			// setVersion(defaults.version);
+			setPictureUrls(defaults.pictureUrls);
+			setPictureNames(defaults.pictureNames);
+			setPicturesToDeleteFlags(defaults.pictureUrls.map((_) => false));
 			setisDataFetching(false);
 		});
 	}, [appId]);
@@ -51,7 +54,16 @@ export default function EditAppForm({ appId }) {
 		e.preventDefault();
 		setIsUploading(true);
 		try {
-			await editApp(appId, appName, description, changelog);
+			const picturesToDelete = pictureNames.filter((_, index) => picturesToDeleteFlags[index]);
+			await editApp(
+				appId,
+				appName.trim(),
+				description.trim(),
+				changelog.trim(),
+				isChangingLogo ? logoFile : undefined,
+				newAppPicturesFiles,
+				picturesToDelete
+			);
 			setIsUploadError(false);
 		} catch (error) {
 			console.error(error);
@@ -62,13 +74,29 @@ export default function EditAppForm({ appId }) {
 		}
 	}
 
-	// function showLogoEditor() {
-	// 	setIsChangingLogo(true);
-	// }
+	function showLogoEditor() {
+		setIsChangingLogo(true);
+	}
 
-	// function hideLogoEditor() {
-	// 	setIsChangingLogo(false);
-	// }
+	function hideLogoEditor() {
+		setIsChangingLogo(false);
+	}
+
+	function handleLogoFileChanged(files) {
+		const newLogoFile = files[0]; // could be undefined but that's fine
+		setLogoFile(newLogoFile);
+	}
+
+	function handleNewAppPicturesFilesChanged(files) {
+		const newAppPicturesFiles = files;
+		setNewAppPicturesFiles(newAppPicturesFiles);
+	}
+
+	function togglePictureToDelete(index) {
+		const flagsCopy = [...picturesToDeleteFlags];
+		flagsCopy[index] = !flagsCopy[index];
+		setPicturesToDeleteFlags(flagsCopy);
+	}
 
 	return (
 		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
@@ -90,38 +118,31 @@ export default function EditAppForm({ appId }) {
 					<label>
 						Logo aplikacji: <span className="required-asterisk">*</span>
 					</label>
-					<div className="img-file-container">
-						<a className="file-button" href={logoUrl} target="_blank">
-							logo.png {/* It is always named that in the database */}
-						</a>
-						<p className="coming-soon">(Możliwość edycji będzie dostępna wkrótce)</p>
-					</div>
+					{!isChangingLogo && (
+						<div className="img-file-container">
+							<a className="file-button" href={logoUrl} target="_blank">
+								logo.png {/* It is always named that in the database */}
+							</a>
+							<button type="button" onClick={showLogoEditor}>
+								<Icon className="icon-button" path={mdiPencil} size={1} />
+							</button>
+						</div>
+					)}
+					{isChangingLogo && (
+						<div className="new-logo-input-container">
+							<button type="button" onClick={hideLogoEditor} className="btn btn-primary">
+								Anuluj edycję loga
+							</button>
+							<FileInput
+								defaultFileInputLabel="Dodaj logo (256x256 px) *"
+								inputFileAccept=".png"
+								inputFileMultiple={false}
+								onFilesChanged={handleLogoFileChanged}
+								inputFileRequired={isChangingLogo}
+							/>
+						</div>
+					)}
 				</div>
-
-				{/* <div className="input-container">
-				<label>
-					Wersja: <span className="required-asterisk">*</span>
-				</label>
-				<input
-					required
-					type="text"
-					value={version}
-					onChange={(e) => setVersion(e.target.value)}
-					className="text-input"
-				/>
-			</div>
-
-			<div className="input-container">
-				<label>Plik instalacyjny:</label>
-				<div className="file-container">
-					<a className="btn btn-primary file-button" href={logoUrl}>
-						Otwórz
-					</a>
-					<div className="btn btn-primary file-button" onClick={() => {}}>
-						Dodaj plik
-					</div>
-				</div>
-			</div> */}
 
 				<div className="input-container">
 					<label>Opis:</label>
@@ -150,13 +171,28 @@ export default function EditAppForm({ appId }) {
 					<ul className="picture-list">
 						{pictureUrls.map((url, index) => (
 							<li className="picture-list-item" key={index}>
-								<a className="picture-list-item-title" href={url} target="_blank">
-									Screenshot {index + 1}
+								<a className="picture-list-item-title file-button" href={url} target="_blank">
+									<span className={picturesToDeleteFlags[index] ? 'picture-marked-to-delete' : ''}>
+										{pictureNames[index]}
+									</span>
 								</a>
+								<button type="button" onClick={() => togglePictureToDelete(index)}>
+									<Icon
+										className="icon-button"
+										path={picturesToDeleteFlags[index] ? mdiArrowULeftTop : mdiDelete}
+										size={1}
+									/>
+								</button>
 							</li>
 						))}
 					</ul>
-					<p className="coming-soon">(Możliwość edycji będzie dostępna wkrótce)</p>
+					<FileInput
+						defaultFileInputLabel="Dodaj nowe screenshoty"
+						inputFileRequired={false}
+						inputFileAccept="image/png, image/gif, image/jpeg"
+						inputFileMultiple={true}
+						onFilesChanged={handleNewAppPicturesFilesChanged}
+					/>
 				</div>
 
 				<p className="required-asterisk">* pole wymagane</p>

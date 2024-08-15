@@ -7,6 +7,7 @@ import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/Spinner';
 import ReplaceWithSpinnerIf from '../ReplaceWithSpinnerIf';
+import { notifyUsersOnNewApp } from './actions';
 
 export default function AddAppForm({ userUid }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
@@ -53,8 +54,17 @@ export default function AddAppForm({ userUid }) {
 		e.preventDefault();
 		setIsUploading(true);
 		try {
-			await addApp(appName, brandId, apkFile, logoFile, version, description, appPicturesFiles);
+			const appId = await addApp(
+				appName.trim(),
+				brandId,
+				apkFile,
+				logoFile,
+				version.trim(),
+				description.trim(),
+				appPicturesFiles
+			);
 			setIsUploadError(false);
+			notifyUsersOnNewApp(appId, appName);
 		} catch (error) {
 			console.error(error);
 			setIsUploadError(true);
