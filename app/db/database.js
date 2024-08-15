@@ -320,6 +320,7 @@ export async function editApp(appId, newName, newDescription, newChangelog) {
  * @param {string} version
  * @param {string} description
  * @param {File[]} appPicturesFiles
+ * @returns {Promise<string>} newly added app's id
  */
 export async function addApp(
 	name,
@@ -364,6 +365,9 @@ export async function addApp(
 		const pictureFileRef = storageRef(picturesFolderRef, pictureFile.name);
 		uploadBytes(pictureFileRef, pictureFile);
 	}
+
+	// 6. return app ID
+	return appId;
 }
 
 /**
