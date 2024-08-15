@@ -40,9 +40,9 @@ export default function UpdateAppForm({ appId }) {
 		e.preventDefault();
 		setIsUploading(true);
 		try {
-			await updateApp(appId, file, version, changelog);
+			await updateApp(appId, file, version.trim(), changelog.trim());
 			setIsUploadError(false);
-			notifyUsersOnAppUpdate(appId, appName, version);
+			notifyUsersOnAppUpdate(appId, appName.trim(), version.trim());
 		} catch (error) {
 			console.error(error);
 			setIsUploadError(true);

@@ -51,7 +51,7 @@ export default function EditAppForm({ appId }) {
 		e.preventDefault();
 		setIsUploading(true);
 		try {
-			await editApp(appId, appName, description, changelog);
+			await editApp(appId, appName.trim(), description.trim(), changelog.trim());
 			setIsUploadError(false);
 		} catch (error) {
 			console.error(error);
