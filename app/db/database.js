@@ -5,6 +5,7 @@ import {
 	getDownloadURL,
 	listAll,
 	uploadBytes,
+	deleteObject,
 } from 'firebase/storage';
 import { app } from './firebase-setup';
 
@@ -43,6 +44,7 @@ const USERS_PATH = `${DB_PATH}/Users`;
  * @property {string} changelog
  * @property {string} downloadUrl
  * @property {string[]} pictureUrls
+ * @property {string[]} pictureNames
  *
  * @typedef AppUpdateDetails
  * @property {string} version
@@ -168,7 +170,9 @@ export async function getAppDetails(appId) {
 
 		app.logoUrl = await getLogoUrl(appId);
 		app.downloadUrl = await getAppDownloadUrl(appId);
-		app.pictureUrls = await getPictureUrls(appId);
+		const appPictures = await getAppPictures(appId);
+		app.pictureUrls = appPictures.pictureUrls;
+		app.pictureNames = appPictures.pictureNames;
 
 		return app;
 	} catch (error) {
@@ -219,10 +223,14 @@ async function getAppDownloadUrl(appId) {
 }
 
 /**
+ * @typedef AppPictures
+ * @property {string[]} pictureUrls
+ * @property {string[]} pictureNames
+ *
  * @param {string} appId
- * @returns {Promise<string[]>}
+ * @returns {Promise<AppPictures>}
  */
-async function getPictureUrls(appId) {
+async function getAppPictures(appId) {
 	try {
 		const picturesRef = storageRef(storage, `${APPS_PATH}/${appId}/pictures`);
 		const fileList = await listAll(picturesRef);
@@ -231,10 +239,13 @@ async function getPictureUrls(appId) {
 			return await getDownloadURL(picture);
 		});
 
-		return await Promise.all(promises);
+		return {
+			pictureNames: fileList.items.map((f) => f.name),
+			pictureUrls: await Promise.all(promises),
+		};
 	} catch (error) {
 		console.error(error);
-		return [];
+		return { pictureNames: [], pictureUrls: [] };
 	}
 }
 
@@ -298,18 +309,73 @@ export async function updateApp(appId, apkFile, newVersion, changelog) {
 }
 
 /**
+ * Update app logo
+ *
+ * @param {string} appId
+ * @param {File} logoFile
+ */
+async function uploadAppLogo(appId, logoFile) {
+	const logoFileRef = storageRef(storage, `${APPS_PATH}/${appId}/logo.png`);
+	await uploadBytes(logoFileRef, logoFile);
+}
+
+/**
+ * Upload new app pictures
+ *
+ * @param {string} appId
+ * @param {File[]} picturesFiles
+ */
+async function uploadAppPictures(appId, picturesFiles) {
+	const picturesFolderRef = storageRef(storage, `${APPS_PATH}/${appId}/pictures`);
+	for (let pictureFile of picturesFiles) {
+		const pictureFileRef = storageRef(picturesFolderRef, pictureFile.name);
+		await uploadBytes(pictureFileRef, pictureFile);
+	}
+}
+
+/**
  * @param {string} appId
  * @param {string} newName
  * @param {string} newDescription
  * @param {string} newChangelog
+ * @param {File?} newLogoFile
+ * @param {File[]?} newPicturesFiles
+ * @param {string[]?} picturesToDeleteNames
  */
-export async function editApp(appId, newName, newDescription, newChangelog) {
+export async function editApp(
+	appId,
+	newName,
+	newDescription,
+	newChangelog,
+	newLogoFile = undefined,
+	newPicturesFiles = undefined,
+	picturesToDeleteNames = undefined
+) {
+	// 1. update app metadata
 	const appReference = databaseRef(db, `${APPS_PATH}/${appId}`);
 	await update(appReference, {
 		name: newName,
 		changelog: newChangelog,
 		description: newDescription,
 	});
+
+	// 2. update app logo
+	if (newLogoFile !== undefined) {
+		await uploadAppLogo(appId, newLogoFile);
+	}
+
+	// 3. remove unwanted pictures
+	if (picturesToDeleteNames !== undefined) {
+		for (let pictureName of picturesToDeleteNames) {
+			const pictureFileRef = storageRef(storage, `${APPS_PATH}/${appId}/pictures/${pictureName}`);
+			await deleteObject(pictureFileRef);
+		}
+	}
+
+	// 4. upload new pictures
+	if (newPicturesFiles !== undefined) {
+		await uploadAppPictures(appId, newPicturesFiles);
+	}
 }
 
 /**
@@ -343,8 +409,7 @@ export async function addApp(
 	await uploadBytes(apkFileRef, apkFile);
 
 	// 3. upload the logo
-	const logoFileRef = storageRef(storage, `${APPS_PATH}/${appId}/logo.png`);
-	await uploadBytes(logoFileRef, logoFile);
+	await uploadAppLogo(appId, logoFile);
 
 	// 4. add app metadata
 	const appReference = databaseRef(db, `${APPS_PATH}/${appId}`);
@@ -359,11 +424,7 @@ export async function addApp(
 	});
 
 	// 5. upload app pictures
-	const picturesFolderRef = storageRef(storage, `${APPS_PATH}/${appId}/pictures`);
-	for (let pictureFile of appPicturesFiles) {
-		const pictureFileRef = storageRef(picturesFolderRef, pictureFile.name);
-		uploadBytes(pictureFileRef, pictureFile);
-	}
+	await uploadAppPictures(appId, appPicturesFiles);
 }
 
 /**
