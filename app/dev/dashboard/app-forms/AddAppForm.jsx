@@ -55,12 +55,12 @@ export default function AddAppForm({ userUid }) {
 		setIsUploading(true);
 		try {
 			const appId = await addApp(
-				appName,
+				appName.trim(),
 				brandId,
 				apkFile,
 				logoFile,
-				version,
-				description,
+				version.trim(),
+				description.trim(),
 				appPicturesFiles
 			);
 			setIsUploadError(false);

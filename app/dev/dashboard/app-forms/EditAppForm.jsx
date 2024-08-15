@@ -57,9 +57,9 @@ export default function EditAppForm({ appId }) {
 			const picturesToDelete = pictureNames.filter((_, index) => picturesToDeleteFlags[index]);
 			await editApp(
 				appId,
-				appName,
-				description,
-				changelog,
+				appName.trim(),
+				description.trim(),
+				changelog.trim(),
 				isChangingLogo ? logoFile : undefined,
 				newAppPicturesFiles,
 				picturesToDelete
