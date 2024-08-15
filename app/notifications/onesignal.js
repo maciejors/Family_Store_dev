@@ -59,10 +59,26 @@ async function sendPushToAll(
  */
 export async function sendPushNewApp(appId, appName) {
 	await sendPushToAll(
-		appName,
-		appName,
+		`NEW: ${appName}`,
+		`NOWOŚĆ: ${appName}`,
 		`Discover the latest at Family Store - ${appName}. Try it today!`,
-		`Nowość w Family Store - ${appName}. Wypróbuj już dziś!`,
+		`Odkryj nowości w Family Store - ${appName}. Wypróbuj już dziś!`,
+		`https://family-store.vercel.app/apps/${appId}`
+	);
+}
+
+/**
+ * Send a push notification to inform of an application receiving an update
+ *
+ * @param {number} appId
+ * @param {string} appName
+ */
+export async function sendPushAppUpdate(appId, appName, newVersion) {
+	await sendPushToAll(
+		`Update: ${appName} (${newVersion})`,
+		`Aktualizacja: ${appName} (${newVersion})`,
+		`${appName} has just received an update. Check it out!`,
+		`Aplikacja ${appName} właśnie otrzymała aktualizację. Sprawdź co nowego!`,
 		`https://family-store.vercel.app/apps/${appId}`
 	);
 }

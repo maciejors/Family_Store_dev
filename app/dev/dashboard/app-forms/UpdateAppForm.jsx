@@ -7,12 +7,14 @@ import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/Spinner';
 import ReplaceWithSpinnerIf from '../ReplaceWithSpinnerIf';
+import { notifyUsersOnAppUpdate } from './actions';
 
 export default function UpdateAppForm({ appId }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
 
 	const [file, setFile] = useState(undefined);
 	const [version, setVersion] = useState('');
+	const [appName, setAppName] = useState('');
 	const [changelog, setChangelog] = useState('');
 	const [currentVersion, setCurrentVersion] = useState('');
 
@@ -24,6 +26,7 @@ export default function UpdateAppForm({ appId }) {
 		getAppUpdateDetails(appId).then((defaults) => {
 			setChangelog(defaults.changelog ?? '');
 			setCurrentVersion(defaults.version);
+			setAppName(defaults.appName);
 			setisDataFetching(false);
 		});
 	}, [appId]);
@@ -39,6 +42,7 @@ export default function UpdateAppForm({ appId }) {
 		try {
 			await updateApp(appId, file, version, changelog);
 			setIsUploadError(false);
+			notifyUsersOnAppUpdate(appId, appName, version);
 		} catch (error) {
 			console.error(error);
 			setIsUploadError(true);
