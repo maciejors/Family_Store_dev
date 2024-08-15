@@ -20,7 +20,20 @@ input[type='file'].file-input {
 }
 
 .img-file-container {
-	@apply flex flex-row items-center;
+	@apply flex flex-row items-center gap-1;
+}
+
+.img-file-container .icon-button,
+.picture-list .icon-button {
+	@apply text-primary hover:text-primary-hover;
+}
+
+.new-logo-input-container {
+	@apply flex flex-col gap-4 mt-2 w-full;
+}
+
+.new-logo-input-container .btn {
+	@apply w-fit;
 }
 
 .file-button {
@@ -48,7 +61,7 @@ textarea.text-input {
 }
 
 .picture-list {
-	@apply flex flex-col;
+	@apply flex flex-col mb-2;
 }
 
 .picture-list-item {
@@ -58,6 +71,10 @@ textarea.text-input {
 
 .picture-list-item-title {
 	@apply grow text-primary;
+}
+
+.picture-marked-to-delete {
+	@apply line-through;
 }
 
 .file-button {
