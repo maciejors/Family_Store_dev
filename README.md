@@ -13,6 +13,7 @@ Family Store Dev is a Next.js project designed to manage a service that stores m
 - **Tailwind CSS**: A utility-first CSS framework for UI development.
 - **Firebase Realtime Database**: A cloud-hosted NoSQL database to store and sync data in real-time.
 - **Firebase Storage**: A cloud storage service for securely uploading and downloading content.
+- **OneSignal REST API**: A service for sending push notifications to our mobile app users.
 
 ## Features
   
@@ -27,7 +28,7 @@ Family Store Dev is a Next.js project designed to manage a service that stores m
 - **App management:**
   - **Create New App:** Effortlessly add new applications to the platform, providing detailed information, screenshots, logos, and changelogs.
   - **Update Existing Apps:** Empower users to upload new versions of their applications.
-  - **Edit Existing App Details:** Modify app name, update description and changelog to keep the content up-to-date and accurate.
+  - **Edit Existing App Details:** Modify app name, update description and changelog, and update logo and screenshots to keep the content up-to-date and accurate.
 
 - **Brands:**
   - Allow users to group their apps and publish them under different author names.
@@ -38,8 +39,6 @@ We are actively working on enhancing Family Store Dev with the following feature
 
 - **Browse Applications:**
   - Explore list of mobile applications available on the platform.
-- **App management:**
-  - Edit existing app logo and screenshots.
 
 ## Screenshots
 
