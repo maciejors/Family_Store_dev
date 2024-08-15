@@ -194,8 +194,9 @@ export async function getAppUpdateDetails(appId) {
 		}
 		const version = snapshot.child('version').val();
 		const changelog = snapshot.child('changelog').val();
+		const appName = snapshot.child('name').val();
 
-		return { version, changelog };
+		return { version, changelog, appName };
 	} catch (error) {
 		console.error(error);
 		return {};
@@ -386,6 +387,7 @@ export async function editApp(
  * @param {string} version
  * @param {string} description
  * @param {File[]} appPicturesFiles
+ * @returns {Promise<string>} newly added app's id
  */
 export async function addApp(
 	name,
