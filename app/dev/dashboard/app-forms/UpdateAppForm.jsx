@@ -93,16 +93,16 @@ export default function UpdateAppForm({ appId }) {
 					/>
 				</div>
 				<p className="required-asterisk">* pole wymagane</p>
-				{!isSuccess() && (
-					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
-						{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
-					</button>
-				)}
 				<FormSubmitFeedback
 					wasSubmitted={wasSubmitted}
 					isError={isUploadError}
 					isLoading={isUploading}
 				/>
+				{!isSuccess() && (
+					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+						{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
+					</button>
+				)}
 			</form>
 		</ReplaceWithSpinnerIf>
 	);
