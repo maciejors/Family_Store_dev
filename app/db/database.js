@@ -427,6 +427,7 @@ export async function addApp(
 
 	// 5. upload app pictures
 	await uploadAppPictures(appId, appPicturesFiles);
+	return appId;
 }
 
 /**

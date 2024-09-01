@@ -35,6 +35,16 @@ export default function AddAppForm({ userUid }) {
 		});
 	}, [userUid]);
 
+	/**
+	 * Checks if the app is in the state that the app has been successfuly
+	 * uploaded, to hide the upload button
+	 * TODO: this is a temporary solution as there is plenty of code duplication
+	 * across different app forms. We should address this in the future
+	 */
+	function isSuccess() {
+		return !isUploading && wasSubmitted && !isUploadError;
+	}
+
 	function handleApkFileChanged(files) {
 		const newLogoFile = files[0]; // could be undefined but that's fine
 		setApkFile(newLogoFile);
@@ -63,8 +73,8 @@ export default function AddAppForm({ userUid }) {
 				description.trim(),
 				appPicturesFiles
 			);
+			await notifyUsersOnNewApp(appId, appName.trim());
 			setIsUploadError(false);
-			notifyUsersOnNewApp(appId, appName);
 		} catch (error) {
 			console.error(error);
 			setIsUploadError(true);
@@ -156,14 +166,16 @@ export default function AddAppForm({ userUid }) {
 						onFilesChanged={handleAppPicturesFilesChanged}
 					/>
 					<p className="required-asterisk">* pole wymagane</p>
-					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
-						{isUploading ? <Spinner size={28} width={3} light /> : 'Dodaj aplikację'}
-					</button>
 					<FormSubmitFeedback
 						wasSubmitted={wasSubmitted}
 						isError={isUploadError}
 						isLoading={isUploading}
 					/>
+					{!isSuccess() && (
+						<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+							{isUploading ? <Spinner size={28} width={3} light /> : 'Dodaj aplikację'}
+						</button>
+					)}
 				</form>
 			)}
 		</ReplaceWithSpinnerIf>

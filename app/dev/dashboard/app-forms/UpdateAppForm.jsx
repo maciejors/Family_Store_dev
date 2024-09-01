@@ -41,8 +41,8 @@ export default function UpdateAppForm({ appId }) {
 		setIsUploading(true);
 		try {
 			await updateApp(appId, file, version.trim(), changelog.trim());
+			await notifyUsersOnAppUpdate(appId, appName.trim(), version.trim());
 			setIsUploadError(false);
-			notifyUsersOnAppUpdate(appId, appName.trim(), version.trim());
 		} catch (error) {
 			console.error(error);
 			setIsUploadError(true);
@@ -50,6 +50,14 @@ export default function UpdateAppForm({ appId }) {
 			setIsUploading(false);
 			setWasSubmitted(true);
 		}
+	}
+
+	/**
+	 * Checks if the app is in the state that the app has been successfuly
+	 * uploaded, to hide the upload button
+	 */
+	function isSuccess() {
+		return !isUploading && wasSubmitted && !isUploadError;
 	}
 
 	return (
@@ -85,14 +93,16 @@ export default function UpdateAppForm({ appId }) {
 					/>
 				</div>
 				<p className="required-asterisk">* pole wymagane</p>
-				<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
-					{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
-				</button>
 				<FormSubmitFeedback
 					wasSubmitted={wasSubmitted}
 					isError={isUploadError}
 					isLoading={isUploading}
 				/>
+				{!isSuccess() && (
+					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+						{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
+					</button>
+				)}
 			</form>
 		</ReplaceWithSpinnerIf>
 	);
