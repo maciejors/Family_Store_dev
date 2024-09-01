@@ -41,8 +41,8 @@ export default function UpdateAppForm({ appId }) {
 		setIsUploading(true);
 		try {
 			await updateApp(appId, file, version.trim(), changelog.trim());
+			await notifyUsersOnAppUpdate(appId, appName.trim(), version.trim());
 			setIsUploadError(false);
-			notifyUsersOnAppUpdate(appId, appName.trim(), version.trim());
 		} catch (error) {
 			console.error(error);
 			setIsUploadError(true);

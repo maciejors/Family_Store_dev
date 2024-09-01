@@ -73,8 +73,8 @@ export default function AddAppForm({ userUid }) {
 				description.trim(),
 				appPicturesFiles
 			);
+			await notifyUsersOnNewApp(appId, appName.trim());
 			setIsUploadError(false);
-			notifyUsersOnNewApp(appId, appName);
 		} catch (error) {
 			console.error(error);
 			setIsUploadError(true);
