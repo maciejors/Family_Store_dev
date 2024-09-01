@@ -52,6 +52,14 @@ export default function UpdateAppForm({ appId }) {
 		}
 	}
 
+	/**
+	 * Checks if the app is in the state that the app has been successfuly
+	 * uploaded, to hide the upload button
+	 */
+	function isSuccess() {
+		return !isUploading && wasSubmitted && !isUploadError;
+	}
+
 	return (
 		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
 			<form onSubmit={handleSubmit} className="app-form">
@@ -85,9 +93,11 @@ export default function UpdateAppForm({ appId }) {
 					/>
 				</div>
 				<p className="required-asterisk">* pole wymagane</p>
-				<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
-					{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
-				</button>
+				{!isSuccess() && (
+					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+						{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
+					</button>
+				)}
 				<FormSubmitFeedback
 					wasSubmitted={wasSubmitted}
 					isError={isUploadError}

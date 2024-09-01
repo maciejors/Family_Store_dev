@@ -74,6 +74,14 @@ export default function EditAppForm({ appId }) {
 		}
 	}
 
+	/**
+	 * Checks if the app is in the state that the app has been successfuly
+	 * uploaded, to hide the upload button
+	 */
+	function isSuccess() {
+		return !isUploading && wasSubmitted && !isUploadError;
+	}
+
 	function showLogoEditor() {
 		setIsChangingLogo(true);
 	}
@@ -194,12 +202,12 @@ export default function EditAppForm({ appId }) {
 						onFilesChanged={handleNewAppPicturesFilesChanged}
 					/>
 				</div>
-
 				<p className="required-asterisk">* pole wymagane</p>
-
-				<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
-					{isUploading ? <Spinner size={28} width={3} light /> : 'Zapisz zmiany'}
-				</button>
+				{!isSuccess() && (
+					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+						{isUploading ? <Spinner size={28} width={3} light /> : 'Zapisz zmiany'}
+					</button>
+				)}
 				<FormSubmitFeedback
 					wasSubmitted={wasSubmitted}
 					isError={isUploadError}
