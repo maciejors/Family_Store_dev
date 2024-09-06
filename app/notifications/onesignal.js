@@ -41,7 +41,9 @@ async function sendPushToAll(
 			'Content-Type': 'application/json',
 			Authorization: `Basic ${API_KEY}`,
 		};
-		await axios.post(PUSH_ENDPOINT, requestBody, { headers: requestHeaders });
+		console.log('Sending push notification...');
+		const response = await axios.post(PUSH_ENDPOINT, requestBody, { headers: requestHeaders });
+		console.log('Response data from OneSignal: ', response.data);
 	} catch (error) {
 		console.error(
 			'Error sending notification:',
