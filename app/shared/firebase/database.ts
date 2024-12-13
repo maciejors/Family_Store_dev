@@ -69,7 +69,7 @@ export async function getAppsForBrand(brandId: string): Promise<AppPreview[]> {
 	const promises = Object.values(apps).map(async (app) => {
 		return {
 			...app,
-			logoUrl: await getLogoUrl(app.id),
+			logoUrl: await getLogoUrl(app.id!),
 		} as AppPreview;
 	});
 
@@ -83,7 +83,7 @@ export async function getUserAppsByBrands(userUid: string): Promise<AppsByBrand[
 		return [];
 	}
 	const userBrands = await getBrandsForUser(userUid);
-	const result = [];
+	const result: AppsByBrand[] = [];
 	for (let brand of userBrands) {
 		const appsForBrand = await getAppsForBrand(brand.id);
 		result.push({ brand, apps: appsForBrand });
@@ -220,9 +220,9 @@ export async function editApp(
 	newName: string,
 	newDescription: string,
 	newChangelog: string,
-	newLogoFile: File | null = undefined,
-	newPicturesFiles: File[] | null = undefined,
-	picturesToDeleteNames: string[] | null = undefined
+	newLogoFile: File | undefined,
+	newPicturesFiles: File[],
+	picturesToDeleteNames: string[]
 ) {
 	// 1. update app metadata
 	const appReference = databaseRef(db, `${APPS_PATH}/${appId}`);

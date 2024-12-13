@@ -27,7 +27,7 @@ async function sendPushToAll(
 	polishTitle: string,
 	englishContent: string,
 	polishContent: string,
-	url: string | null = undefined
+	url?: string
 ) {
 	try {
 		const requestBody: NotificationRequestBody = {

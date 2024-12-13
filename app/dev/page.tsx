@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import './authPage.css';
@@ -23,13 +23,13 @@ export default function AuthPage() {
 	const [password, setPassword] = useState('');
 	const [repeatPassword, setRepeatPassword] = useState('');
 
-	function changeAuthType(event) {
+	function changeAuthType(event: FormEvent) {
 		event.preventDefault();
 		setIsLogin(!isLogin);
 		setAlertMessage('');
 	}
 
-	async function submit(event) {
+	async function submit(event: FormEvent) {
 		event.preventDefault();
 		try {
 			if (isLogin) {
@@ -52,7 +52,7 @@ export default function AuthPage() {
 	}
 
 	useEffect(() => {
-		if (currentUser !== null) {
+		if (currentUser !== undefined) {
 			if (isLoggedInRegular(currentUser)) {
 				push('/dev/access-denied');
 				return;
@@ -65,7 +65,7 @@ export default function AuthPage() {
 	}, [currentUser]);
 
 	return (
-		currentUser &&
+		currentUser !== undefined &&
 		isNotAuthenticated(currentUser) && (
 			<div className="main-container auth-container">
 				<form className="auth-form">
@@ -105,7 +105,7 @@ export default function AuthPage() {
 							required
 						/>
 						{isLogin ? (
-							<a className="auth-label auth-link" href="">
+							<a className="auth-label auth-link" href={undefined}>
 								Nie pamiętasz hasła?
 							</a>
 						) : (

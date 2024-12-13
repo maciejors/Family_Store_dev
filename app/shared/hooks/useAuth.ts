@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { authStateListener, createUser, signIn } from '@/app/shared/firebase/auth';
-import { getAnonymousUser } from '@/app/shared/utils/userFunctions';
 import { User as FirebaseUser } from 'firebase/auth';
 import User from '@/app/shared/models/User';
 
 function useAuth() {
 	const localStorageKey = 'user';
-	const [currentUser, setCurrentUser] = useState<User | null>(null);
+	const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined);
 
 	async function login(email: string, password: string) {
 		try {
@@ -28,7 +27,11 @@ function useAuth() {
 
 	useEffect(() => {
 		const userStr = localStorage.getItem(localStorageKey);
-		setCurrentUser(userStr === null ? getAnonymousUser() : JSON.parse(userStr));
+		if (userStr !== null) {
+			setCurrentUser(JSON.parse(userStr));
+		} else {
+			setCurrentUser(null);
+		}
 
 		const unsubscribe = authStateListener((firebaseUser: FirebaseUser, isDev: boolean) => {
 			if (firebaseUser) {
@@ -41,7 +44,7 @@ function useAuth() {
 				setCurrentUser(user);
 				localStorage.setItem(localStorageKey, JSON.stringify(user));
 			} else {
-				setCurrentUser(getAnonymousUser());
+				setCurrentUser(null);
 				localStorage.removeItem(localStorageKey);
 			}
 		});

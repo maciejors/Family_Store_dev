@@ -31,7 +31,7 @@ export default function Dashboard() {
 	}
 
 	async function onUserChanged() {
-		if (currentUser !== null) {
+		if (currentUser !== undefined) {
 			if (isNotAuthenticated(currentUser)) {
 				push('/dev');
 				return;
@@ -40,7 +40,7 @@ export default function Dashboard() {
 				push('/dev/access-denied');
 				return;
 			}
-			const fetchedData = await getUserAppsByBrands(currentUser.uid);
+			const fetchedData = await getUserAppsByBrands(currentUser!.uid);
 			const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
 			setAppsData(dataToDisplay);
 		}
