@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getCurrentAppVersion } from '@/app/shared/firebase/database';
+import { getCurrentAppVersion } from '@/app/shared/supabase/database/getCurrentAppVersion';
 
 type VersionResponse = {
 	version?: string;
@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 	try {
 		const version = await getCurrentAppVersion(appId);
-		if (version === '') {
+		if (version === null) {
 			res.status(404).send({ error: 'App with the provided ID does not exist' });
 			return;
 		}

@@ -291,13 +291,3 @@ export async function addApp(
 	await uploadAppPictures(appId, appPicturesFiles);
 	return appId;
 }
-
-export async function getCurrentAppVersion(appId: string): Promise<string> {
-	const appVersionRef = databaseRef(db, `${APPS_PATH}/${appId}/version`);
-	const snapshot = await get(appVersionRef);
-
-	if (!snapshot.exists()) {
-		return '';
-	}
-	return snapshot.val();
-}
