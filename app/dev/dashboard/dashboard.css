@@ -1,3 +1,5 @@
+@reference '../../globals.css';
+
 header.dashboard-header {
 	@apply flex flex-row justify-between mt-4 mb-8 w-full;
 }
@@ -57,7 +59,7 @@ header.dashboard-header {
 */
 
 .overlay {
-	@apply bg-gray-600 bg-opacity-50;
+	@apply bg-gray-600/50;
 	@apply fixed top-0 left-0 w-full h-full;
 	@apply flex flex-col justify-center items-center;
 	@apply p-4;

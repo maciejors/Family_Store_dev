@@ -1,3 +1,5 @@
+@reference '../../globals.css';
+
 .img-container {
 	@apply w-full h-80 flex gap-1 items-center justify-start overflow-x-auto;
 	height: calc(20rem + 100vw - 100%);

@@ -1,3 +1,5 @@
+@reference '../../globals.css';
+
 form.app-form {
 	@apply flex flex-col items-center gap-4 p-2 mt-4 text-lg;
 }
@@ -49,7 +51,7 @@ p.required-asterisk {
 }
 
 .text-input {
-	@apply border-2 rounded shadow-inner bg-white w-full;
+	@apply border-2 rounded-sm shadow-inner bg-white w-full;
 }
 
 .text-input-invalid {
