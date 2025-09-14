@@ -5,7 +5,7 @@ export async function getCurrentAppVersion(appId: string): Promise<string | null
 		.from('apps')
 		.select('version')
 		.eq('id', appId)
-		.single();
+		.maybeSingle();
 
 	if (error) {
 		console.error(error);
