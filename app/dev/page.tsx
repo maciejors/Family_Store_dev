@@ -5,15 +5,11 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import './authPage.css';
 import useAuth from '@/app/shared/hooks/useAuth';
-import {
-	isLoggedInDeveloper,
-	isLoggedInRegular,
-	isNotAuthenticated,
-} from '@/app/shared/utils/userFunctions';
+import { isLoggedInDeveloper, isLoggedInRegular } from '@/app/shared/utils/userFunctions';
 import validate from './validation';
 
 export default function AuthPage() {
-	const { currentUser, login, register } = useAuth();
+	const { currentUser, logIn, register } = useAuth();
 	const { push } = useRouter();
 
 	const [isLogin, setIsLogin] = useState(true);
@@ -33,21 +29,18 @@ export default function AuthPage() {
 		event.preventDefault();
 		try {
 			if (isLogin) {
-				const { success } = await login(email, password);
-				if (!success) setAlertMessage('Dane logowania są niepoprawne');
+				await logIn(email, password);
 			} else {
 				const validation = validate(email, password, repeatPassword);
-				if (validation.isValid) {
-					const { success, error } = await register(email, password);
-					if (!success) {
-						if (error.code === 'auth/email-already-in-use')
-							setAlertMessage('Ten e-mail posiada już konto');
-						else setAlertMessage('Coś poszło nie tak');
-					}
-				} else setAlertMessage(validation.message);
+				if (!validation.isValid) {
+					setAlertMessage(validation.message);
+					return;
+				}
+				await register(email, password);
 			}
 		} catch (error) {
-			console.error(Error, 'Submit auth form error');
+			console.error(error);
+			setAlertMessage(error.message ?? 'An unknown error occurred');
 		}
 	}
 
@@ -66,7 +59,7 @@ export default function AuthPage() {
 
 	return (
 		currentUser !== undefined &&
-		isNotAuthenticated(currentUser) && (
+		currentUser === null && (
 			<div className="main-container auth-container">
 				<form className="auth-form">
 					<header>

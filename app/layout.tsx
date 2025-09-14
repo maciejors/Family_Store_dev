@@ -1,6 +1,7 @@
 import React from 'react';
 import './globals.css';
 import { Rubik } from 'next/font/google';
+import ClientWrapper from './ClientWrapper';
 
 const font = Rubik({ subsets: ['latin-ext'], weight: '400' });
 
@@ -12,7 +13,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
-			<body className={font.className}>{children}</body>
+			<body className={font.className}>
+				<ClientWrapper>{children}</ClientWrapper>
+			</body>
 		</html>
 	);
 }
