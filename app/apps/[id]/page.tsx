@@ -6,11 +6,12 @@ import './app-details.css';
 import ImageViewer from './ImageViewer';
 import LastUpdatedLabel from '@/app/shared/components/LastUpdatedLabel';
 
-export default async function AppDetails({ params }) {
-	const app = await getAppDetails(params.id);
-	const brand = await getBrandById(app.authorId);
+export default async function AppDetails(props) {
+    const params = await props.params;
+    const app = await getAppDetails(params.id);
+    const brand = await getBrandById(app.authorId);
 
-	return (
+    return (
 		<div className="main-container">
 			<header>
 				<div className="app-header">
