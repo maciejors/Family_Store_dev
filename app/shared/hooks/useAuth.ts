@@ -1,63 +1,45 @@
-import { useEffect, useState } from 'react';
-import { authStateListener, createUser, signIn } from '@/app/shared/firebase/auth';
-import { User as FirebaseUser } from 'firebase/auth';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/app/shared/store/store';
+import { loadInitState, logInAction, logOutAction } from '@/app/shared/store/slices/authSlice';
+import { signUpSupabase, signInSupabase, signOutSupabase } from '@/app/shared/supabase/auth';
 import User from '@/app/shared/models/User';
 
 function useAuth() {
-	const localStorageKey = 'user';
-	const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined);
+	const LOCAL_STORAGE_KEY = 'user';
 
-	async function login(email: string, password: string) {
-		try {
-			await signIn(email, password);
-			return { success: true };
-		} catch (error) {
-			return { success: false, error };
-		}
+	const currentUser = useSelector((state: RootState) => state.auth.authUser);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const userStr = localStorage.getItem(LOCAL_STORAGE_KEY);
+		const user = userStr === null ? null : (JSON.parse(userStr) as User);
+		dispatch(loadInitState(user));
+	}, [dispatch]);
+
+	async function logIn(email: string, password: string) {
+		const user = await signInSupabase(email, password);
+		dispatch(logInAction(user));
+		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
 	}
 
 	async function register(email: string, password: string) {
-		try {
-			await createUser(email, password);
-			return { success: true };
-		} catch (error) {
-			return { success: false, error };
-		}
+		const user = await signUpSupabase(email, password);
+		dispatch(logInAction(user));
+		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
 	}
 
-	useEffect(() => {
-		const userStr = localStorage.getItem(localStorageKey);
-		if (userStr !== null) {
-			setCurrentUser(JSON.parse(userStr));
-		} else {
-			setCurrentUser(null);
-		}
-
-		const unsubscribe = authStateListener((firebaseUser: FirebaseUser, isDev: boolean) => {
-			if (firebaseUser) {
-				const user: User = {
-					uid: firebaseUser.uid,
-					email: firebaseUser.email!,
-					displayName: firebaseUser.displayName!,
-					isDev,
-				};
-				setCurrentUser(user);
-				localStorage.setItem(localStorageKey, JSON.stringify(user));
-			} else {
-				setCurrentUser(null);
-				localStorage.removeItem(localStorageKey);
-			}
-		});
-
-		return () => {
-			unsubscribe();
-		};
-	}, []);
+	async function logOut() {
+		await signOutSupabase();
+		dispatch(logOutAction());
+		localStorage.removeItem(LOCAL_STORAGE_KEY);
+	}
 
 	return {
 		currentUser,
-		login,
+		logIn,
 		register,
+		logOut,
 	};
 }
 

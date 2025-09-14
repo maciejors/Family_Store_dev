@@ -1,29 +1,20 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { signOut } from '@/app/shared/firebase/auth';
+import { signOutSupabase } from '@/app/shared/supabase/auth';
 import '@/app/globals.css';
 import './styles.css';
 import useAuth from '@/app/shared/hooks/useAuth';
 import { useEffect } from 'react';
-import {
-	isLoggedInDeveloper,
-	isLoggedInRegular,
-	isNotAuthenticated,
-} from '@/app/shared/utils/userFunctions';
+import { isLoggedInDeveloper, isLoggedInRegular } from '@/app/shared/utils/userFunctions';
 
 export default function AccessDeniedPage() {
-	const { currentUser } = useAuth();
+	const { currentUser, logOut } = useAuth();
 	const { push } = useRouter();
-
-	async function logout() {
-		await signOut();
-		push('/dev');
-	}
 
 	useEffect(() => {
 		if (currentUser !== undefined) {
-			if (isNotAuthenticated(currentUser)) {
+			if (currentUser === null) {
 				push('/dev');
 				return;
 			}
@@ -41,7 +32,7 @@ export default function AccessDeniedPage() {
 				<main className="message">
 					<h2>Odmowa dostępu</h2>
 					<p>Ta część platformy jest dostępna jedynie dla użytkowników z kontem dewelopera.</p>
-					<button className="btn btn-primary" onClick={logout}>
+					<button className="btn btn-primary" onClick={logOut}>
 						Wyloguj się
 					</button>
 				</main>
