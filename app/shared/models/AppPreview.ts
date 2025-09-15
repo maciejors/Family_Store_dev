@@ -1,10 +1,8 @@
 export default interface AppPreview {
-	id: string;
+	id: number;
 	name: string;
-	authorId: string;
+	brandName: string;
 	version: string;
-	lastUpdated: number;
+	lastUpdated: string;
 	logoUrl: string;
-	description: string;
-	changelog: string;
 }

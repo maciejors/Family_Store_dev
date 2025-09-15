@@ -46,7 +46,7 @@ export default function EditBrandForm({
 			<button>
 				<Icon className="option" path={mdiCheck} size={1} />
 			</button>
-			<div onClick={handleCancel} className="fake-button icon-button">
+			<div onClick={handleCancel} className="icon-button">
 				<Icon className="option" path={mdiClose} size={1} />
 			</div>
 		</form>

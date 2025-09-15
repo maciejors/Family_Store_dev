@@ -8,17 +8,21 @@ const formattingOptions: Intl.DateTimeFormatOptions = {
 	day: 'numeric',
 };
 
-export default function LastUpdatedLabel({ lastUpdatedMillis, prefix }) {
-	/**
-	 * @param {number} millis
-	 * @returns {string} Date formatted like this: 8 Jan 2023
-	 */
+export interface LastUpdatedLabelProps {
+	lastUpdatedIso: string;
+	prefix: string;
+}
+
+export default function LastUpdatedLabel({
+	lastUpdatedIso,
+	prefix,
+}: LastUpdatedLabelProps) {
 	const [labelToDisplay, setLabelToDisplay] = useState('');
 	useEffect(() => {
-		const date = new Date(lastUpdatedMillis);
+		const date = new Date(lastUpdatedIso);
 		const formattedDate = date.toLocaleDateString(navigator.language, formattingOptions);
 		setLabelToDisplay(`${prefix !== undefined ? prefix : ''}${formattedDate}`);
-	}, []);
+	}, [lastUpdatedIso, prefix]);
 
 	return <p>{labelToDisplay}</p>;
 }
