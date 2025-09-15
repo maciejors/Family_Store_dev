@@ -2,27 +2,20 @@ import React, { useEffect, useState } from 'react';
 import {
 	addBrand,
 	deleteBrand,
-	getUserAppsByBrands,
 	updateBrand,
-} from '@/app/shared/firebase/database';
+} from '@/app/shared/supabase/database/brands';
 import './brandsManager.css';
 import EditableBrandTile from './EditableBrandTile';
 import BrandAddingHandler from './BrandAddingHandler';
 import Spinner from '@/app/shared/components/Spinner';
-import BrandData from '@/app/shared/models/BrandData';
-
-async function getBrandsDataToDisplay(userUid: string): Promise<BrandData[]> {
-	const fullBrandsData = await getUserAppsByBrands(userUid);
-	// we need just app counts
-	return fullBrandsData.map(({ brand, apps }) => ({ brand, appCount: apps.length }));
-}
+import Brand from '@/app/shared/models/Brand';
+import { getBrandsForUser } from '@/app/shared/supabase/database/brands';
 
 export default function BrandsManager({ userUid }) {
-	// brands data: a list of objects { brand, appCount }
-	const [brandsData, setBrandsData] = useState<BrandData[] | null>(null);
+	const [brandsData, setBrandsData] = useState<Brand[] | null>(null);
 
 	async function fetchBrandsData() {
-		const fetchedData = await getBrandsDataToDisplay(userUid);
+		const fetchedData = await getBrandsForUser(userUid);
 		setBrandsData(fetchedData);
 	}
 
@@ -30,13 +23,13 @@ export default function BrandsManager({ userUid }) {
 		fetchBrandsData();
 	}, []);
 
-	async function handleConfirmEditBrand(brandId: string, newBrandName: string) {
+	async function handleConfirmEditBrand(brandId: number, newBrandName: string) {
 		setBrandsData(null);
 		await updateBrand(brandId, newBrandName);
 		await fetchBrandsData();
 	}
 
-	async function handleDeleteBrand(brandId: string) {
+	async function handleDeleteBrand(brandId: number) {
 		setBrandsData(null);
 		await deleteBrand(brandId);
 		await fetchBrandsData();
@@ -52,10 +45,10 @@ export default function BrandsManager({ userUid }) {
 		<>
 			{brandsData && (
 				<ul className="brands-list">
-					{brandsData.map((brandData) => (
-						<li key={brandData.brand.id}>
+					{brandsData.map((brand) => (
+						<li key={brand.id}>
 							<EditableBrandTile
-								brandData={brandData}
+								brandData={brand}
 								onConfirmEdit={handleConfirmEditBrand}
 								onDelete={handleDeleteBrand}
 							/>

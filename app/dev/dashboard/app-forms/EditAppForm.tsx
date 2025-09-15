@@ -4,7 +4,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete, mdiArrowULeftTop } from '@mdi/js';
 import '../forms.css';
-import { editApp, getAppDetails } from '@/app/shared/firebase/database';
+import { editApp, getAppDetails } from '@/app/shared/supabase/database/apps';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/components/Spinner';
 import ReplaceWithSpinnerIf from '@/app/shared/components/ReplaceWithSpinnerIf';
@@ -54,7 +54,9 @@ export default function EditAppForm({ appId }) {
 		e.preventDefault();
 		setIsUploading(true);
 		try {
-			const picturesToDelete = pictureNames.filter((_, index) => picturesToDeleteFlags[index]);
+			const picturesToDelete = pictureNames.filter(
+				(_, index) => picturesToDeleteFlags[index]
+			);
 			await editApp(
 				appId,
 				appName.trim(),
@@ -107,7 +109,10 @@ export default function EditAppForm({ appId }) {
 	}
 
 	return (
-		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
+		<ReplaceWithSpinnerIf
+			condition={isDataFetching}
+			extraSpinnerWrapperClasses="pt-8 pb-6"
+		>
 			<form onSubmit={handleSubmit} className="app-form">
 				<div className="input-container">
 					<label>
@@ -179,8 +184,16 @@ export default function EditAppForm({ appId }) {
 					<ul className="picture-list">
 						{pictureUrls.map((url, index) => (
 							<li className="picture-list-item" key={index}>
-								<a className="picture-list-item-title file-button" href={url} target="_blank">
-									<span className={picturesToDeleteFlags[index] ? 'picture-marked-to-delete' : ''}>
+								<a
+									className="picture-list-item-title file-button"
+									href={url}
+									target="_blank"
+								>
+									<span
+										className={
+											picturesToDeleteFlags[index] ? 'picture-marked-to-delete' : ''
+										}
+									>
 										{pictureNames[index]}
 									</span>
 								</a>
@@ -209,7 +222,11 @@ export default function EditAppForm({ appId }) {
 					isLoading={isUploading}
 				/>
 				{!isSuccess() && (
-					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+					<button
+						className="btn btn-primary submit-btn"
+						type="submit"
+						disabled={isUploading}
+					>
 						{isUploading ? <Spinner size={28} width={3} light /> : 'Zapisz zmiany'}
 					</button>
 				)}

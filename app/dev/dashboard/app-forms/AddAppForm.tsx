@@ -2,13 +2,14 @@
 
 import React, { FormEvent, useEffect, useState } from 'react';
 import '../forms.css';
-import { addApp, getBrandsForUser } from '@/app/shared/firebase/database';
+import { addApp } from '@/app/shared/supabase/database/apps';
+import { getBrandsForUser } from '@/app/shared/supabase/database/brands';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/components/Spinner';
 import ReplaceWithSpinnerIf from '@/app/shared/components/ReplaceWithSpinnerIf';
 import { notifyUsersOnNewApp } from './actions';
-import Brand from '@/app/shared/models/Brand';
+import BrandBase from '@/app/shared/models/Brand';
 
 export default function AddAppForm({ userUid }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
@@ -19,8 +20,8 @@ export default function AddAppForm({ userUid }) {
 	const [appPicturesFiles, setAppPicturesFiles] = useState<File[]>([]);
 	const [version, setVersion] = useState('1.0.0');
 	const [description, setDescription] = useState('');
-	const [brandId, setBrandId] = useState<string | undefined>(undefined);
-	const [userBrands, setUserBrands] = useState<Brand[]>([]);
+	const [brandId, setBrandId] = useState<number | undefined>(undefined);
+	const [userBrands, setUserBrands] = useState<BrandBase[]>([]);
 
 	const [isUploading, setIsUploading] = useState(false);
 	const [isUploadError, setIsUploadError] = useState(false);
@@ -86,7 +87,10 @@ export default function AddAppForm({ userUid }) {
 	}
 
 	return (
-		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
+		<ReplaceWithSpinnerIf
+			condition={isDataFetching}
+			extraSpinnerWrapperClasses="pt-8 pb-6"
+		>
 			{userBrands.length === 0 && (
 				<div className="no-brands-info-container">
 					<p>Brak marek powiązanych z tym kontem.</p>
@@ -126,7 +130,7 @@ export default function AddAppForm({ userUid }) {
 						</label>
 						<select
 							value={brandId}
-							onChange={(e) => setBrandId(e.target.value)}
+							onChange={(e) => setBrandId(parseInt(e.target.value))}
 							required
 							className="text-input"
 						>
@@ -173,7 +177,11 @@ export default function AddAppForm({ userUid }) {
 						isLoading={isUploading}
 					/>
 					{!isSuccess() && (
-						<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+						<button
+							className="btn btn-primary submit-btn"
+							type="submit"
+							disabled={isUploading}
+						>
 							{isUploading ? <Spinner size={28} width={3} light /> : 'Dodaj aplikację'}
 						</button>
 					)}

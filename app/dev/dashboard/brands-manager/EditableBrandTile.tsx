@@ -4,12 +4,12 @@ import { mdiPencil, mdiDelete } from '@mdi/js';
 import './brandsManager.css';
 import '../forms.css';
 import EditBrandForm from './EditBrandForm';
-import BrandData from '@/app/shared/models/BrandData';
+import Brand from '@/app/shared/models/Brand';
 
 interface EditableBrandTileProps {
-	brandData: BrandData;
-	onConfirmEdit: { (brandId: string, newBrandName: string): Promise<void> };
-	onDelete: { (brandId: string): void };
+	brandData: Brand;
+	onConfirmEdit: { (brandId: number, newBrandName: string): Promise<void> };
+	onDelete: { (brandId: number): void };
 }
 
 export default function EditableBrandTile({
@@ -28,12 +28,12 @@ export default function EditableBrandTile({
 	}
 
 	async function handleConfirmEdit(newBrandName: string) {
-		await onConfirmEdit(brandData.brand.id, newBrandName);
+		await onConfirmEdit(brandData.id, newBrandName);
 		hideEditor();
 	}
 
 	function handleDelete() {
-		onDelete(brandData.brand.id);
+		onDelete(brandData.id);
 	}
 
 	return (
@@ -41,7 +41,7 @@ export default function EditableBrandTile({
 			{!isEditing && (
 				<div className="editable-brand-tile">
 					<p>
-						{brandData.brand.name} ({brandData.appCount})
+						{brandData.name} ({brandData.appCount})
 					</p>
 					<button onClick={showEditor}>
 						<Icon className="option" path={mdiPencil} size={1} />
@@ -55,7 +55,7 @@ export default function EditableBrandTile({
 			)}
 			{isEditing && (
 				<EditBrandForm
-					defaultBrandName={brandData.brand.name}
+					defaultBrandName={brandData.name}
 					onConfirmEdit={handleConfirmEdit}
 					onCancel={hideEditor}
 				/>

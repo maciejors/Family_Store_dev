@@ -6,8 +6,13 @@ import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
 import Dialog from './Dialog';
 import UpdateAppForm from './app-forms/UpdateAppForm';
 import EditAppForm from './app-forms/EditAppForm';
+import AppPreview from '@/app/shared/models/AppPreview';
 
-export default function AppCard({ app }) {
+export interface AppCardProps {
+	app: AppPreview;
+}
+
+export default function AppCard({ app }: AppCardProps) {
 	return (
 		<div className="card app-card">
 			<main>
@@ -22,7 +27,7 @@ export default function AppCard({ app }) {
 					<h3>{app.name}</h3>
 					<p className="version-label">Wersja: {app.version}</p>
 					<span className="last-updated-label">
-						<LastUpdatedLabel lastUpdatedMillis={app.lastUpdated} prefix="Aktual. " />
+						<LastUpdatedLabel lastUpdatedIso={app.lastUpdated} prefix="Aktual. " />
 					</span>
 				</div>
 			</main>

@@ -51,8 +51,10 @@ async function sendPushToAll(
 			Authorization: `Basic ${API_KEY}`,
 		};
 		console.log('Sending push notification...');
-		const response = await axios.post(PUSH_ENDPOINT, requestBody, { headers: requestHeaders });
-		console.log('Response data from OneSignal: ', response.data);
+		// const response = await axios.post(PUSH_ENDPOINT, requestBody, {
+		// 	headers: requestHeaders,
+		// });
+		// console.log('Response data from OneSignal: ', response.data);
 	} catch (error) {
 		console.error(
 			'Error sending notification:',
@@ -65,7 +67,7 @@ async function sendPushToAll(
  * Send a push notification to inform of a new application
  * being published to the Family Store.
  */
-export async function sendPushNewApp(appId: string, appName: string) {
+export async function sendPushNewApp(appId: number, appName: string) {
 	await sendPushToAll(
 		`NEW: ${appName}`,
 		`NOWOŚĆ: ${appName}`,
@@ -78,7 +80,11 @@ export async function sendPushNewApp(appId: string, appName: string) {
 /**
  * Send a push notification to inform of an application receiving an update
  */
-export async function sendPushAppUpdate(appId: string, appName: string, newVersion: string) {
+export async function sendPushAppUpdate(
+	appId: number,
+	appName: string,
+	newVersion: string
+) {
 	await sendPushToAll(
 		`Update: ${appName} (${newVersion})`,
 		`Aktualizacja: ${appName} (${newVersion})`,

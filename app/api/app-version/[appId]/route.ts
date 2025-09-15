@@ -1,16 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentAppVersion } from '@/app/shared/supabase/database/getCurrentAppVersion';
+import { getCurrentAppVersion } from '@/app/shared/supabase/database/apps';
 
 type VersionResponse = {
 	version?: string;
 	error?: string;
 };
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ appId: string }> }) {
-	const { appId } = await params;
+export async function GET(
+	_: NextRequest,
+	{ params }: { params: Promise<{ appId: string }> }
+) {
+	const { appId: appIdString } = await params;
+	const appId = parseInt(appIdString);
 
-	if (typeof appId !== 'string') {
-		return NextResponse.json<VersionResponse>({ error: 'Invalid appId' }, { status: 400 });
+	if (isNaN(appId)) {
+		return NextResponse.json<VersionResponse>(
+			{ error: 'Invalid appId' },
+			{ status: 400 }
+		);
 	}
 
 	try {
@@ -26,6 +33,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ appI
 	} catch (err) {
 		console.log(err);
 
-		return NextResponse.json<VersionResponse>({ error: 'Failed to fetch data' }, { status: 500 });
+		return NextResponse.json<VersionResponse>(
+			{ error: 'Failed to fetch data' },
+			{ status: 500 }
+		);
 	}
 }
