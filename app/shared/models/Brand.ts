@@ -1,5 +1,5 @@
 export default interface Brand {
-	id: string;
-	ownerUserId: string;
+	id: number;
 	name: string;
+	appCount: number;
 }

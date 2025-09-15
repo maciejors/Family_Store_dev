@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import Icon from '@mdi/react';
 import { mdiDownload } from '@mdi/js';
-import { getAppDetails, getBrandById } from '@/app/shared/firebase/database';
+import { getAppDetails } from '@/app/shared/supabase/database/apps';
 import './app-details.css';
 import ImageViewer from './ImageViewer';
 import LastUpdatedLabel from '@/app/shared/components/LastUpdatedLabel';
 
-export default async function AppDetails({ params }) {
+export default async function AppDetails(props: { params: any }) {
+	const params = await props.params;
 	const app = await getAppDetails(params.id);
-	const brand = await getBrandById(app.authorId);
 
 	return (
 		<div className="main-container">
@@ -33,7 +33,7 @@ export default async function AppDetails({ params }) {
 					<div className="app-base-info">
 						<h2>{app.name}</h2>
 						<p className="version-label">Wersja: {app.version}</p>
-						<p className="author-label">Autor: {brand.name}</p>
+						<p className="author-label">Autor: {app.brandName}</p>
 					</div>
 				</div>
 				<div className="download">
@@ -43,7 +43,7 @@ export default async function AppDetails({ params }) {
 					</a>
 					<span className="last-updated-label">
 						<LastUpdatedLabel
-							lastUpdatedMillis={app.lastUpdated}
+							lastUpdatedIso={app.lastUpdated}
 							prefix="Ostatnia aktualizacja: "
 						/>
 					</span>

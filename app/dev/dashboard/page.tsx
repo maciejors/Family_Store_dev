@@ -3,17 +3,12 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getUserAppsByBrands } from '@/app/shared/firebase/database';
-import { signOut } from '@/app/shared/firebase/auth';
+import { getUserAppsByBrands } from '@/app/shared/supabase/database/apps';
 import AppList from './AppList';
 import Dialog from './Dialog';
 import './dashboard.css';
 import useAuth from '@/app/shared/hooks/useAuth';
-import {
-	isLoggedInDeveloper,
-	isLoggedInRegular,
-	isNotAuthenticated,
-} from '@/app/shared/utils/userFunctions';
+import { isLoggedInDeveloper, isLoggedInRegular } from '@/app/shared/utils/userFunctions';
 import NoAppsInfo from './NoAppsInfo';
 import BrandsManager from './brands-manager/BrandsManager';
 import ReplaceWithSpinnerIf from '@/app/shared/components/ReplaceWithSpinnerIf';
@@ -22,17 +17,12 @@ import AppsByBrand from '@/app/shared/models/AppsByBrand';
 
 export default function Dashboard() {
 	const { push } = useRouter();
-	let { currentUser } = useAuth();
-	// appsDataToDisplay: a list of objects { brand, apps } where app count > 0
+	let { currentUser, logOut } = useAuth();
 	const [appsData, setAppsData] = useState<AppsByBrand[] | null>(null);
-
-	async function logout() {
-		await signOut();
-	}
 
 	async function onUserChanged() {
 		if (currentUser !== undefined) {
-			if (isNotAuthenticated(currentUser)) {
+			if (currentUser === null) {
 				push('/dev');
 				return;
 			}
@@ -69,17 +59,20 @@ export default function Dashboard() {
 						>
 							<AddAppForm userUid={currentUser.uid} />
 						</Dialog>
-						<button className="btn btn-secondary" onClick={logout}>
+						<button className="btn btn-secondary" onClick={logOut}>
 							Wyloguj się
 						</button>
 					</div>
 				</header>
 				<main className="w-full">
-					<ReplaceWithSpinnerIf condition={appsData === null} extraSpinnerWrapperClasses="pt-16">
+					<ReplaceWithSpinnerIf
+						condition={appsData === null}
+						extraSpinnerWrapperClasses="pt-16"
+					>
 						{appsData &&
 							appsData.length > 0 &&
-							appsData.map(({ brand, apps }) => (
-								<AppList brandName={brand.name} apps={apps} key={brand.id} />
+							appsData.map(({ brandId, brandName, apps }) => (
+								<AppList key={brandId} brandName={brandName} apps={apps} />
 							))}
 						{appsData && appsData.length === 0 && <NoAppsInfo />}
 					</ReplaceWithSpinnerIf>

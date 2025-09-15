@@ -2,7 +2,7 @@
 
 import React, { FormEvent, useEffect, useState } from 'react';
 import '../forms.css';
-import { getAppUpdateDetails, updateApp } from '@/app/shared/firebase/database';
+import { getAppUpdateDetails, updateApp } from '@/app/shared/supabase/database/apps';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/app/shared/components/Spinner';
@@ -61,7 +61,10 @@ export default function UpdateAppForm({ appId }) {
 	}
 
 	return (
-		<ReplaceWithSpinnerIf condition={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
+		<ReplaceWithSpinnerIf
+			condition={isDataFetching}
+			extraSpinnerWrapperClasses="pt-8 pb-6"
+		>
 			<form onSubmit={handleSubmit} className="app-form">
 				<FileInput
 					defaultFileInputLabel="Dodaj plik instalacyjny *"
@@ -99,7 +102,11 @@ export default function UpdateAppForm({ appId }) {
 					isLoading={isUploading}
 				/>
 				{!isSuccess() && (
-					<button className="btn btn-primary submit-btn" type="submit" disabled={isUploading}>
+					<button
+						className="btn btn-primary submit-btn"
+						type="submit"
+						disabled={isUploading}
+					>
 						{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
 					</button>
 				)}
