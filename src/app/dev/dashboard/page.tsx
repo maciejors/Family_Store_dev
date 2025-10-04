@@ -22,7 +22,7 @@ export default function Dashboard() {
 	async function onUserChanged() {
 		if (currentUser !== undefined) {
 			if (currentUser === null) {
-				push('/dev');
+				push('/dev/auth');
 				return;
 			}
 			if (isLoggedInRegular(currentUser)) {

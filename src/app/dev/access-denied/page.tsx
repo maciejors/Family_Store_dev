@@ -12,7 +12,7 @@ export default function AccessDeniedPage() {
 	useEffect(() => {
 		if (currentUser !== undefined) {
 			if (currentUser === null) {
-				push('/dev');
+				push('/dev/auth');
 				return;
 			}
 			if (isLoggedInDeveloper(currentUser)) {
