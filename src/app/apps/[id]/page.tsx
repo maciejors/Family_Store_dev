@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Icon from '@mdi/react';
 import { mdiDownload } from '@mdi/js';
 import { getAppDetails } from '@/lib/supabase/database/apps';
-import styles from './styles.module.css';
+import styles from './page.module.css';
 import ImageViewer from './ImageViewer';
 import LastUpdatedLabel from '@/components/LastUpdatedLabel';
 
