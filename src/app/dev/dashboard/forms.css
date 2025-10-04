@@ -87,10 +87,6 @@ textarea.text-input {
 	@apply text-gray-700 cursor-pointer;
 }
 
-.coming-soon {
-	@apply text-gray-400 italic pl-1;
-}
-
 .submit-btn {
 	@apply w-64 h-12;
 }
@@ -105,8 +101,4 @@ textarea.text-input {
 
 .submit-success {
 	@apply text-sm text-green-500;
-}
-
-.no-brands-info-container {
-	@apply flex flex-col items-center text-base p-4;
 }

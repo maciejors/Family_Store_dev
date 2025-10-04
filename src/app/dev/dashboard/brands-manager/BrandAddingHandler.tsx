@@ -26,9 +26,9 @@ export default function BrandAddingHandler({ onConfirmAddBrand }) {
 	return (
 		<>
 			{!isAddingBrand && (
-				<button className="add-brand-btn" onClick={showEditor}>
+				<button className="text-primary flex flex-row items-center" onClick={showEditor}>
 					<Icon path={mdiPlus} size={1} />
-					<p>Dodaj</p>
+					<p className="text-lg">Dodaj</p>
 				</button>
 			)}
 			{isAddingBrand && (

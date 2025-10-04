@@ -7,7 +7,7 @@ import '../forms.css';
 import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/components/Spinner';
-import ReplaceWithSpinnerIf from '@/components/ReplaceWithSpinnerIf';
+import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
 import FileInput from './FileInput';
 
 export default function EditAppForm({ appId }) {
@@ -109,10 +109,7 @@ export default function EditAppForm({ appId }) {
 	}
 
 	return (
-		<ReplaceWithSpinnerIf
-			condition={isDataFetching}
-			extraSpinnerWrapperClasses="pt-8 pb-6"
-		>
+		<ConditionalSpinner isLoading={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
 			<form onSubmit={handleSubmit} className="app-form">
 				<div className="input-container">
 					<label>
@@ -231,6 +228,6 @@ export default function EditAppForm({ appId }) {
 					</button>
 				)}
 			</form>
-		</ReplaceWithSpinnerIf>
+		</ConditionalSpinner>
 	);
 }

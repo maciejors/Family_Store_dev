@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
-import './brandsManager.css';
+import brandManagerStyles from './brandsManager.module.css';
 import '../forms.css';
 import EditBrandForm from './EditBrandForm';
 import Brand from '@/models/Brand';
@@ -38,27 +38,26 @@ export default function EditableBrandTile({
 
 	return (
 		<>
-			{!isEditing && (
-				<div className="editable-brand-tile">
-					<p>
-						{brandData.name} ({brandData.appCount})
-					</p>
-					<button onClick={showEditor}>
-						<Icon className="option" path={mdiPencil} size={1} />
-					</button>
-					{brandData.appCount == 0 && (
-						<button onClick={handleDelete}>
-							<Icon className="option" path={mdiDelete} size={1} />
-						</button>
-					)}
-				</div>
-			)}
-			{isEditing && (
+			{isEditing ? (
 				<EditBrandForm
 					defaultBrandName={brandData.name}
 					onConfirmEdit={handleConfirmEdit}
 					onCancel={hideEditor}
 				/>
+			) : (
+				<div className={brandManagerStyles['editable-brand-tile']}>
+					<p className="text-xl">
+						{brandData.name} ({brandData.appCount})
+					</p>
+					<button onClick={showEditor} className={brandManagerStyles.btn}>
+						<Icon className="option" path={mdiPencil} size={1} />
+					</button>
+					{brandData.appCount == 0 && (
+						<button onClick={handleDelete} className={brandManagerStyles.btn}>
+							<Icon className="option" path={mdiDelete} size={1} />
+						</button>
+					)}
+				</div>
 			)}
 		</>
 	);

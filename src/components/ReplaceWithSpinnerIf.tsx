@@ -1,22 +1,24 @@
 import React from 'react';
 import Spinner from './Spinner';
-import '@/app/dev/dashboard/dashboard.css';
 
-export default function ReplaceWithSpinnerIf({
+export default function ConditionalSpinner({
 	children,
-	condition,
+	isLoading,
 	extraSpinnerWrapperClasses = '',
 	spinnerSize = 64,
 	spinnerWidth = 6,
 }) {
 	return (
 		<>
-			{condition && (
-				<div className={`spinner-container py-8 ${extraSpinnerWrapperClasses}`}>
+			{isLoading ? (
+				<div
+					className={`w-full flex flex-col items-center py-8 ${extraSpinnerWrapperClasses}`}
+				>
 					<Spinner size={spinnerSize} width={spinnerWidth} />
 				</div>
+			) : (
+				children
 			)}
-			{!condition && children}
 		</>
 	);
 }

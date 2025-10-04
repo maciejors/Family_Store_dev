@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiClose } from '@mdi/js';
+import brandManagerStyles from './brandsManager.module.css';
 
 interface EditBrandFormProps {
 	defaultBrandName: string;
@@ -35,7 +36,7 @@ export default function EditBrandForm({
 	}
 
 	return (
-		<form onSubmit={handleConfirm} className="editable-brand-tile">
+		<form onSubmit={handleConfirm} className={brandManagerStyles['editable-brand-tile']}>
 			<input
 				type="text"
 				value={newNameInput}
@@ -43,7 +44,7 @@ export default function EditBrandForm({
 				placeholder="Nazwa marki"
 				className={'text-input' + (isInputValid ? '' : ' text-input-invalid')}
 			/>
-			<button>
+			<button className={brandManagerStyles.btn}>
 				<Icon className="option" path={mdiCheck} size={1} />
 			</button>
 			<div onClick={handleCancel} className="icon-button">

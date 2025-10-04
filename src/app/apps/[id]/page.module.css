@@ -1,21 +1,21 @@
 @reference '../../globals.css';
 /* header */
 
-header {
+.app-header {
 	@apply flex flex-col items-center justify-between gap-2;
 	@apply sm:flex-row w-full mt-4 mb-2 sm:mb-4;
 }
 
-.app-header {
+.app-banner {
 	@apply grid grid-flow-col grid-cols-6 gap-2 sm:gap-4 items-center w-full;
 	@apply sm:flex;
 }
 
-.download {
+.download-container {
 	@apply sm:w-fit w-full flex flex-col sm:items-center items-start gap-0.5;
 }
 
-a.download {
+.download-btn {
 	@apply text-lg flex gap-2 flex-row-reverse pr-3 items-center;
 	@apply sm:text-2xl sm:px-4 sm:py-2 w-full;
 }
@@ -29,32 +29,8 @@ a.download {
 	@apply sm:w-fit;
 }
 
-.app-base-info {
-	@apply col-span-4 flex flex-col;
-}
-
-.app-base-info h2 {
-	@apply text-2xl sm:text-4xl;
-}
-
-.app-base-info p {
-	@apply text-gray-600;
-}
-
-.version-label {
-	@apply sm:text-lg text-sm;
-}
-
-.author-label {
-	@apply sm:text-xl text-base;
-}
-
 /* main */
 
-main {
+.app-details {
 	@apply w-full sm:text-lg whitespace-pre-line flex flex-col gap-2 sm:gap-4 mb-2;
-}
-
-div.changelog {
-	@apply bg-white py-2 px-4;
 }

@@ -14,8 +14,8 @@ export interface AppCardProps {
 
 export default function AppCard({ app }: AppCardProps) {
 	return (
-		<div className="card app-card">
-			<main>
+		<div className="card p-4 text-lg transition-colors bg-white flex flex-col justify-between">
+			<main className="flex flex-row justify-start gap-6">
 				<Image
 					src={app.logoUrl}
 					alt={`${app.name} logo`}
@@ -25,13 +25,13 @@ export default function AppCard({ app }: AppCardProps) {
 				/>
 				<div className="app-details">
 					<h3>{app.name}</h3>
-					<p className="version-label">Wersja: {app.version}</p>
-					<span className="last-updated-label">
+					<p className="text-base text-gray-600">Wersja: {app.version}</p>
+					<span className="text-base text-gray-600">
 						<LastUpdatedLabel lastUpdatedIso={app.lastUpdated} prefix="Aktual. " />
 					</span>
 				</div>
 			</main>
-			<footer>
+			<footer className="flex flex-row justify-end gap-4">
 				<a href={`/apps/${app.id}`} target="_blank">
 					<Icon className="footer-btn" path={mdiLaunch} size={1} />
 				</a>

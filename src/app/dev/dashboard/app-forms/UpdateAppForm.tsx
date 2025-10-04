@@ -6,7 +6,7 @@ import { getAppUpdateDetails, updateApp } from '@/lib/supabase/database/apps';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/components/Spinner';
-import ReplaceWithSpinnerIf from '@/components/ReplaceWithSpinnerIf';
+import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
 import { notifyUsersOnAppUpdate } from './actions';
 
 export default function UpdateAppForm({ appId }) {
@@ -61,10 +61,7 @@ export default function UpdateAppForm({ appId }) {
 	}
 
 	return (
-		<ReplaceWithSpinnerIf
-			condition={isDataFetching}
-			extraSpinnerWrapperClasses="pt-8 pb-6"
-		>
+		<ConditionalSpinner isLoading={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
 			<form onSubmit={handleSubmit} className="app-form">
 				<FileInput
 					defaultFileInputLabel="Dodaj plik instalacyjny *"
@@ -111,6 +108,6 @@ export default function UpdateAppForm({ appId }) {
 					</button>
 				)}
 			</form>
-		</ReplaceWithSpinnerIf>
+		</ConditionalSpinner>
 	);
 }

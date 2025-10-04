@@ -3,7 +3,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import './authPage.css';
+import authStyles from './authStyles.module.css';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import validate from './validation';
@@ -60,11 +60,11 @@ export default function AuthPage() {
 	return (
 		currentUser !== undefined &&
 		currentUser === null && (
-			<div className="main-container auth-container">
-				<form className="auth-form">
+			<div className="main-container items-center h-screen">
+				<form className="p-10 shadow-md rounded-sm bg-white w-96">
 					<header>
 						<Image
-							className="auth-logo"
+							className="mx-auto mb-5 h-auto w-auto"
 							src={'/logo.png'}
 							alt={'Family Store logo'}
 							width={60}
@@ -72,25 +72,25 @@ export default function AuthPage() {
 							priority
 						/>
 					</header>
-					<main className="auth-main">
+					<main className="flex flex-col">
 						<h3>{isLogin ? 'Logowanie' : 'Rejestracja'}</h3>
-						{alertMessage ? <p className="auth-error">{alertMessage}</p> : ''}
-						<label className="auth-label" htmlFor="email">
+						{alertMessage ? <p className="text-red-700 mt-2">{alertMessage}</p> : ''}
+						<label className={authStyles.label} htmlFor="email">
 							Email
 						</label>
 						<input
-							className="auth-input"
+							className={authStyles.input}
 							id="email"
 							type="email"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 							required
 						/>
-						<label className="auth-label" htmlFor="password">
+						<label className={authStyles.label} htmlFor="password">
 							Hasło
 						</label>
 						<input
-							className="auth-input"
+							className={authStyles.input}
 							id="password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
@@ -98,16 +98,19 @@ export default function AuthPage() {
 							required
 						/>
 						{isLogin ? (
-							<a className="auth-label auth-link" href={undefined}>
+							<a
+								className={`${authStyles.label} mt-5 underline self-end`}
+								href={undefined}
+							>
 								Nie pamiętasz hasła?
 							</a>
 						) : (
 							<>
-								<label className="auth-label" htmlFor="repeat">
+								<label className={authStyles.label} htmlFor="repeat">
 									Powtórz hasło
 								</label>
 								<input
-									className="auth-input"
+									className={authStyles.input}
 									id="repeat"
 									value={repeatPassword}
 									onChange={(e) => setRepeatPassword(e.target.value)}
@@ -118,7 +121,7 @@ export default function AuthPage() {
 						)}
 						<button
 							onClick={(event) => submit(event)}
-							className="btn btn-primary auth-btn auth-btn-submit"
+							className={`btn btn-primary mt-5 ${authStyles.btn}`}
 						>
 							{isLogin ? 'Zaloguj się' : 'Utwórz konto'}
 						</button>
@@ -126,7 +129,7 @@ export default function AuthPage() {
 					<footer>
 						<button
 							onClick={(event) => changeAuthType(event)}
-							className="btn btn-secondary auth-btn"
+							className={`btn btn-secondary ${authStyles.btn}`}
 						>
 							{isLogin ? 'Nie mam konta' : 'Mam już konto'}
 						</button>

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Icon from '@mdi/react';
 import { mdiDownload } from '@mdi/js';
 import { getAppDetails } from '@/lib/supabase/database/apps';
-import './app-details.css';
+import styles from './styles.module.css';
 import ImageViewer from './ImageViewer';
 import LastUpdatedLabel from '@/components/LastUpdatedLabel';
 
@@ -12,9 +12,9 @@ export default async function AppDetails(props: { params: any }) {
 
 	return (
 		<div className="main-container">
-			<header>
-				<div className="app-header">
-					<div className="logo-container">
+			<header className={styles['app-header']}>
+				<div className={styles['app-banner']}>
+					<div className={styles['logo-container']}>
 						<Image
 							src={app.logoUrl}
 							alt={`${app.name} logo`}
@@ -30,18 +30,21 @@ export default async function AppDetails(props: { params: any }) {
 							height={200}
 						/>
 					</div>
-					<div className="app-base-info">
-						<h2>{app.name}</h2>
-						<p className="version-label">Wersja: {app.version}</p>
-						<p className="author-label">Autor: {app.brandName}</p>
+					<div className="col-span-4 flex flex-col">
+						<h2 className="text-2xl sm:text-4xl">{app.name}</h2>
+						<p className="text-gray-600 sm:text-lg text-sm">Wersja: {app.version}</p>
+						<p className="text-gray-600 sm:text-xl text-base">Autor: {app.brandName}</p>
 					</div>
 				</div>
-				<div className="download">
-					<a href={app.downloadUrl} className="btn btn-primary download">
+				<div className={styles['download-container']}>
+					<a
+						href={app.downloadUrl}
+						className={`btn btn-primary ${styles['download-btn']}`}
+					>
 						<p>Pobierz</p>
 						<Icon path={mdiDownload} size={1} />
 					</a>
-					<span className="last-updated-label">
+					<span className={styles['last-updated-label']}>
 						<LastUpdatedLabel
 							lastUpdatedIso={app.lastUpdated}
 							prefix="Ostatnia aktualizacja: "
@@ -49,11 +52,11 @@ export default async function AppDetails(props: { params: any }) {
 					</span>
 				</div>
 			</header>
-			<main>
+			<main className={styles['app-details']}>
 				<p>{app.description}</p>
 				<ImageViewer imagesUrls={app.pictureUrls} />
 				{app.changelog !== undefined && app.changelog !== '' && (
-					<div className="card changelog">
+					<div className="card bg-white py-2 px-4">
 						<h6>Lista zmian:</h6>
 						<p>{app.changelog}</p>
 					</div>

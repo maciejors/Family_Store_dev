@@ -7,7 +7,7 @@ import { getBrandsForUser } from '@/lib/supabase/database/brands';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/components/Spinner';
-import ReplaceWithSpinnerIf from '@/components/ReplaceWithSpinnerIf';
+import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
 import { notifyUsersOnNewApp } from './actions';
 import BrandBase from '@/models/Brand';
 
@@ -87,12 +87,9 @@ export default function AddAppForm({ userUid }) {
 	}
 
 	return (
-		<ReplaceWithSpinnerIf
-			condition={isDataFetching}
-			extraSpinnerWrapperClasses="pt-8 pb-6"
-		>
+		<ConditionalSpinner isLoading={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
 			{userBrands.length === 0 && (
-				<div className="no-brands-info-container">
+				<div className="flex flex-col items-center text-base p-4">
 					<p>Brak marek powiązanych z tym kontem.</p>
 					<p>Aby dodać aplikację, należy posiadać przynajmniej jedną markę.</p>
 				</div>
@@ -187,6 +184,6 @@ export default function AddAppForm({ userUid }) {
 					)}
 				</form>
 			)}
-		</ReplaceWithSpinnerIf>
+		</ConditionalSpinner>
 	);
 }

@@ -6,12 +6,11 @@ import { useRouter } from 'next/navigation';
 import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
 import AppList from './AppList';
 import Dialog from './Dialog';
-import './dashboard.css';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import NoAppsInfo from './NoAppsInfo';
 import BrandsManager from './brands-manager/BrandsManager';
-import ReplaceWithSpinnerIf from '@/components/ReplaceWithSpinnerIf';
+import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
 import AddAppForm from './app-forms/AddAppForm';
 import AppsByBrand from '@/models/AppsByBrand';
 
@@ -44,17 +43,17 @@ export default function Dashboard() {
 		currentUser &&
 		isLoggedInDeveloper(currentUser) && (
 			<div className="main-container">
-				<header className="dashboard-header">
+				<header className="flex flex-row justify-between mt-4 mb-8 w-full">
 					<h2>Moje aplikacje</h2>
-					<div className="header-buttons">
+					<div className="flex flex-row gap-4">
 						<Dialog
-							openButton={<div className="btn btn-primary">Zarządzaj markami</div>}
+							openButton={<div className="btn btn-primary h-full">Zarządzaj markami</div>}
 							title="Zarządzanie markami"
 						>
 							<BrandsManager userUid={currentUser.uid} />
 						</Dialog>
 						<Dialog
-							openButton={<div className="btn btn-primary">Dodaj aplikację</div>}
+							openButton={<div className="btn btn-primary h-full">Dodaj aplikację</div>}
 							title="Dodaj aplikację"
 						>
 							<AddAppForm userUid={currentUser.uid} />
@@ -65,8 +64,8 @@ export default function Dashboard() {
 					</div>
 				</header>
 				<main className="w-full">
-					<ReplaceWithSpinnerIf
-						condition={appsData === null}
+					<ConditionalSpinner
+						isLoading={appsData === null}
 						extraSpinnerWrapperClasses="pt-16"
 					>
 						{appsData &&
@@ -75,7 +74,7 @@ export default function Dashboard() {
 								<AppList key={brandId} brandName={brandName} apps={apps} />
 							))}
 						{appsData && appsData.length === 0 && <NoAppsInfo />}
-					</ReplaceWithSpinnerIf>
+					</ConditionalSpinner>
 				</main>
 			</div>
 		)

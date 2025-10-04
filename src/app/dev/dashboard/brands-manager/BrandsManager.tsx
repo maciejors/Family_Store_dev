@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { addBrand, deleteBrand, updateBrand } from '@/lib/supabase/database/brands';
-import './brandsManager.css';
 import EditableBrandTile from './EditableBrandTile';
 import BrandAddingHandler from './BrandAddingHandler';
-import Spinner from '@/components/Spinner';
 import Brand from '@/models/Brand';
 import { getBrandsForUser } from '@/lib/supabase/database/brands';
+import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
 
 export default function BrandsManager({ userUid }) {
 	const [brandsData, setBrandsData] = useState<Brand[] | null>(null);
@@ -38,10 +37,10 @@ export default function BrandsManager({ userUid }) {
 	}
 
 	return (
-		<>
-			{brandsData && (
-				<ul className="brands-list">
-					{brandsData.map((brand) => (
+		<ConditionalSpinner isLoading={!brandsData} spinnerSize={48} spinnerWidth={5}>
+			<ul className="pt-2 flex flex-col gap-2">
+				{brandsData &&
+					brandsData.map((brand) => (
 						<li key={brand.id}>
 							<EditableBrandTile
 								brandData={brand}
@@ -50,16 +49,10 @@ export default function BrandsManager({ userUid }) {
 							/>
 						</li>
 					))}
-					<li key="">
-						<BrandAddingHandler onConfirmAddBrand={handleConfirmAddBrand} />
-					</li>
-				</ul>
-			)}
-			{!brandsData && (
-				<div className="spinner-container py-4">
-					<Spinner size={48} width={5} />
-				</div>
-			)}
-		</>
+				<li key="">
+					<BrandAddingHandler onConfirmAddBrand={handleConfirmAddBrand} />
+				</li>
+			</ul>
+		</ConditionalSpinner>
 	);
 }
