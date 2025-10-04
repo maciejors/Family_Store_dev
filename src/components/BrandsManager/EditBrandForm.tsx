@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiClose } from '@mdi/js';
-import brandManagerStyles from './brandsManager.module.css';
+import brandManagerStyles from './BrandsManager.module.css';
 
 interface EditBrandFormProps {
 	defaultBrandName: string;

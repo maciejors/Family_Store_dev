@@ -1,7 +1,7 @@
 'use client';
 
 import React, { FormEvent, useEffect, useState } from 'react';
-import '../forms.css';
+import './forms.css';
 import { addApp } from '@/lib/supabase/database/apps';
 import { getBrandsForUser } from '@/lib/supabase/database/brands';
 import FileInput from './FileInput';

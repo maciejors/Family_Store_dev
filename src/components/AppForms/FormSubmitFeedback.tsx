@@ -1,5 +1,5 @@
 import React from 'react';
-import '../forms.css';
+import './forms.css';
 import Icon from '@mdi/react';
 import { mdiClose, mdiCheck } from '@mdi/js';
 

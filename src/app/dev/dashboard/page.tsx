@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
 import AppList from './AppList';
-import Dialog from './Dialog';
+import Dialog from '@/components/Dialog';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import NoAppsInfo from './NoAppsInfo';
-import BrandsManager from './brands-manager/BrandsManager';
+import BrandsManager from '@/components/BrandsManager';
 import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
-import AddAppForm from './app-forms/AddAppForm';
+import AddAppForm from '@/components/AppForms/AddAppForm';
 import AppsByBrand from '@/models/AppsByBrand';
 
 export default function Dashboard() {

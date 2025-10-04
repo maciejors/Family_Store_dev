@@ -3,9 +3,9 @@ import Image from 'next/image';
 import LastUpdatedLabel from '@/components/LastUpdatedLabel';
 import Icon from '@mdi/react';
 import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
-import Dialog from './Dialog';
-import UpdateAppForm from './app-forms/UpdateAppForm';
-import EditAppForm from './app-forms/EditAppForm';
+import Dialog from '@/components/Dialog';
+import UpdateAppForm from '@/components/AppForms/UpdateAppForm';
+import EditAppForm from '@/components/AppForms/EditAppForm';
 import AppPreview from '@/models/AppPreview';
 
 export interface AppCardProps {

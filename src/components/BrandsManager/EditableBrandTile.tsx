@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
-import brandManagerStyles from './brandsManager.module.css';
-import '../forms.css';
+import brandManagerStyles from './BrandsManager.module.css';
+import '../AppForms/forms.css';
 import EditBrandForm from './EditBrandForm';
 import Brand from '@/models/Brand';
 

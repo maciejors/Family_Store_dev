@@ -1,4 +1,4 @@
-@reference '../../globals.css';
+@reference '../../app/globals.css';
 
 form.app-form {
 	@apply flex flex-col items-center gap-4 p-2 mt-4 text-lg;

@@ -3,7 +3,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete, mdiArrowULeftTop } from '@mdi/js';
-import '../forms.css';
+import './forms.css';
 import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/components/Spinner';

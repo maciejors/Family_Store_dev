@@ -26,7 +26,7 @@ export default function Dialog({ children, openButton, title }) {
 					<div className="card bg-gray-50 w-fit h-fit p-2 z-10 overflow-y-auto">
 						<header className="flex justify-between gap-4 items-start">
 							<h3>{title}</h3>
-							<button onClick={hideDialog} className="hover:text-gray-700">
+							<button onClick={hideDialog} className="hover:text-gray-700 cursor-pointer">
 								<Icon path={mdiClose} size={1.5} />
 							</button>
 						</header>
