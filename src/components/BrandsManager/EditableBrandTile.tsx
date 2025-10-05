@@ -5,7 +5,7 @@ import brandManagerStyles from './BrandsManager.module.css';
 import '../AppForms/forms.css';
 import EditBrandForm from './EditBrandForm';
 import Brand from '@/models/Brand';
-import IconButton from '../buttons/IconButton';
+import IconButton from '../shared/buttons/IconButton';
 
 interface EditableBrandTileProps {
 	brandData: Brand;

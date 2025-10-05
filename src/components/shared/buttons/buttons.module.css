@@ -1,4 +1,4 @@
-@reference '../../globals.css';
+@reference '../../../globals.css';
 
 .btn {
 	@apply cursor-pointer inline-flex justify-center items-center;

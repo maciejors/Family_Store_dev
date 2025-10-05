@@ -5,16 +5,16 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
 import AppList from './AppList';
-import Dialog from '@/components/wrappers/Dialog';
+import Dialog from '@/components/shared/wrappers/Dialog';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import NoAppsInfo from './NoAppsInfo';
 import BrandsManager from '@/components/BrandsManager';
-import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
+import ConditionalSpinner from '@/components/shared/loading/ConditionalSpinner';
 import AddAppForm from '@/components/AppForms/AddAppForm';
 import AppsByBrand from '@/models/AppsByBrand';
-import Button from '@/components/buttons/Button';
-import MainContainer from '@/components/wrappers/MainContainer';
+import Button from '@/components/shared/buttons/Button';
+import MainContainer from '@/components/shared/wrappers/MainContainer';
 
 export default function Dashboard() {
 	const { push } = useRouter();

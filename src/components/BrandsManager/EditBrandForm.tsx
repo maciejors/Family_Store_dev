@@ -3,7 +3,7 @@ import Icon from '@mdi/react';
 import { mdiCheck, mdiClose } from '@mdi/js';
 import '../AppForms/forms.css';
 import brandManagerStyles from './BrandsManager.module.css';
-import IconButton from '../buttons/IconButton';
+import IconButton from '../shared/buttons/IconButton';
 
 interface EditBrandFormProps {
 	defaultBrandName: string;

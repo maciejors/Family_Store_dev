@@ -4,7 +4,8 @@ import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import { useEffect } from 'react';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
-import Button from '@/components/buttons/Button';
+import Button from '@/components/shared/buttons/Button';
+import MessagePage from '@/components/shared/MessagePage';
 
 export default function AccessDeniedPage() {
 	const { currentUser, logOut } = useAuth();
@@ -26,15 +27,12 @@ export default function AccessDeniedPage() {
 	return (
 		currentUser &&
 		isLoggedInRegular(currentUser) && (
-			<div className="flex flex-col items-center justify-center h-screen">
-				<main className="p-10 shadow-md rounded-sm bg-white mx-8 max-w-md flex flex-col gap-4 items-center">
-					<h2 className="text-center">Odmowa dostępu</h2>
-					<p className="text-center">
-						Ta część platformy jest dostępna jedynie dla użytkowników z kontem dewelopera.
-					</p>
-					<Button onClick={logOut}>Wyloguj się</Button>
-				</main>
-			</div>
+			<MessagePage title="Odmowa dostępu">
+				<p className="text-center">
+					Ta część platformy jest dostępna jedynie dla użytkowników z kontem dewelopera.
+				</p>
+				<Button onClick={logOut}>Wyloguj się</Button>
+			</MessagePage>
 		)
 	);
 }

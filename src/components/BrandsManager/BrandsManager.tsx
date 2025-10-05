@@ -4,7 +4,7 @@ import EditableBrandTile from './EditableBrandTile';
 import BrandAddingHandler from './BrandAddingHandler';
 import Brand from '@/models/Brand';
 import { getBrandsForUser } from '@/lib/supabase/database/brands';
-import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
+import ConditionalSpinner from '@/components/shared/loading/ConditionalSpinner';
 
 export default function BrandsManager({ userUid }) {
 	const [brandsData, setBrandsData] = useState<Brand[] | null>(null);

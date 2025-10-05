@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import EditBrandForm from './EditBrandForm';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
-import TextButton from '../buttons/TextButton';
+import TextButton from '../shared/buttons/TextButton';
 
 export default function BrandAddingHandler({ onConfirmAddBrand }) {
 	const [isAddingBrand, setIsAddingBrand] = useState(false);
