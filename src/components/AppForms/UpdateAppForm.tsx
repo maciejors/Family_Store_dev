@@ -5,8 +5,8 @@ import './forms.css';
 import { getAppUpdateDetails, updateApp } from '@/lib/supabase/database/apps';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
-import Spinner from '@/components/Spinner';
-import ConditionalSpinner from '@/components/ConditionalSpinner';
+import Spinner from '@/components/loading/Spinner';
+import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import { notifyUsersOnAppUpdate } from './actions';
 import Button from '../buttons/Button';
 
