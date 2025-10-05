@@ -1,0 +1,9 @@
+@reference '../../app/globals.css';
+
+.editable-brand-tile {
+	@apply flex flex-row gap-2 items-center;
+}
+
+.btn {
+	@apply hover:text-gray-700 cursor-pointer;
+}
