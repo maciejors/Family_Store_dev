@@ -13,6 +13,7 @@ import BrandsManager from '@/components/BrandsManager';
 import ConditionalSpinner from '@/components/ConditionalSpinner';
 import AddAppForm from '@/components/AppForms/AddAppForm';
 import AppsByBrand from '@/models/AppsByBrand';
+import Button from '@/components/buttons/Button';
 
 export default function Dashboard() {
 	const { push } = useRouter();
@@ -47,20 +48,20 @@ export default function Dashboard() {
 					<h2>Moje aplikacje</h2>
 					<div className="flex flex-row gap-4">
 						<Dialog
-							openButton={<div className="btn btn-primary h-full">Zarządzaj markami</div>}
+							openButton={<Button className="h-full">Zarządzaj markami</Button>}
 							title="Zarządzanie markami"
 						>
 							<BrandsManager userUid={currentUser.uid} />
 						</Dialog>
 						<Dialog
-							openButton={<div className="btn btn-primary h-full">Dodaj aplikację</div>}
+							openButton={<Button className="h-full">Dodaj aplikację</Button>}
 							title="Dodaj aplikację"
 						>
 							<AddAppForm userUid={currentUser.uid} />
 						</Dialog>
-						<button className="btn btn-secondary" onClick={logOut}>
+						<Button variant="secondary" onClick={logOut}>
 							Wyloguj się
-						</button>
+						</Button>
 					</div>
 				</header>
 				<main className="w-full">

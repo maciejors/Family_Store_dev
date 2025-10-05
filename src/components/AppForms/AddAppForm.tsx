@@ -10,6 +10,7 @@ import Spinner from '@/components/Spinner';
 import ConditionalSpinner from '@/components/ConditionalSpinner';
 import { notifyUsersOnNewApp } from './actions';
 import BrandBase from '@/models/Brand';
+import Button from '../buttons/Button';
 
 export default function AddAppForm({ userUid }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
@@ -174,13 +175,9 @@ export default function AddAppForm({ userUid }) {
 						isLoading={isUploading}
 					/>
 					{!isSuccess() && (
-						<button
-							className="btn btn-primary submit-btn"
-							type="submit"
-							disabled={isUploading}
-						>
+						<Button className="submit-btn" type="submit" disabled={isUploading}>
 							{isUploading ? <Spinner size={28} width={3} light /> : 'Dodaj aplikację'}
-						</button>
+						</Button>
 					)}
 				</form>
 			)}

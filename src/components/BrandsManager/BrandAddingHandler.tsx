@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import EditBrandForm from './EditBrandForm';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
+import TextButton from '../buttons/TextButton';
 
 export default function BrandAddingHandler({ onConfirmAddBrand }) {
 	const [isAddingBrand, setIsAddingBrand] = useState(false);
@@ -26,10 +27,9 @@ export default function BrandAddingHandler({ onConfirmAddBrand }) {
 	return (
 		<>
 			{!isAddingBrand && (
-				<button className="text-primary flex flex-row items-center" onClick={showEditor}>
-					<Icon path={mdiPlus} size={1} />
-					<p className="text-lg">Dodaj</p>
-				</button>
+				<TextButton onClick={showEditor} startIcon={<Icon path={mdiPlus} size={1} />}>
+					Dodaj
+				</TextButton>
 			)}
 			{isAddingBrand && (
 				<EditBrandForm

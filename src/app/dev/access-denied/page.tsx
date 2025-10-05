@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import { useEffect } from 'react';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
+import Button from '@/components/buttons/Button';
 
 export default function AccessDeniedPage() {
 	const { currentUser, logOut } = useAuth();
@@ -31,9 +32,7 @@ export default function AccessDeniedPage() {
 					<p className="text-center">
 						Ta część platformy jest dostępna jedynie dla użytkowników z kontem dewelopera.
 					</p>
-					<button className="btn btn-primary" onClick={logOut}>
-						Wyloguj się
-					</button>
+					<Button onClick={logOut}>Wyloguj się</Button>
 				</main>
 			</div>
 		)

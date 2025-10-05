@@ -5,6 +5,7 @@ import { getAppDetails } from '@/lib/supabase/database/apps';
 import styles from './page.module.css';
 import ImageViewer from './ImageViewer';
 import LastUpdatedLabel from '@/components/LastUpdatedLabel';
+import Button from '@/components/buttons/Button';
 
 export default async function AppDetails(props: { params: any }) {
 	const params = await props.params;
@@ -37,12 +38,11 @@ export default async function AppDetails(props: { params: any }) {
 					</div>
 				</div>
 				<div className={styles['download-container']}>
-					<a
-						href={app.downloadUrl}
-						className={`btn btn-primary ${styles['download-btn']}`}
-					>
-						<p>Pobierz</p>
-						<Icon path={mdiDownload} size={1} />
+					<a download href={app.downloadUrl} className="contents">
+						<Button className={styles['download-btn']}>
+							<p>Pobierz</p>
+							<Icon path={mdiDownload} size={1} />
+						</Button>
 					</a>
 					<span className={styles['last-updated-label']}>
 						<LastUpdatedLabel

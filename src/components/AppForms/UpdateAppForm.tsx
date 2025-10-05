@@ -8,6 +8,7 @@ import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/components/Spinner';
 import ConditionalSpinner from '@/components/ConditionalSpinner';
 import { notifyUsersOnAppUpdate } from './actions';
+import Button from '../buttons/Button';
 
 export default function UpdateAppForm({ appId }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
@@ -99,13 +100,9 @@ export default function UpdateAppForm({ appId }) {
 					isLoading={isUploading}
 				/>
 				{!isSuccess() && (
-					<button
-						className="btn btn-primary submit-btn"
-						type="submit"
-						disabled={isUploading}
-					>
+					<Button className="submit-btn" type="submit" disabled={isUploading}>
 						{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
-					</button>
+					</Button>
 				)}
 			</form>
 		</ConditionalSpinner>

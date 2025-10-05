@@ -7,6 +7,7 @@ import authStyles from './authStyles.module.css';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import validate from './validation';
+import Button from '@/components/buttons/Button';
 
 export default function AuthPage() {
 	const { currentUser, logIn, register } = useAuth();
@@ -119,20 +120,18 @@ export default function AuthPage() {
 								/>
 							</>
 						)}
-						<button
-							onClick={(event) => submit(event)}
-							className={`btn btn-primary mt-5 ${authStyles.btn}`}
-						>
+						<Button onClick={(event) => submit(event)} className="mt-5 w-full">
 							{isLogin ? 'Zaloguj się' : 'Utwórz konto'}
-						</button>
+						</Button>
 					</main>
 					<footer>
-						<button
+						<Button
 							onClick={(event) => changeAuthType(event)}
-							className={`btn btn-secondary ${authStyles.btn}`}
+							variant="secondary"
+							className="mt-3 w-full"
 						>
 							{isLogin ? 'Nie mam konta' : 'Mam już konto'}
-						</button>
+						</Button>
 					</footer>
 				</form>
 			</div>

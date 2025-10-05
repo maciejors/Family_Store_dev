@@ -7,6 +7,8 @@ import Dialog from '@/components/Dialog';
 import UpdateAppForm from '@/components/AppForms/UpdateAppForm';
 import EditAppForm from '@/components/AppForms/EditAppForm';
 import AppPreview from '@/models/AppPreview';
+import Link from 'next/link';
+import IconButton from '@/components/buttons/IconButton';
 
 export interface AppCardProps {
 	app: AppPreview;
@@ -32,17 +34,17 @@ export default function AppCard({ app }: AppCardProps) {
 				</div>
 			</main>
 			<footer className="flex flex-row justify-end gap-4">
-				<a href={`/apps/${app.id}`} target="_blank">
-					<Icon className="footer-btn" path={mdiLaunch} size={1} />
-				</a>
+				<Link href={`/apps/${app.id}`} target="_blank">
+					<IconButton icon={<Icon path={mdiLaunch} size={1} />} />
+				</Link>
 				<Dialog
-					openButton={<Icon className="icon-button" path={mdiUpload} size={1} />}
+					openButton={<IconButton icon={<Icon path={mdiUpload} size={1} />} />}
 					title="Dodaj aktualizację"
 				>
 					<UpdateAppForm appId={app.id} />
 				</Dialog>
 				<Dialog
-					openButton={<Icon className="icon-button" path={mdiPencil} size={1} />}
+					openButton={<IconButton icon={<Icon path={mdiPencil} size={1} />} />}
 					title="Edytuj aplikację"
 				>
 					<EditAppForm appId={app.id} />
