@@ -38,8 +38,8 @@ export default function AppCard({ app }: AppCardProps) {
 				</div>
 			</main>
 			<footer className="flex flex-row justify-end gap-4">
-				<Link href={`/apps/${app.id}`} target="_blank">
-					<IconButton icon={<Icon path={mdiLaunch} size={1} />} />
+				<Link href={`/apps/${app.id}`} target="_blank" className="contents">
+					<IconButton component="span" icon={<Icon path={mdiLaunch} size={1} />} />
 				</Link>
 				<>
 					<IconButton

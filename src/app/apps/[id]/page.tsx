@@ -41,7 +41,7 @@ export default async function AppDetails(props: { params: any }) {
 				</div>
 				<div className={styles['download-container']}>
 					<a download href={app.downloadUrl} className="contents">
-						<Button className={styles['download-btn']}>
+						<Button component="span" className={styles['download-btn']}>
 							<p>Pobierz</p>
 							<Icon path={mdiDownload} size={1} />
 						</Button>

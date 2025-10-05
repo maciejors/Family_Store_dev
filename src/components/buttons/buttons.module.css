@@ -9,11 +9,6 @@
 	@apply cursor-not-allowed;
 }
 
-.btn-primary,
-.btn-secondary {
-	@apply py-1 px-2 border-2 border-solid rounded-lg;
-}
-
 .btn-primary {
 	@apply bg-primary border-primary text-white;
 }

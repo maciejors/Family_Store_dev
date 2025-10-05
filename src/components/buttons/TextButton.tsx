@@ -4,16 +4,19 @@ import btnStyles from './buttons.module.css';
 
 export type TextButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	startIcon?: ReactElement;
+	component?: 'button' | 'span';
 };
 
 export default function TextButton({
 	startIcon,
+	component = 'button',
 	className,
 	children,
 	...otherProps
 }: TextButtonProps) {
+	const Component = component;
 	return (
-		<button
+		<Component
 			className={clsx(
 				btnStyles.btn,
 				'text-primary text-lg hover:underline',
@@ -24,6 +27,6 @@ export default function TextButton({
 		>
 			{startIcon}
 			<span>{children}</span>
-		</button>
+		</Component>
 	);
 }
