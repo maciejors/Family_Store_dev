@@ -6,8 +6,8 @@ import styles from './page.module.css';
 import ImageViewer from './ImageViewer';
 import LastUpdatedLabel from '@/components/LastUpdatedLabel';
 import Button from '@/components/buttons/Button';
-import MainContainer from '@/components/MainContainer';
-import Card from '@/components/Card';
+import MainContainer from '@/components/wrappers/MainContainer';
+import Card from '@/components/wrappers/Card';
 
 export default async function AppDetails(props: { params: any }) {
 	const params = await props.params;

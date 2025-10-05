@@ -8,7 +8,7 @@ import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import validate from './validation';
 import Button from '@/components/buttons/Button';
-import MainContainer from '@/components/MainContainer';
+import MainContainer from '@/components/wrappers/MainContainer';
 
 export default function AuthPage() {
 	const { currentUser, logIn, register } = useAuth();

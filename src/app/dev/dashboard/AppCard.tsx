@@ -3,13 +3,13 @@ import Image from 'next/image';
 import LastUpdatedLabel from '@/components/LastUpdatedLabel';
 import Icon from '@mdi/react';
 import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
-import Dialog from '@/components/Dialog';
+import Dialog from '@/components/wrappers/Dialog';
 import UpdateAppForm from '@/components/AppForms/UpdateAppForm';
 import EditAppForm from '@/components/AppForms/EditAppForm';
 import AppPreview from '@/models/AppPreview';
 import Link from 'next/link';
 import IconButton from '@/components/buttons/IconButton';
-import Card from '@/components/Card';
+import Card from '@/components/wrappers/Card';
 
 export interface AppCardProps {
 	app: AppPreview;
