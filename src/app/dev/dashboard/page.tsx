@@ -41,6 +41,9 @@ export default function Dashboard() {
 		onUserChanged();
 	}, [currentUser]);
 
+	const [isBrandsDialogOpen, setIsBrandsDialogOpen] = useState(false);
+	const [isAddAppDialogOpen, setIsAddAppDialogOpen] = useState(false);
+
 	return (
 		currentUser &&
 		isLoggedInDeveloper(currentUser) && (
@@ -48,28 +51,37 @@ export default function Dashboard() {
 				<header className="flex flex-row justify-between mt-4 mb-8 w-full">
 					<h2>Moje aplikacje</h2>
 					<div className="flex flex-row gap-4">
-						<Dialog
-							openButton={<Button className="h-full">Zarządzaj markami</Button>}
-							title="Zarządzanie markami"
-						>
-							<BrandsManager userUid={currentUser.uid} />
-						</Dialog>
-						<Dialog
-							openButton={<Button className="h-full">Dodaj aplikację</Button>}
-							title="Dodaj aplikację"
-						>
-							<AddAppForm userUid={currentUser.uid} />
-						</Dialog>
+						<>
+							<Button className="h-full" onClick={() => setIsBrandsDialogOpen(true)}>
+								Zarządzaj markami
+							</Button>
+							<Dialog
+								open={isBrandsDialogOpen}
+								handleClose={() => setIsBrandsDialogOpen(false)}
+								title="Zarządzanie markami"
+							>
+								<BrandsManager userUid={currentUser.uid} />
+							</Dialog>
+						</>
+						<>
+							<Button className="h-full" onClick={() => setIsAddAppDialogOpen(false)}>
+								Dodaj aplikację
+							</Button>
+							<Dialog
+								open={isAddAppDialogOpen}
+								handleClose={() => setIsAddAppDialogOpen(false)}
+								title="Dodaj aplikację"
+							>
+								<AddAppForm userUid={currentUser.uid} />
+							</Dialog>
+						</>
 						<Button variant="secondary" onClick={logOut}>
 							Wyloguj się
 						</Button>
 					</div>
 				</header>
 				<main className="w-full">
-					<ConditionalSpinner
-						isLoading={appsData === null}
-						extraSpinnerWrapperClasses="pt-16"
-					>
+					<ConditionalSpinner isLoading={!appsData} extraSpinnerWrapperClasses="pt-16">
 						{appsData &&
 							appsData.length > 0 &&
 							appsData.map(({ brandId, brandName, apps }) => (

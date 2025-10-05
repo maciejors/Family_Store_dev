@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import LastUpdatedLabel from '@/components/LastUpdatedLabel';
 import Icon from '@mdi/react';
@@ -16,6 +16,9 @@ export interface AppCardProps {
 }
 
 export default function AppCard({ app }: AppCardProps) {
+	const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
 	return (
 		<Card className="p-4 text-lg flex flex-col justify-between">
 			<main className="flex flex-row justify-start gap-6">
@@ -38,18 +41,32 @@ export default function AppCard({ app }: AppCardProps) {
 				<Link href={`/apps/${app.id}`} target="_blank">
 					<IconButton icon={<Icon path={mdiLaunch} size={1} />} />
 				</Link>
-				<Dialog
-					openButton={<IconButton icon={<Icon path={mdiUpload} size={1} />} />}
-					title="Dodaj aktualizację"
-				>
-					<UpdateAppForm appId={app.id} />
-				</Dialog>
-				<Dialog
-					openButton={<IconButton icon={<Icon path={mdiPencil} size={1} />} />}
-					title="Edytuj aplikację"
-				>
-					<EditAppForm appId={app.id} />
-				</Dialog>
+				<>
+					<IconButton
+						icon={<Icon path={mdiUpload} size={1} />}
+						onClick={() => setIsUpdateDialogOpen(true)}
+					/>
+					<Dialog
+						open={isUpdateDialogOpen}
+						handleClose={() => setIsUpdateDialogOpen(false)}
+						title="Dodaj aktualizację"
+					>
+						<UpdateAppForm appId={app.id} />
+					</Dialog>
+				</>
+				<>
+					<IconButton
+						icon={<Icon path={mdiPencil} size={1} />}
+						onClick={() => setIsEditDialogOpen(true)}
+					/>
+					<Dialog
+						open={isEditDialogOpen}
+						handleClose={() => setIsEditDialogOpen(false)}
+						title="Edytuj aplikację"
+					>
+						<EditAppForm appId={app.id} />
+					</Dialog>
+				</>
 			</footer>
 		</Card>
 	);

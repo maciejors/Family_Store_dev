@@ -24,10 +24,6 @@
 	}
 }
 
-html {
-	padding-right: calc(-1 * (100vw - 100%));
-}
-
 body {
 	@apply bg-gray-200;
 	@apply overflow-x-hidden;
