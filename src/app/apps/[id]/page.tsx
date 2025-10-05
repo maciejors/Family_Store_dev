@@ -6,13 +6,15 @@ import styles from './page.module.css';
 import ImageViewer from './ImageViewer';
 import LastUpdatedLabel from '@/components/LastUpdatedLabel';
 import Button from '@/components/buttons/Button';
+import MainContainer from '@/components/MainContainer';
+import Card from '@/components/Card';
 
 export default async function AppDetails(props: { params: any }) {
 	const params = await props.params;
 	const app = await getAppDetails(params.id);
 
 	return (
-		<div className="main-container">
+		<MainContainer>
 			<header className={styles['app-header']}>
 				<div className={styles['app-banner']}>
 					<div className={styles['logo-container']}>
@@ -56,12 +58,12 @@ export default async function AppDetails(props: { params: any }) {
 				<p>{app.description}</p>
 				<ImageViewer imagesUrls={app.pictureUrls} />
 				{app.changelog !== undefined && app.changelog !== '' && (
-					<div className="card bg-white py-2 px-4">
+					<Card className="py-2 px-4">
 						<h6>Lista zmian:</h6>
 						<p>{app.changelog}</p>
-					</div>
+					</Card>
 				)}
 			</main>
-		</div>
+		</MainContainer>
 	);
 }

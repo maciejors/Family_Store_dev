@@ -33,11 +33,6 @@ body {
 	@apply overflow-x-hidden;
 }
 
-.main-container {
-	@apply flex flex-col justify-center items-center;
-	@apply w-full px-2 sm:px-8 md:px-16 lg:px-24 xl:px-36 2xl:px-48;
-}
-
 h1 {
 	@apply text-5xl;
 }
@@ -52,8 +47,4 @@ h3 {
 
 h6 {
 	@apply font-bold;
-}
-
-.card {
-	@apply shadow-lg rounded-md;
 }

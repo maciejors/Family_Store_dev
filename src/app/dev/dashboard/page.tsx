@@ -14,6 +14,7 @@ import ConditionalSpinner from '@/components/ConditionalSpinner';
 import AddAppForm from '@/components/AppForms/AddAppForm';
 import AppsByBrand from '@/models/AppsByBrand';
 import Button from '@/components/buttons/Button';
+import MainContainer from '@/components/MainContainer';
 
 export default function Dashboard() {
 	const { push } = useRouter();
@@ -43,7 +44,7 @@ export default function Dashboard() {
 	return (
 		currentUser &&
 		isLoggedInDeveloper(currentUser) && (
-			<div className="main-container">
+			<MainContainer>
 				<header className="flex flex-row justify-between mt-4 mb-8 w-full">
 					<h2>Moje aplikacje</h2>
 					<div className="flex flex-row gap-4">
@@ -77,7 +78,7 @@ export default function Dashboard() {
 						{appsData && appsData.length === 0 && <NoAppsInfo />}
 					</ConditionalSpinner>
 				</main>
-			</div>
+			</MainContainer>
 		)
 	);
 }

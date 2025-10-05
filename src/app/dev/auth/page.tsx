@@ -8,6 +8,7 @@ import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import validate from './validation';
 import Button from '@/components/buttons/Button';
+import MainContainer from '@/components/MainContainer';
 
 export default function AuthPage() {
 	const { currentUser, logIn, register } = useAuth();
@@ -61,7 +62,7 @@ export default function AuthPage() {
 	return (
 		currentUser !== undefined &&
 		currentUser === null && (
-			<div className="main-container items-center h-screen">
+			<MainContainer fillScreen>
 				<form className="p-10 shadow-md rounded-sm bg-white w-96">
 					<header>
 						<Image
@@ -134,7 +135,7 @@ export default function AuthPage() {
 						</Button>
 					</footer>
 				</form>
-			</div>
+			</MainContainer>
 		)
 	);
 }

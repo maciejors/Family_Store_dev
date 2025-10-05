@@ -9,6 +9,7 @@ import EditAppForm from '@/components/AppForms/EditAppForm';
 import AppPreview from '@/models/AppPreview';
 import Link from 'next/link';
 import IconButton from '@/components/buttons/IconButton';
+import Card from '@/components/Card';
 
 export interface AppCardProps {
 	app: AppPreview;
@@ -16,7 +17,7 @@ export interface AppCardProps {
 
 export default function AppCard({ app }: AppCardProps) {
 	return (
-		<div className="card p-4 text-lg transition-colors bg-white flex flex-col justify-between">
+		<Card className="p-4 text-lg flex flex-col justify-between">
 			<main className="flex flex-row justify-start gap-6">
 				<Image
 					src={app.logoUrl}
@@ -50,6 +51,6 @@ export default function AppCard({ app }: AppCardProps) {
 					<EditAppForm appId={app.id} />
 				</Dialog>
 			</footer>
-		</div>
+		</Card>
 	);
 }
