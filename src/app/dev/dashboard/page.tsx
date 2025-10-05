@@ -10,7 +10,7 @@ import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import NoAppsInfo from './NoAppsInfo';
 import BrandsManager from '@/components/BrandsManager';
-import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
+import ConditionalSpinner from '@/components/ConditionalSpinner';
 import AddAppForm from '@/components/AppForms/AddAppForm';
 import AppsByBrand from '@/models/AppsByBrand';
 

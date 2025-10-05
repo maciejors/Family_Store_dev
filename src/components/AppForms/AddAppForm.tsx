@@ -7,7 +7,7 @@ import { getBrandsForUser } from '@/lib/supabase/database/brands';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/components/Spinner';
-import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
+import ConditionalSpinner from '@/components/ConditionalSpinner';
 import { notifyUsersOnNewApp } from './actions';
 import BrandBase from '@/models/Brand';
 

@@ -7,7 +7,7 @@ import './forms.css';
 import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
 import FormSubmitFeedback from './FormSubmitFeedback';
 import Spinner from '@/components/Spinner';
-import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
+import ConditionalSpinner from '@/components/ConditionalSpinner';
 import FileInput from './FileInput';
 
 export default function EditAppForm({ appId }) {
