@@ -5,7 +5,8 @@ export async function getBrandsForUser(userId: string): Promise<Brand[]> {
 	const { data: userBrands, error } = await supabase
 		.from('brands')
 		.select('id, name, apps:apps(count)')
-		.eq('owner_id', userId);
+		.eq('owner_id', userId)
+		.order('created_at', { ascending: true });
 
 	if (error) throw error;
 

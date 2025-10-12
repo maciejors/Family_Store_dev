@@ -7,6 +7,8 @@ import authStyles from './authStyles.module.css';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import validate from './validation';
+import Button from '@/components/shared/buttons/Button';
+import MainContainer from '@/components/shared/wrappers/MainContainer';
 
 export default function AuthPage() {
 	const { currentUser, logIn, register } = useAuth();
@@ -60,7 +62,7 @@ export default function AuthPage() {
 	return (
 		currentUser !== undefined &&
 		currentUser === null && (
-			<div className="main-container items-center h-screen">
+			<MainContainer fillScreen>
 				<form className="p-10 shadow-md rounded-sm bg-white w-96">
 					<header>
 						<Image
@@ -119,23 +121,21 @@ export default function AuthPage() {
 								/>
 							</>
 						)}
-						<button
-							onClick={(event) => submit(event)}
-							className={`btn btn-primary mt-5 ${authStyles.btn}`}
-						>
+						<Button onClick={(event) => submit(event)} className="mt-5 w-full">
 							{isLogin ? 'Zaloguj się' : 'Utwórz konto'}
-						</button>
+						</Button>
 					</main>
 					<footer>
-						<button
+						<Button
 							onClick={(event) => changeAuthType(event)}
-							className={`btn btn-secondary ${authStyles.btn}`}
+							variant="secondary"
+							className="mt-3 w-full"
 						>
 							{isLogin ? 'Nie mam konta' : 'Mam już konto'}
-						</button>
+						</Button>
 					</footer>
 				</form>
-			</div>
+			</MainContainer>
 		)
 	);
 }

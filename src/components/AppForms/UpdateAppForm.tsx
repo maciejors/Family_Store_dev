@@ -5,9 +5,10 @@ import './forms.css';
 import { getAppUpdateDetails, updateApp } from '@/lib/supabase/database/apps';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
-import Spinner from '@/components/Spinner';
-import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
+import Spinner from '@/components/shared/loading/Spinner';
+import ConditionalSpinner from '@/components/shared/loading/ConditionalSpinner';
 import { notifyUsersOnAppUpdate } from './actions';
+import Button from '../shared/buttons/Button';
 
 export default function UpdateAppForm({ appId }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
@@ -99,13 +100,9 @@ export default function UpdateAppForm({ appId }) {
 					isLoading={isUploading}
 				/>
 				{!isSuccess() && (
-					<button
-						className="btn btn-primary submit-btn"
-						type="submit"
-						disabled={isUploading}
-					>
+					<Button className="submit-btn" type="submit" disabled={isUploading}>
 						{isUploading ? <Spinner size={28} width={3} light /> : 'Wydaj aktualizację'}
-					</button>
+					</Button>
 				)}
 			</form>
 		</ConditionalSpinner>

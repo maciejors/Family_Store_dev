@@ -5,6 +5,7 @@ import brandManagerStyles from './BrandsManager.module.css';
 import '../AppForms/forms.css';
 import EditBrandForm from './EditBrandForm';
 import Brand from '@/models/Brand';
+import IconButton from '../shared/buttons/IconButton';
 
 interface EditableBrandTileProps {
 	brandData: Brand;
@@ -49,13 +50,12 @@ export default function EditableBrandTile({
 					<p className="text-xl">
 						{brandData.name} ({brandData.appCount})
 					</p>
-					<button onClick={showEditor} className={brandManagerStyles.btn}>
-						<Icon className="option" path={mdiPencil} size={1} />
-					</button>
+					<IconButton onClick={showEditor} icon={<Icon path={mdiPencil} size={1} />} />
 					{brandData.appCount == 0 && (
-						<button onClick={handleDelete} className={brandManagerStyles.btn}>
-							<Icon className="option" path={mdiDelete} size={1} />
-						</button>
+						<IconButton
+							onClick={handleDelete}
+							icon={<Icon path={mdiDelete} size={1} />}
+						/>
 					)}
 				</div>
 			)}

@@ -6,9 +6,10 @@ import { mdiPencil, mdiDelete, mdiArrowULeftTop } from '@mdi/js';
 import './forms.css';
 import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
 import FormSubmitFeedback from './FormSubmitFeedback';
-import Spinner from '@/components/Spinner';
-import ConditionalSpinner from '@/components/ReplaceWithSpinnerIf';
+import Spinner from '@/components/shared/loading/Spinner';
+import ConditionalSpinner from '@/components/shared/loading/ConditionalSpinner';
 import FileInput from './FileInput';
+import Button from '../shared/buttons/Button';
 
 export default function EditAppForm({ appId }) {
 	const [isDataFetching, setisDataFetching] = useState(true);
@@ -219,13 +220,9 @@ export default function EditAppForm({ appId }) {
 					isLoading={isUploading}
 				/>
 				{!isSuccess() && (
-					<button
-						className="btn btn-primary submit-btn"
-						type="submit"
-						disabled={isUploading}
-					>
+					<Button className="submit-btn" type="submit" disabled={isUploading}>
 						{isUploading ? <Spinner size={28} width={3} light /> : 'Zapisz zmiany'}
-					</button>
+					</Button>
 				)}
 			</form>
 		</ConditionalSpinner>
