@@ -1,9 +1,0 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.familystore.familystore",
-    "sha256_cert_fingerprints":
-    ["B0:66:43:7B:62:A9:0B:ED:A8:9D:E9:01:F2:1A:5A:F5:FE:88:A8:62:E5:3C:24:ED:69:56:FC:0D:54:EB:B1:A7"]
-  }
-}]

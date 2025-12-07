@@ -1,0 +1,104 @@
+@reference '../../globals.css';
+
+form.app-form {
+	@apply flex flex-col items-center gap-4 p-2 mt-4 text-lg;
+}
+
+.input-container {
+	@apply flex flex-col items-start w-full;
+}
+
+input[type='file'].file-input {
+	@apply opacity-0 absolute -z-10;
+}
+
+.file-input {
+	@apply cursor-pointer;
+	@apply w-full p-10 block;
+	@apply border-4 border-dashed border-primary rounded-xl;
+	@apply hover:bg-gray-200 transition-colors;
+	@apply text-primary font-semibold text-xl;
+	@apply flex flex-col justify-center items-center;
+}
+
+.img-file-container {
+	@apply flex flex-row items-center gap-1;
+}
+
+.img-file-container .icon-button,
+.picture-list .icon-button {
+	@apply text-primary hover:text-primary-hover;
+}
+
+.new-logo-input-container {
+	@apply flex flex-col gap-4 mt-2 w-full;
+}
+
+.new-logo-input-container .btn {
+	@apply w-fit;
+}
+
+.file-button {
+	@apply m-1;
+}
+
+.required-asterisk {
+	@apply text-red-600;
+}
+
+p.required-asterisk {
+	@apply w-full text-base;
+}
+
+.text-input {
+	@apply border-2 rounded-sm shadow-inner bg-white w-full;
+}
+
+.text-input-invalid {
+	@apply border-red-500;
+}
+
+textarea.text-input {
+	@apply resize-y;
+}
+
+.picture-list {
+	@apply flex flex-col mb-2;
+}
+
+.picture-list-item {
+	@apply ml-2;
+	@apply flex flex-row items-center;
+}
+
+.picture-list-item-title {
+	@apply grow text-primary;
+}
+
+.picture-marked-to-delete {
+	@apply line-through;
+}
+
+.file-button {
+	@apply text-primary hover:underline;
+}
+
+.icon-button:hover {
+	@apply text-gray-700 cursor-pointer;
+}
+
+.submit-btn {
+	@apply w-64 h-12;
+}
+
+.submit-message-container {
+	@apply flex flex-row gap-1 items-center;
+}
+
+.submit-error {
+	@apply text-sm text-red-500;
+}
+
+.submit-success {
+	@apply text-sm text-green-500;
+}
