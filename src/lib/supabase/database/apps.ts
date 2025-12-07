@@ -62,7 +62,7 @@ export async function getAppsForBrand(brandId: number): Promise<AppPreview[]> {
 		.select(
 			`id, 
       name, 
-      brands (name), 
+      brands!inner (name), 
       version, 
       lastUpdated:last_updated`
 		)
@@ -88,7 +88,7 @@ export async function getUserAppsByBrands(userUid: string): Promise<AppsByBrand[
 		.select(
 			`id, 
       name, 
-      brands (id, name), 
+      brands!inner (id, name), 
       version, 
       lastUpdated:last_updated`
 		)
