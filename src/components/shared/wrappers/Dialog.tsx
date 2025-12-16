@@ -3,7 +3,6 @@
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { ReactNode, useEffect } from 'react';
-import React from 'react';
 import IconButton from '../buttons/IconButton';
 import Card from './Card';
 import Overlay from './Overlay';
@@ -42,6 +41,7 @@ export default function Dialog({ children, open, handleClose, title }: DialogPro
 						<IconButton
 							onClick={handleClose}
 							icon={<Icon path={mdiClose} size={1.5} />}
+							aria-label="Close"
 						/>
 					</header>
 					{children}
