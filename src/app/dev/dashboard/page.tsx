@@ -16,7 +16,7 @@ import AppsByBrand from '@/models/AppsByBrand';
 import Button from '@/components/shared/buttons/Button';
 import MainContainer from '@/components/shared/wrappers/MainContainer';
 
-export default function Dashboard() {
+export default function DashboardPage() {
 	const { push } = useRouter();
 	let { currentUser, logOut } = useAuth();
 	const [appsData, setAppsData] = useState<AppsByBrand[] | null>(null);
@@ -64,7 +64,7 @@ export default function Dashboard() {
 							</Dialog>
 						</>
 						<>
-							<Button className="h-full" onClick={() => setIsAddAppDialogOpen(false)}>
+							<Button className="h-full" onClick={() => setIsAddAppDialogOpen(true)}>
 								Dodaj aplikację
 							</Button>
 							<Dialog
