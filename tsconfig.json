@@ -8,6 +8,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@tests/*": [
+        "./src/__test-utils__/*"
       ]
     },
     "allowJs": true,

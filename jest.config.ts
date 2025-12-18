@@ -19,13 +19,19 @@ const config: Config = {
 	moduleNameMapper: {
 		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
 		'^@/(.*)$': '<rootDir>/src/$1',
+		'^@tests/(.*)$': '<rootDir>/src/__test-utils__/$1',
 	},
 
 	clearMocks: true,
-	setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+	setupFilesAfterEnv: ['<rootDir>/src/__test-utils__/setup.ts'],
 
 	collectCoverage: true,
-	collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!**/vendor/**'],
+	collectCoverageFrom: [
+		'src/**/*.{ts,tsx}',
+		'!src/**/*.d.ts',
+		'!src/__test-utils__/**',
+		'!src/models/**',
+	],
 	coveragePathIgnorePatterns: [
 		'/node_modules/',
 		'/coverage',
