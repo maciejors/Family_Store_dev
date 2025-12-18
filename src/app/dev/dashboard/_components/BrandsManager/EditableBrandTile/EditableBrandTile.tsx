@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
-import '@/components/AppForms/forms.css';
+import '../../AppForms/forms.css';
 import EditBrandForm from '../EditBrandForm';
 import Brand from '@/models/Brand';
-import IconButton from '../../shared/buttons/IconButton';
+import IconButton from '@/components/buttons/IconButton';
 
 export type EditableBrandTileProps = {
 	brandData: Brand;

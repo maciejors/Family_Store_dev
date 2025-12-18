@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import EditBrandForm from '../EditBrandForm';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
-import TextButton from '../../shared/buttons/TextButton';
+import TextButton from '@/components/buttons/TextButton';
 
 export type BrandAddingHandlerProps = {
 	onConfirmAddBrand: (brandName: string) => Promise<any>;

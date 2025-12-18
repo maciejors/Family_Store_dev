@@ -1,8 +1,8 @@
 import React, { FormEvent, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiClose } from '@mdi/js';
-import '@/components/AppForms/forms.css';
-import IconButton from '../../shared/buttons/IconButton';
+import '../../AppForms/forms.css';
+import IconButton from '@/components/buttons/IconButton';
 
 export type EditBrandFormProps = {
 	defaultBrandName: string;

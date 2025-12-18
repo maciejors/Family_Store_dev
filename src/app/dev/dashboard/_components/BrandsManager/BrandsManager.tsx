@@ -8,7 +8,7 @@ import {
 import EditableBrandTile from './EditableBrandTile';
 import BrandAddingHandler from './BrandAddingHandler';
 import Brand from '@/models/Brand';
-import ConditionalSpinner from '@/components/shared/loading/ConditionalSpinner';
+import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 
 export type BrandsManagerProps = {
 	userUid: string;

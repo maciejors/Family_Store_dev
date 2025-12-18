@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import { useEffect } from 'react';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
-import Button from '@/components/shared/buttons/Button';
-import MessagePage from '@/components/shared/MessagePage';
+import Button from '@/components/buttons/Button';
+import MessagePage from '@/components/MessagePage';
 
 export default function AccessDeniedPage() {
 	const { currentUser, logOut } = useAuth();
@@ -22,7 +22,7 @@ export default function AccessDeniedPage() {
 				return;
 			}
 		}
-	}, [currentUser]);
+	}, [currentUser, push]);
 
 	return (
 		currentUser &&
