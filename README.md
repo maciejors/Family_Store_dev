@@ -13,6 +13,7 @@ Family Store Dev is a Next.js project designed to manage a service that stores m
 - **Tailwind CSS**: A utility-first CSS framework for UI development.
 - **Supabase**: A cloud-hosted PostgreSQL database, file storage, and authentication provider.
 - **OneSignal REST API**: A service for sending push notifications to our mobile app users.
+- **Jest & React Testing Library**: Frameworks for testing components and pages.
 
 ## Features
   
@@ -56,3 +57,8 @@ We are actively working on enhancing Family Store Dev with the following feature
 ![App page](https://ggbpzyvanxsbpypmmzrd.supabase.co/storage/v1/object/public/default/fs-screenshots/fsd7.png)
 
 ![App page mobile](https://ggbpzyvanxsbpypmmzrd.supabase.co/storage/v1/object/public/default/fs-screenshots/fsd8.png)
+
+## For developers:
+
+- Running the app: `npm run dev`
+- Running all tests: `npm test`
