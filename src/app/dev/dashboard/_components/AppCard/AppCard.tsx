@@ -11,9 +11,9 @@ import Link from 'next/link';
 import IconButton from '@/components/shared/buttons/IconButton';
 import Card from '@/components/shared/wrappers/Card';
 
-export interface AppCardProps {
+export type AppCardProps = {
 	app: AppPreview;
-}
+};
 
 export default function AppCard({ app }: AppCardProps) {
 	const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
@@ -38,13 +38,19 @@ export default function AppCard({ app }: AppCardProps) {
 				</div>
 			</main>
 			<footer className="flex flex-row justify-end gap-4">
-				<Link href={`/apps/${app.id}`} target="_blank" className="contents">
+				<Link
+					href={`/apps/${app.id}`}
+					target="_blank"
+					className="contents"
+					aria-label={`Link to ${app.name}'s page`}
+				>
 					<IconButton component="span" icon={<Icon path={mdiLaunch} size={1} />} />
 				</Link>
 				<>
 					<IconButton
 						icon={<Icon path={mdiUpload} size={1} />}
 						onClick={() => setIsUpdateDialogOpen(true)}
+						aria-label={`Update ${app.name}`}
 					/>
 					<Dialog
 						open={isUpdateDialogOpen}
@@ -58,6 +64,7 @@ export default function AppCard({ app }: AppCardProps) {
 					<IconButton
 						icon={<Icon path={mdiPencil} size={1} />}
 						onClick={() => setIsEditDialogOpen(true)}
+						aria-label={`Edit ${app.name}`}
 					/>
 					<Dialog
 						open={isEditDialogOpen}

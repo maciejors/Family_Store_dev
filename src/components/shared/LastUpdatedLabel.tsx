@@ -8,10 +8,10 @@ const formattingOptions: Intl.DateTimeFormatOptions = {
 	day: 'numeric',
 };
 
-export interface LastUpdatedLabelProps {
+export type LastUpdatedLabelProps = {
 	lastUpdatedIso: string;
 	prefix: string;
-}
+};
 
 export default function LastUpdatedLabel({
 	lastUpdatedIso,

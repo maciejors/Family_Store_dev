@@ -1,11 +1,11 @@
 import React from 'react';
-import AppCard from './AppCard';
+import AppCard from '../AppCard';
 import AppPreview from '@/models/AppPreview';
 
-export interface AppListProps {
+export type AppListProps = {
 	brandName: string;
 	apps: AppPreview[];
-}
+};
 
 export default function AppList({ brandName, apps }: AppListProps) {
 	return (
