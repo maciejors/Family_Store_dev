@@ -6,11 +6,11 @@ import { addApp } from '@/lib/supabase/database/apps';
 import { getBrandsForUser } from '@/lib/supabase/database/brands';
 import FileInput from './FileInput';
 import FormSubmitFeedback from './FormSubmitFeedback';
-import Spinner from '@/components/shared/loading/Spinner';
-import ConditionalSpinner from '@/components/shared/loading/ConditionalSpinner';
+import Spinner from '@/components/loading/Spinner';
+import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import { notifyUsersOnNewApp } from './actions';
 import BrandBase from '@/models/Brand';
-import Button from '../shared/buttons/Button';
+import Button from '../../../../../components/buttons/Button';
 
 export default function AddAppForm({ userUid }) {
 	const [isDataFetching, setisDataFetching] = useState(true);

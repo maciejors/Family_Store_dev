@@ -4,10 +4,10 @@ import { mdiDownload } from '@mdi/js';
 import { getAppDetails } from '@/lib/supabase/database/apps';
 import styles from './page.module.css';
 import ImageViewer from './ImageViewer';
-import LastUpdatedLabel from '@/components/shared/LastUpdatedLabel';
-import Button from '@/components/shared/buttons/Button';
-import MainContainer from '@/components/shared/wrappers/MainContainer';
-import Card from '@/components/shared/wrappers/Card';
+import LastUpdatedLabel from '@/components/LastUpdatedLabel';
+import Button from '@/components/buttons/Button';
+import MainContainer from '@/components/wrappers/MainContainer';
+import Card from '@/components/wrappers/Card';
 import AppDetails from '@/models/AppDetails';
 import { notFound } from 'next/navigation';
 

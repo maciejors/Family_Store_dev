@@ -6,10 +6,10 @@ import { mdiPencil, mdiDelete, mdiArrowULeftTop } from '@mdi/js';
 import './forms.css';
 import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
 import FormSubmitFeedback from './FormSubmitFeedback';
-import Spinner from '@/components/shared/loading/Spinner';
-import ConditionalSpinner from '@/components/shared/loading/ConditionalSpinner';
+import Spinner from '@/components/loading/Spinner';
+import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import FileInput from './FileInput';
-import Button from '../shared/buttons/Button';
+import Button from '../../../../../components/buttons/Button';
 
 export default function EditAppForm({ appId }) {
 	const [isDataFetching, setisDataFetching] = useState(true);

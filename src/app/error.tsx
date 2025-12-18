@@ -1,6 +1,6 @@
 'use client';
 
-import MessagePage from '@/components/shared/MessagePage';
+import MessagePage from '@/components/MessagePage';
 import React from 'react';
 
 export default function DefaultErrorPage() {

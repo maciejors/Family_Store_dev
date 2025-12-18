@@ -7,8 +7,8 @@ import authStyles from './authStyles.module.css';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import validate from './validation';
-import Button from '@/components/shared/buttons/Button';
-import MainContainer from '@/components/shared/wrappers/MainContainer';
+import Button from '@/components/buttons/Button';
+import MainContainer from '@/components/wrappers/MainContainer';
 
 export default function AuthPage() {
 	const { currentUser, logIn, register } = useAuth();
@@ -57,7 +57,7 @@ export default function AuthPage() {
 				return;
 			}
 		}
-	}, [currentUser]);
+	}, [currentUser, push]);
 
 	return (
 		currentUser !== undefined &&

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import AppCard from './AppCard';
 import AppPreview from '@/models/AppPreview';
-import { LastUpdatedLabelProps } from '@/components/shared/LastUpdatedLabel';
+import { LastUpdatedLabelProps } from '@/components/LastUpdatedLabel';
 
 jest.mock('next/link', () => ({ children, ...props }) => <a {...props}>{children}</a>);
 jest.mock('next/image', () => ({ priority, ...props }: any) => <img {...props} />);

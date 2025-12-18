@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import LastUpdatedLabel from '@/components/shared/LastUpdatedLabel';
+import LastUpdatedLabel from '@/components/LastUpdatedLabel';
 import Icon from '@mdi/react';
 import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
-import Dialog from '@/components/shared/wrappers/Dialog';
-import UpdateAppForm from '@/components/AppForms/UpdateAppForm';
-import EditAppForm from '@/components/AppForms/EditAppForm';
+import Dialog from '@/components/wrappers/Dialog';
+import UpdateAppForm from '@/app/dev/dashboard/_components/AppForms/UpdateAppForm';
+import EditAppForm from '@/app/dev/dashboard/_components/AppForms/EditAppForm';
 import AppPreview from '@/models/AppPreview';
 import Link from 'next/link';
-import IconButton from '@/components/shared/buttons/IconButton';
-import Card from '@/components/shared/wrappers/Card';
+import IconButton from '@/components/buttons/IconButton';
+import Card from '@/components/wrappers/Card';
 
 export type AppCardProps = {
 	app: AppPreview;
