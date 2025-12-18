@@ -7,7 +7,7 @@ import { LastUpdatedLabelProps } from '@/components/LastUpdatedLabel';
 jest.mock('next/link', () => ({ children, ...props }) => <a {...props}>{children}</a>);
 jest.mock('next/image', () => ({ priority, ...props }: any) => <img {...props} />);
 jest.mock(
-	'@/components/shared/LastUpdatedLabel',
+	'@/components/LastUpdatedLabel',
 	() =>
 		({ lastUpdatedIso, prefix }: LastUpdatedLabelProps) =>
 			(
@@ -16,8 +16,8 @@ jest.mock(
 				</p>
 			)
 );
-jest.mock('@/components/AppForms/EditAppForm');
-jest.mock('@/components/AppForms/UpdateAppForm');
+jest.mock('../AppForms/EditAppForm');
+jest.mock('../AppForms/UpdateAppForm');
 
 const MOCK_APP: AppPreview = {
 	id: 1,

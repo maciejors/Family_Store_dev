@@ -11,10 +11,10 @@ jest.mock('next/image', () => ({ priority, ...props }: any) => <img {...props} /
 jest.mock('next/navigation', () => ({ useRouter: () => ({ push: jest.fn() }) }));
 jest.mock('@/lib/supabase/database/apps');
 jest.mock('@/hooks/useAuth');
-jest.mock('@/components/BrandsManager');
-jest.mock('@/components/AppForms/AddAppForm');
-jest.mock('@/components/AppForms/EditAppForm');
-jest.mock('@/components/AppForms/UpdateAppForm');
+jest.mock('./_components/BrandsManager');
+jest.mock('./_components/AppForms/AddAppForm');
+jest.mock('./_components/AppForms/EditAppForm');
+jest.mock('./_components/AppForms/UpdateAppForm');
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
