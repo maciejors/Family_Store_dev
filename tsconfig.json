@@ -8,6 +8,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@tests/*": [
+        "./src/__test-utils__/*"
       ]
     },
     "allowJs": true,
@@ -27,13 +30,18 @@
       }
     ],
     "strictNullChecks": true,
-    "target": "ES2017"
+    "target": "ES2017",
+    "types": [
+      "jest",
+      "@testing-library/jest-dom"
+    ]
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "setupTests.ts"
   ],
   "exclude": [
     "node_modules"

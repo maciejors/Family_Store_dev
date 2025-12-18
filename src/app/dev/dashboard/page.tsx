@@ -4,11 +4,11 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
-import AppList from './AppList';
+import AppList from './_components/AppList';
 import Dialog from '@/components/shared/wrappers/Dialog';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
-import NoAppsInfo from './NoAppsInfo';
+import NoAppsInfo from './_components/NoAppsInfo';
 import BrandsManager from '@/components/BrandsManager';
 import ConditionalSpinner from '@/components/shared/loading/ConditionalSpinner';
 import AddAppForm from '@/components/AppForms/AddAppForm';
@@ -16,7 +16,7 @@ import AppsByBrand from '@/models/AppsByBrand';
 import Button from '@/components/shared/buttons/Button';
 import MainContainer from '@/components/shared/wrappers/MainContainer';
 
-export default function Dashboard() {
+export default function DashboardPage() {
 	const { push } = useRouter();
 	let { currentUser, logOut } = useAuth();
 	const [appsData, setAppsData] = useState<AppsByBrand[] | null>(null);
@@ -64,7 +64,7 @@ export default function Dashboard() {
 							</Dialog>
 						</>
 						<>
-							<Button className="h-full" onClick={() => setIsAddAppDialogOpen(false)}>
+							<Button className="h-full" onClick={() => setIsAddAppDialogOpen(true)}>
 								Dodaj aplikację
 							</Button>
 							<Dialog

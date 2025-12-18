@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import EditBrandForm from './EditBrandForm';
+import EditBrandForm from '../EditBrandForm';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
-import TextButton from '../shared/buttons/TextButton';
+import TextButton from '../../shared/buttons/TextButton';
 
-export default function BrandAddingHandler({ onConfirmAddBrand }) {
+export type BrandAddingHandlerProps = {
+	onConfirmAddBrand: (brandName: string) => Promise<any>;
+};
+
+export default function BrandAddingHandler({
+	onConfirmAddBrand,
+}: BrandAddingHandlerProps) {
 	const [isAddingBrand, setIsAddingBrand] = useState(false);
 
 	function showEditor() {

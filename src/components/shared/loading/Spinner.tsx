@@ -7,6 +7,7 @@ export default function Spinner({ size, width, light = false }) {
 				light ? 'border-white' : 'border-gray-600'
 			}`}
 			style={{ width: size, height: size, borderWidth: width + 'px' }}
+			role="status"
 		/>
 	);
 }

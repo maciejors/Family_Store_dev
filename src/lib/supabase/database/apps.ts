@@ -101,7 +101,6 @@ export async function getUserAppsByBrands(userUid: string): Promise<AppsByBrand[
 	fetchedApps.forEach((app) => {
 		const appPreview: AppPreview = {
 			...app,
-			brandName: app.brands.name,
 			logoUrl: getLogoUrl(app.id),
 		};
 

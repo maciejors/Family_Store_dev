@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
-import brandManagerStyles from './BrandsManager.module.css';
-import '../AppForms/forms.css';
-import EditBrandForm from './EditBrandForm';
+import '@/components/AppForms/forms.css';
+import EditBrandForm from '../EditBrandForm';
 import Brand from '@/models/Brand';
-import IconButton from '../shared/buttons/IconButton';
+import IconButton from '../../shared/buttons/IconButton';
 
-interface EditableBrandTileProps {
+export type EditableBrandTileProps = {
 	brandData: Brand;
 	onConfirmEdit: { (brandId: number, newBrandName: string): Promise<void> };
 	onDelete: { (brandId: number): void };
-}
+};
 
 export default function EditableBrandTile({
 	brandData,
@@ -46,15 +45,20 @@ export default function EditableBrandTile({
 					onCancel={hideEditor}
 				/>
 			) : (
-				<div className={brandManagerStyles['editable-brand-tile']}>
+				<div className="flex gap-2 items-center">
 					<p className="text-xl">
 						{brandData.name} ({brandData.appCount})
 					</p>
-					<IconButton onClick={showEditor} icon={<Icon path={mdiPencil} size={1} />} />
+					<IconButton
+						onClick={showEditor}
+						icon={<Icon path={mdiPencil} size={1} />}
+						aria-label="edit"
+					/>
 					{brandData.appCount == 0 && (
 						<IconButton
 							onClick={handleDelete}
 							icon={<Icon path={mdiDelete} size={1} />}
+							aria-label="delete"
 						/>
 					)}
 				</div>

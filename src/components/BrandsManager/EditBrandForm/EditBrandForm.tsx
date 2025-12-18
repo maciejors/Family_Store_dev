@@ -1,15 +1,14 @@
 import React, { FormEvent, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiClose } from '@mdi/js';
-import '../AppForms/forms.css';
-import brandManagerStyles from './BrandsManager.module.css';
-import IconButton from '../shared/buttons/IconButton';
+import '@/components/AppForms/forms.css';
+import IconButton from '../../shared/buttons/IconButton';
 
-interface EditBrandFormProps {
+export type EditBrandFormProps = {
 	defaultBrandName: string;
 	onConfirmEdit: { (newBrandName: string): void };
 	onCancel: VoidFunction;
-}
+};
 
 export default function EditBrandForm({
 	defaultBrandName,
@@ -38,7 +37,7 @@ export default function EditBrandForm({
 	}
 
 	return (
-		<form onSubmit={handleConfirm} className={brandManagerStyles['editable-brand-tile']}>
+		<form onSubmit={handleConfirm} className="flex gap-2 items-center">
 			<input
 				type="text"
 				value={newNameInput}
@@ -46,11 +45,16 @@ export default function EditBrandForm({
 				placeholder="Nazwa marki"
 				className={'text-input' + (isInputValid ? '' : ' text-input-invalid')}
 			/>
-			<IconButton type="submit" icon={<Icon path={mdiCheck} size={1} />} />
+			<IconButton
+				type="submit"
+				icon={<Icon path={mdiCheck} size={1} />}
+				aria-label="confirm"
+			/>
 			<IconButton
 				type="button"
 				onClick={handleCancel}
 				icon={<Icon path={mdiClose} size={1} />}
+				aria-label="cancel"
 			/>
 		</form>
 	);
