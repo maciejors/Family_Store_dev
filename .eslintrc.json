@@ -4,7 +4,9 @@
     {
       "files": ["**/*.test.{ts,tsx}"],
       "rules": {
-        "react/display-name": "off"
+        "react/display-name": "off",
+        "@next/next/no-img-element": "off",
+        "jsx-a11y/alt-text": "off"
       }
     }
   ]
