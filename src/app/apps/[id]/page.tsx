@@ -3,7 +3,7 @@ import Icon from '@mdi/react';
 import { mdiDownload } from '@mdi/js';
 import { getAppDetails } from '@/lib/supabase/database/apps';
 import styles from './page.module.css';
-import ImageViewer from './ImageViewer';
+import ImageViewer from './_components/ImageViewer';
 import LastUpdatedLabel from '@/components/LastUpdatedLabel';
 import Button from '@/components/buttons/Button';
 import MainContainer from '@/components/wrappers/MainContainer';
@@ -65,7 +65,7 @@ export default async function AppDetailsPage(props: { params: any }) {
 				<main className={styles['app-details']}>
 					<p>{app.description}</p>
 					<ImageViewer imagesUrls={app.pictureUrls} />
-					{app.changelog !== undefined && app.changelog !== '' && (
+					{app.changelog && (
 						<Card className="py-2 px-4">
 							<h6>Lista zmian:</h6>
 							<p>{app.changelog}</p>
