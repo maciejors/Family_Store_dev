@@ -19,7 +19,6 @@ const config: Config = {
 	moduleNameMapper: {
 		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
 		'^@/(.*)$': '<rootDir>/src/$1',
-		'^@tests/(.*)$': '<rootDir>/src/__test-utils__/$1',
 	},
 
 	clearMocks: true,
