@@ -33,7 +33,7 @@ export default function AppCard({ app }: AppCardProps) {
 					<h3>{app.name}</h3>
 					<p className="text-base text-gray-600">Wersja: {app.version}</p>
 					<span className="text-base text-gray-600">
-						<FormattedDateLabel lastUpdatedIso={app.lastUpdated} prefix="Aktual. " />
+						<FormattedDateLabel dateIso={app.lastUpdated} prefix="Aktual. " />
 					</span>
 				</div>
 			</main>

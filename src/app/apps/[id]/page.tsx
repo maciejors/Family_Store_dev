@@ -56,15 +56,12 @@ export default async function AppDetailsPage(props: { params: any }) {
 						</a>
 						<span className={styles['formatted-date-label']}>
 							<FormattedDateLabel
-								lastUpdatedIso={app.lastUpdated}
+								dateIso={app.lastUpdated}
 								prefix="Ostatnia aktualizacja: "
 							/>
 						</span>
 						<span className={styles['formatted-date-label']}>
-							<FormattedDateLabel
-								lastUpdatedIso={app.createdAt}
-								prefix="Opublikowano: "
-							/>
+							<FormattedDateLabel dateIso={app.createdAt} prefix="Opublikowano: " />
 						</span>
 					</div>
 				</header>

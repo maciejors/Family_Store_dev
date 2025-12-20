@@ -9,20 +9,17 @@ const formattingOptions: Intl.DateTimeFormatOptions = {
 };
 
 export type FormattedDateLabelProps = {
-	lastUpdatedIso: string;
+	dateIso: string;
 	prefix: string;
 };
 
-export default function FormattedDateLabel({
-	lastUpdatedIso,
-	prefix,
-}: FormattedDateLabelProps) {
+export default function FormattedDateLabel({ dateIso, prefix }: FormattedDateLabelProps) {
 	const [labelToDisplay, setLabelToDisplay] = useState('');
 	useEffect(() => {
-		const date = new Date(lastUpdatedIso);
+		const date = new Date(dateIso);
 		const formattedDate = date.toLocaleDateString(navigator.language, formattingOptions);
 		setLabelToDisplay(`${prefix !== undefined ? prefix : ''}${formattedDate}`);
-	}, [lastUpdatedIso, prefix]);
+	}, [dateIso, prefix]);
 
 	return <p>{labelToDisplay}</p>;
 }
