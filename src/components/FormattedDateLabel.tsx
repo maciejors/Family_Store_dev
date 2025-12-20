@@ -8,15 +8,15 @@ const formattingOptions: Intl.DateTimeFormatOptions = {
 	day: 'numeric',
 };
 
-export type LastUpdatedLabelProps = {
+export type FormattedDateLabelProps = {
 	lastUpdatedIso: string;
 	prefix: string;
 };
 
-export default function LastUpdatedLabel({
+export default function FormattedDateLabel({
 	lastUpdatedIso,
 	prefix,
-}: LastUpdatedLabelProps) {
+}: FormattedDateLabelProps) {
 	const [labelToDisplay, setLabelToDisplay] = useState('');
 	useEffect(() => {
 		const date = new Date(lastUpdatedIso);

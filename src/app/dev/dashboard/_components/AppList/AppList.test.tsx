@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import AppList, { AppListProps } from './AppList';
 
-jest.mock('next/link', () => ({ children, ...props }) => <a {...props}>{children}</a>);
-jest.mock('next/image', () => ({ priority, ...props }: any) => <img {...props} />);
+jest.mock('next/link');
+jest.mock('next/image');
 
 const MOCK_DATA: AppListProps = {
 	brandName: 'SuperBrand',
@@ -12,6 +12,7 @@ const MOCK_DATA: AppListProps = {
 			name: 'My app 1',
 			version: '1.0',
 			lastUpdated: '2020-04-01T10:00:00',
+			createdAt: '2019-10-02T10:00:00',
 			logoUrl: 'https://localhost/fake-logo-url-1.png',
 		},
 		{
@@ -19,6 +20,7 @@ const MOCK_DATA: AppListProps = {
 			name: 'My app 2',
 			version: '2.1.1',
 			lastUpdated: '2022-06-22T10:00:00',
+			createdAt: '2022-06-22T10:00:00',
 			logoUrl: 'https://localhost/fake-logo-url-2.png',
 		},
 	],

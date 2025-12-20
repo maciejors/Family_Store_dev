@@ -5,7 +5,7 @@ import AppDetails from '@/models/AppDetails';
 
 jest.mock('next/image');
 jest.mock('@/lib/supabase/database/apps');
-jest.mock('@/components/LastUpdatedLabel');
+jest.mock('@/components/FormattedDateLabel');
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 
@@ -14,6 +14,7 @@ const MOCK_APP_DATA: AppDetails = {
 	name: 'My app 1',
 	version: '1.0',
 	lastUpdated: '2020-04-01T10:00:00',
+	createdAt: '2019-10-02T10:00:00',
 	logoUrl: 'https://localhost/fake-logo-url-1.png',
 	downloadUrl: 'https://localhost/fake-app-url.apk',
 	brandName: 'SuperBrand',
@@ -60,6 +61,7 @@ test('Should display all app details', async () => {
 	expect(downloadLink).toHaveAttribute('href', app.downloadUrl);
 
 	expect(screen.getByText(new RegExp(app.lastUpdated))).toBeInTheDocument();
+	expect(screen.getByText(new RegExp(app.createdAt))).toBeInTheDocument();
 	expect(screen.getByText(new RegExp(app.description!))).toBeInTheDocument();
 	expect(screen.getByRole('heading', { name: /lista zmian:/i })).toBeInTheDocument();
 	expect(screen.getByText(new RegExp(app.changelog!))).toBeInTheDocument();

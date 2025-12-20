@@ -20,7 +20,7 @@
 	@apply sm:text-2xl sm:px-4 sm:py-2 w-full;
 }
 
-.last-updated-label {
+.formatted-date-label {
 	@apply text-gray-500 text-sm italic whitespace-nowrap;
 }
 

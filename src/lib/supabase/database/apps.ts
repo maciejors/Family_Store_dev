@@ -64,7 +64,8 @@ export async function getAppsForBrand(brandId: number): Promise<AppPreview[]> {
       name, 
       brands!inner (name), 
       version, 
-      lastUpdated:last_updated`
+      lastUpdated:last_updated,
+			createdAt:created_at`
 		)
 		.eq('brand_id', brandId);
 
@@ -90,7 +91,8 @@ export async function getUserAppsByBrands(userUid: string): Promise<AppsByBrand[
       name, 
       brands!inner (id, name), 
       version, 
-      lastUpdated:last_updated`
+      lastUpdated:last_updated,
+			createdAt:created_at`
 		)
 		.eq('brands.owner_id', userUid);
 
@@ -130,6 +132,7 @@ export async function getAppDetails(appId: number): Promise<AppDetails> {
       brands (name), 
       version, 
       lastUpdated:last_updated,
+			createdAt:created_at,
       description,
       changelog`
 		)

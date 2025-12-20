@@ -3,9 +3,9 @@ import user from '@testing-library/user-event';
 import AppCard from './AppCard';
 import AppPreview from '@/models/AppPreview';
 
-jest.mock('next/link', () => ({ children, ...props }) => <a {...props}>{children}</a>);
-jest.mock('next/image', () => ({ priority, ...props }: any) => <img {...props} />);
-jest.mock('@/components/LastUpdatedLabel');
+jest.mock('next/link');
+jest.mock('next/image');
+jest.mock('@/components/FormattedDateLabel');
 jest.mock('../AppForms/EditAppForm');
 jest.mock('../AppForms/UpdateAppForm');
 
@@ -14,6 +14,7 @@ const MOCK_APP: AppPreview = {
 	name: 'My app 1',
 	version: '1.0',
 	lastUpdated: '2020-04-01T10:00:00',
+	createdAt: '2019-10-02T10:00:00',
 	logoUrl: 'https://localhost/fake-logo-url-1.png',
 };
 

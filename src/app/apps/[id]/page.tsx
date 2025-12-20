@@ -4,7 +4,7 @@ import { mdiDownload } from '@mdi/js';
 import { getAppDetails } from '@/lib/supabase/database/apps';
 import styles from './page.module.css';
 import ImageViewer from './_components/ImageViewer';
-import LastUpdatedLabel from '@/components/LastUpdatedLabel';
+import FormattedDateLabel from '@/components/FormattedDateLabel';
 import Button from '@/components/buttons/Button';
 import MainContainer from '@/components/wrappers/MainContainer';
 import Card from '@/components/wrappers/Card';
@@ -54,10 +54,16 @@ export default async function AppDetailsPage(props: { params: any }) {
 								<Icon path={mdiDownload} size={1} />
 							</Button>
 						</a>
-						<span className={styles['last-updated-label']}>
-							<LastUpdatedLabel
+						<span className={styles['formatted-date-label']}>
+							<FormattedDateLabel
 								lastUpdatedIso={app.lastUpdated}
 								prefix="Ostatnia aktualizacja: "
+							/>
+						</span>
+						<span className={styles['formatted-date-label']}>
+							<FormattedDateLabel
+								lastUpdatedIso={app.createdAt}
+								prefix="Opublikowano: "
 							/>
 						</span>
 					</div>

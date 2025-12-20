@@ -37,6 +37,7 @@ const MOCK_APPS_DATA: AppsByBrand[] = [
 				name: 'My app 1',
 				version: '1.0',
 				lastUpdated: '2020-04-01T10:00:00',
+				createdAt: '2020-02-10T10:00:00',
 				logoUrl: 'https://localhost/fake-logo-url-1.png',
 			},
 			{
@@ -44,6 +45,7 @@ const MOCK_APPS_DATA: AppsByBrand[] = [
 				name: 'My app 2',
 				version: '2.1.1',
 				lastUpdated: '2022-06-22T10:00:00',
+				createdAt: '2021-02-10T10:00:00',
 				logoUrl: 'https://localhost/fake-logo-url-2.png',
 			},
 		],
@@ -58,6 +60,7 @@ const MOCK_APPS_DATA: AppsByBrand[] = [
 				name: 'My app 3',
 				version: '1.6.0',
 				lastUpdated: '2023-11-11T12:00:00',
+				createdAt: '2023-11-11T12:00:00',
 				logoUrl: 'https://localhost/fake-logo-url-3.png',
 			},
 		],

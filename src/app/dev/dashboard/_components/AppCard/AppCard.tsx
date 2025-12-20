@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import LastUpdatedLabel from '@/components/LastUpdatedLabel';
+import FormattedDateLabel from '@/components/FormattedDateLabel';
 import Icon from '@mdi/react';
 import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
 import Dialog from '@/components/wrappers/Dialog';
@@ -33,7 +33,7 @@ export default function AppCard({ app }: AppCardProps) {
 					<h3>{app.name}</h3>
 					<p className="text-base text-gray-600">Wersja: {app.version}</p>
 					<span className="text-base text-gray-600">
-						<LastUpdatedLabel lastUpdatedIso={app.lastUpdated} prefix="Aktual. " />
+						<FormattedDateLabel lastUpdatedIso={app.lastUpdated} prefix="Aktual. " />
 					</span>
 				</div>
 			</main>
