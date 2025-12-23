@@ -21,23 +21,22 @@ export default function DashboardPage() {
 	let { currentUser, logOut } = useAuth();
 	const [appsData, setAppsData] = useState<AppsByBrand[] | null>(null);
 
-	async function onUserChanged() {
-		if (currentUser !== undefined) {
-			if (currentUser === null) {
-				push('/dev/auth');
-				return;
-			}
-			if (isLoggedInRegular(currentUser)) {
-				push('/dev/access-denied');
-				return;
-			}
-			const fetchedData = await getUserAppsByBrands(currentUser!.uid);
-			const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
-			setAppsData(dataToDisplay);
-		}
-	}
-
 	useEffect(() => {
+		async function onUserChanged() {
+			if (currentUser !== undefined) {
+				if (currentUser === null) {
+					push('/dev/auth');
+					return;
+				}
+				if (isLoggedInRegular(currentUser)) {
+					push('/dev/access-denied');
+					return;
+				}
+				const fetchedData = await getUserAppsByBrands(currentUser!.uid);
+				const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
+				setAppsData(dataToDisplay);
+			}
+		}
 		onUserChanged();
 	}, [currentUser]);
 

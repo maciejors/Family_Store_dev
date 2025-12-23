@@ -2,11 +2,12 @@
   "extends": "next/core-web-vitals",
   "overrides": [
     {
-      "files": ["**/*.test.{ts,tsx}"],
+      "files": ["**/*.test.{ts,tsx}", "**/__mocks__/**"],
       "rules": {
         "react/display-name": "off",
         "@next/next/no-img-element": "off",
-        "jsx-a11y/alt-text": "off"
+        "jsx-a11y/alt-text": "off",
+        "import/no-anonymous-default-export": "off"
       }
     }
   ]
