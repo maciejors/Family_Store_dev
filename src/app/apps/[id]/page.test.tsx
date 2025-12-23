@@ -4,7 +4,6 @@ import AppDetailsPage from './page';
 import AppDetails from '@/models/AppDetails';
 
 jest.mock('next/image');
-jest.mock('@/lib/supabase/database/apps');
 jest.mock('@/components/FormattedDateLabel');
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;

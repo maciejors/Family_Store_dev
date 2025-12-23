@@ -3,7 +3,6 @@ import BrandsManager from './BrandsManager';
 import Brand from '@/models/Brand';
 import * as brandsApi from '@/lib/supabase/database/brands';
 
-jest.mock('@/lib/supabase/database/brands');
 const mockedBrandsApi = brandsApi as jest.Mocked<typeof brandsApi>;
 
 const MOCK_BRANDS: Brand[] = [

@@ -1,16 +1,20 @@
 'use client';
 
 import React, { FormEvent, useEffect, useState } from 'react';
-import './forms.css';
+import '../forms.css';
 import { getAppUpdateDetails, updateApp } from '@/lib/supabase/database/apps';
-import FileInput from './FileInput';
-import FormSubmitFeedback from './FormSubmitFeedback';
+import FileInput from '../FileInput';
+import FormSubmitFeedback from '../FormSubmitFeedback';
 import Spinner from '@/components/loading/Spinner';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
-import { notifyUsersOnAppUpdate } from './actions';
+import { notifyUsersOnAppUpdate } from '../actions';
 import Button from '@/components/buttons/Button';
 
-export default function UpdateAppForm({ appId }) {
+export type UpdateAppFormProps = {
+	appId: number;
+};
+
+export default function UpdateAppForm({ appId }: UpdateAppFormProps) {
 	const [isDataFetching, setisDataFetching] = useState(true);
 
 	const [file, setFile] = useState<File | undefined>(undefined);
@@ -41,7 +45,11 @@ export default function UpdateAppForm({ appId }) {
 		e.preventDefault();
 		setIsUploading(true);
 		try {
-			await updateApp(appId, file!, version.trim(), changelog.trim());
+			await updateApp(appId, {
+				apkFile: file!,
+				newVersion: version.trim(),
+				changelog: changelog.trim(),
+			});
 			await notifyUsersOnAppUpdate(appId, appName.trim(), version.trim());
 			setIsUploadError(false);
 		} catch (error) {
@@ -63,7 +71,7 @@ export default function UpdateAppForm({ appId }) {
 
 	return (
 		<ConditionalSpinner isLoading={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
-			<form onSubmit={handleSubmit} className="app-form">
+			<form onSubmit={handleSubmit} className="app-form" aria-label="Update app form">
 				<FileInput
 					defaultFileInputLabel="Dodaj plik instalacyjny *"
 					inputFileAccept=".apk"
@@ -71,10 +79,11 @@ export default function UpdateAppForm({ appId }) {
 					onFilesChanged={handleApkFileChanged}
 				/>
 				<div className="input-container">
-					<label>
+					<label htmlFor="version">
 						Wersja: <span className="required-asterisk">*</span>
 					</label>
 					<input
+						id="version"
 						required
 						type="text"
 						value={version}
@@ -84,8 +93,9 @@ export default function UpdateAppForm({ appId }) {
 					/>
 				</div>
 				<div className="input-container">
-					<label>Lista zmian:</label>
+					<label htmlFor="changelog">Lista zmian:</label>
 					<textarea
+						id="changelog"
 						value={changelog}
 						onChange={(e) => setChangelog(e.target.value)}
 						className="text-input"

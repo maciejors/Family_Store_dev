@@ -5,8 +5,6 @@ import { NextRequest } from 'next/server';
 import { GET } from './route';
 import * as appsApi from '@/lib/supabase/database/apps';
 
-jest.mock('@/lib/supabase/database/apps');
-
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 
 async function makeRequest(appId: string) {

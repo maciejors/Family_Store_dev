@@ -3,15 +3,19 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete, mdiArrowULeftTop } from '@mdi/js';
-import './forms.css';
+import '../forms.css';
 import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
-import FormSubmitFeedback from './FormSubmitFeedback';
+import FormSubmitFeedback from '../FormSubmitFeedback';
 import Spinner from '@/components/loading/Spinner';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
-import FileInput from './FileInput';
-import Button from '../../../../../components/buttons/Button';
+import FileInput from '../FileInput';
+import Button from '@/components/buttons/Button';
 
-export default function EditAppForm({ appId }) {
+export type EditAppFormProps = {
+	appId: number;
+};
+
+export default function EditAppForm({ appId }: EditAppFormProps) {
 	const [isDataFetching, setisDataFetching] = useState(true);
 
 	const defaultLogoInputLabel = 'Dodaj nowe logo';
@@ -58,15 +62,14 @@ export default function EditAppForm({ appId }) {
 			const picturesToDelete = pictureNames.filter(
 				(_, index) => picturesToDeleteFlags[index]
 			);
-			await editApp(
-				appId,
-				appName.trim(),
-				description.trim(),
-				changelog.trim(),
-				isChangingLogo ? logoFile : undefined,
-				newAppPicturesFiles,
-				picturesToDelete
-			);
+			await editApp(appId, {
+				newName: appName.trim(),
+				newDescription: description.trim(),
+				newChangelog: changelog.trim(),
+				newLogoFile: isChangingLogo ? logoFile : undefined,
+				newPicturesFiles: newAppPicturesFiles,
+				picturesToDeleteNames: picturesToDelete,
+			});
 			setIsUploadError(false);
 		} catch (error) {
 			console.error(error);
@@ -111,13 +114,14 @@ export default function EditAppForm({ appId }) {
 
 	return (
 		<ConditionalSpinner isLoading={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
-			<form onSubmit={handleSubmit} className="app-form">
+			<form onSubmit={handleSubmit} className="app-form" aria-label="Edit app form">
 				<div className="input-container">
-					<label>
+					<label htmlFor="name">
 						Nazwa aplikacji: <span className="required-asterisk">*</span>
 					</label>
 					<input
 						required
+						id="name"
 						type="text"
 						value={appName}
 						onChange={(e) => setAppName(e.target.value)}
@@ -126,7 +130,7 @@ export default function EditAppForm({ appId }) {
 				</div>
 
 				<div className="input-container">
-					<label>
+					<label htmlFor="logo">
 						Logo aplikacji: <span className="required-asterisk">*</span>
 					</label>
 					{!isChangingLogo && (
@@ -134,7 +138,7 @@ export default function EditAppForm({ appId }) {
 							<a className="file-button" href={logoUrl} target="_blank">
 								logo.png {/* It is always named that in the database */}
 							</a>
-							<button type="button" onClick={showLogoEditor}>
+							<button type="button" onClick={showLogoEditor} id="logo">
 								<Icon className="icon-button" path={mdiPencil} size={1} />
 							</button>
 						</div>
@@ -156,8 +160,9 @@ export default function EditAppForm({ appId }) {
 				</div>
 
 				<div className="input-container">
-					<label>Opis:</label>
+					<label htmlFor="description">Opis:</label>
 					<textarea
+						id="description"
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}
 						className="text-input"
@@ -167,8 +172,9 @@ export default function EditAppForm({ appId }) {
 				</div>
 
 				<div className="input-container">
-					<label>Lista zmian:</label>
+					<label htmlFor="changelog">Lista zmian:</label>
 					<textarea
+						id="changelog"
 						value={changelog}
 						onChange={(e) => setChangelog(e.target.value)}
 						className="text-input"
@@ -195,7 +201,13 @@ export default function EditAppForm({ appId }) {
 										{pictureNames[index]}
 									</span>
 								</a>
-								<button type="button" onClick={() => togglePictureToDelete(index)}>
+								<button
+									type="button"
+									onClick={() => togglePictureToDelete(index)}
+									aria-label={`${
+										picturesToDeleteFlags[index] ? 'undo ' : ''
+									}delete picture ${pictureNames[index]}`}
+								>
 									<Icon
 										className="icon-button"
 										path={picturesToDeleteFlags[index] ? mdiArrowULeftTop : mdiDelete}

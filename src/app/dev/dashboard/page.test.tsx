@@ -10,7 +10,6 @@ import { push } from '@/__mocks__/next/navigation';
 jest.mock('next/link');
 jest.mock('next/image');
 jest.mock('next/navigation');
-jest.mock('@/lib/supabase/database/apps');
 jest.mock('@/hooks/useAuth');
 jest.mock('./_components/BrandsManager');
 jest.mock('./_components/AppForms/AddAppForm');

@@ -5,13 +5,22 @@ import Icon from '@mdi/react';
 import { mdiCheck, mdiUpload } from '@mdi/js';
 import './forms.css';
 
+export type FileInputProps = {
+	id?: string;
+	defaultFileInputLabel: string;
+	inputFileRequired?: boolean;
+	inputFileMultiple?: boolean;
+	inputFileAccept?: string;
+	onFilesChanged: (files: File[]) => any;
+};
+
 export default function FileInput({
+	id,
 	defaultFileInputLabel,
-	inputFileRequired = true,
 	inputFileMultiple = false,
 	inputFileAccept,
 	onFilesChanged,
-}) {
+}: FileInputProps) {
 	const [fileInput, setFileInput] = useState(''); // input needs a filename
 	const [fileInputLabels, setFileInputLabels] = useState([defaultFileInputLabel]);
 
@@ -28,16 +37,16 @@ export default function FileInput({
 	}
 
 	return (
-		<label className="file-input">
+		<label className="file-input" htmlFor={id}>
 			<Icon path={fileInput === '' ? mdiUpload : mdiCheck} size={1.5} />
 			{fileInputLabels.map((label) => (
 				<p key={label}>{label}</p>
 			))}
 			<input
-				required={inputFileRequired}
+				id={id}
+				required={false} // TODO: will be handled properly by zod later
 				type="file"
 				accept={inputFileAccept}
-				value={fileInput}
 				onChange={handleFilesChanged}
 				className="file-input"
 				multiple={inputFileMultiple}
