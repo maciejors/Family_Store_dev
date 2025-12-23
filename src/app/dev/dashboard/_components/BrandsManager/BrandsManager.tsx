@@ -23,6 +23,7 @@ export default function BrandsManager({ userUid }) {
 	}, [userUid]);
 
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		fetchBrandsData();
 	}, [fetchBrandsData]);
 
