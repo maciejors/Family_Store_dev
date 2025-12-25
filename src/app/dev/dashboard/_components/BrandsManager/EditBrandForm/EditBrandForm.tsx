@@ -1,8 +1,8 @@
 import React, { FormEvent, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiClose } from '@mdi/js';
-import '../../AppForms/forms.css';
 import IconButton from '@/components/buttons/IconButton';
+import TextInput from '@/components/inputs/TextInput';
 
 export type EditBrandFormProps = {
 	defaultBrandName: string;
@@ -37,13 +37,14 @@ export default function EditBrandForm({
 	}
 
 	return (
-		<form onSubmit={handleConfirm} className="flex gap-2 items-center">
-			<input
+		<form onSubmit={handleConfirm} className="flex gap-2 items-center text-lg">
+			<TextInput
 				type="text"
 				value={newNameInput}
 				onChange={(e) => setNewNameInput(e.target.value)}
 				placeholder="Nazwa marki"
-				className={'text-input' + (isInputValid ? '' : ' text-input-invalid')}
+				error={!isInputValid}
+				compact
 			/>
 			<IconButton
 				type="submit"

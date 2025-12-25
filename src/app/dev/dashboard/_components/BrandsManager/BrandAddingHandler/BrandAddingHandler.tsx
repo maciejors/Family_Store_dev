@@ -38,11 +38,13 @@ export default function BrandAddingHandler({
 				</TextButton>
 			)}
 			{isAddingBrand && (
-				<EditBrandForm
-					defaultBrandName=""
-					onConfirmEdit={handleConfirmAddBrand}
-					onCancel={handleCancelAddBrand}
-				/>
+				<div className="mb-1">
+					<EditBrandForm
+						defaultBrandName=""
+						onConfirmEdit={handleConfirmAddBrand}
+						onCancel={handleCancelAddBrand}
+					/>
+				</div>
 			)}
 		</>
 	);
