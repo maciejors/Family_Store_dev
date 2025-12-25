@@ -3,8 +3,8 @@ import Icon from '@mdi/react';
 import { mdiDownload } from '@mdi/js';
 import { getAppDetails } from '@/lib/supabase/database/apps';
 import styles from './page.module.css';
-import ImageViewer from './ImageViewer';
-import LastUpdatedLabel from '@/components/LastUpdatedLabel';
+import ImageViewer from './_components/ImageViewer';
+import FormattedDateLabel from '@/components/FormattedDateLabel';
 import Button from '@/components/buttons/Button';
 import MainContainer from '@/components/wrappers/MainContainer';
 import Card from '@/components/wrappers/Card';
@@ -54,18 +54,21 @@ export default async function AppDetailsPage(props: { params: any }) {
 								<Icon path={mdiDownload} size={1} />
 							</Button>
 						</a>
-						<span className={styles['last-updated-label']}>
-							<LastUpdatedLabel
-								lastUpdatedIso={app.lastUpdated}
+						<span className={styles['formatted-date-label']}>
+							<FormattedDateLabel
+								dateIso={app.lastUpdated}
 								prefix="Ostatnia aktualizacja: "
 							/>
+						</span>
+						<span className={styles['formatted-date-label']}>
+							<FormattedDateLabel dateIso={app.createdAt} prefix="Opublikowano: " />
 						</span>
 					</div>
 				</header>
 				<main className={styles['app-details']}>
 					<p>{app.description}</p>
 					<ImageViewer imagesUrls={app.pictureUrls} />
-					{app.changelog !== undefined && app.changelog !== '' && (
+					{app.changelog && (
 						<Card className="py-2 px-4">
 							<h6>Lista zmian:</h6>
 							<p>{app.changelog}</p>

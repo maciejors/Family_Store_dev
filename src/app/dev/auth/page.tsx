@@ -101,7 +101,7 @@ export default function AuthPage() {
 						/>
 						{isLogin ? (
 							<a
-								className={`${authStyles.label} mt-5 underline self-end`}
+								className={`${authStyles.label} mt-5 underline self-end hidden`}
 								href={undefined}
 							>
 								Nie pamiętasz hasła?

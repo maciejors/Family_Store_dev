@@ -3,5 +3,6 @@ export default interface AppPreview {
 	name: string;
 	version: string;
 	lastUpdated: string;
+	createdAt: string;
 	logoUrl: string;
 }

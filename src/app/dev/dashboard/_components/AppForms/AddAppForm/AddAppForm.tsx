@@ -1,25 +1,29 @@
 'use client';
 
 import React, { FormEvent, useEffect, useState } from 'react';
-import './forms.css';
+import '../forms.css';
 import { addApp } from '@/lib/supabase/database/apps';
 import { getBrandsForUser } from '@/lib/supabase/database/brands';
-import FileInput from './FileInput';
-import FormSubmitFeedback from './FormSubmitFeedback';
+import FileInput from '../FileInput';
+import FormSubmitFeedback from '../FormSubmitFeedback';
 import Spinner from '@/components/loading/Spinner';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
-import { notifyUsersOnNewApp } from './actions';
+import { notifyUsersOnNewApp } from '../actions';
 import BrandBase from '@/models/Brand';
-import Button from '../../../../../components/buttons/Button';
+import Button from '@/components/buttons/Button';
 
-export default function AddAppForm({ userUid }) {
+export type AddAppFormProps = {
+	userUid: string;
+};
+
+export default function AddAppForm({ userUid }: AddAppFormProps) {
 	const [isDataFetching, setisDataFetching] = useState(true);
 
 	const [appName, setAppName] = useState('');
 	const [apkFile, setApkFile] = useState<File | undefined>(undefined);
 	const [logoFile, setLogoFile] = useState<File | undefined>(undefined);
 	const [appPicturesFiles, setAppPicturesFiles] = useState<File[]>([]);
-	const [version, setVersion] = useState('1.0.0');
+	const [version, setVersion] = useState('');
 	const [description, setDescription] = useState('');
 	const [brandId, setBrandId] = useState<number | undefined>(undefined);
 	const [userBrands, setUserBrands] = useState<BrandBase[]>([]);
@@ -67,15 +71,15 @@ export default function AddAppForm({ userUid }) {
 		e.preventDefault();
 		setIsUploading(true);
 		try {
-			const appId = await addApp(
-				appName.trim(),
-				brandId!,
-				apkFile!,
-				logoFile!,
-				version.trim(),
-				description.trim(),
-				appPicturesFiles
-			);
+			const appId = await addApp({
+				name: appName.trim(),
+				brandId: brandId!,
+				apkFile: apkFile!,
+				logoFile: logoFile!,
+				version: version.trim(),
+				description: description.trim(),
+				appPicturesFiles,
+			});
 			await notifyUsersOnNewApp(appId, appName.trim());
 			setIsUploadError(false);
 		} catch (error) {
@@ -89,19 +93,20 @@ export default function AddAppForm({ userUid }) {
 
 	return (
 		<ConditionalSpinner isLoading={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
-			{userBrands.length === 0 && (
+			{!isDataFetching && userBrands.length === 0 && (
 				<div className="flex flex-col items-center text-base p-4">
 					<p>Brak marek powiązanych z tym kontem.</p>
 					<p>Aby dodać aplikację, należy posiadać przynajmniej jedną markę.</p>
 				</div>
 			)}
-			{userBrands.length > 0 && (
-				<form onSubmit={handleSubmit} className="app-form">
+			{!isDataFetching && userBrands.length > 0 && (
+				<form onSubmit={handleSubmit} className="app-form" aria-label="Add app form">
 					<div className="input-container">
-						<label>
+						<label htmlFor="name">
 							Nazwa aplikacji: <span className="required-asterisk">*</span>
 						</label>
 						<input
+							id="name"
 							required
 							type="text"
 							value={appName}
@@ -110,10 +115,11 @@ export default function AddAppForm({ userUid }) {
 						/>
 					</div>
 					<div className="input-container">
-						<label>
+						<label htmlFor="version">
 							Wersja: <span className="required-asterisk">*</span>
 						</label>
 						<input
+							id="version"
 							required
 							type="text"
 							value={version}
@@ -123,10 +129,11 @@ export default function AddAppForm({ userUid }) {
 						/>
 					</div>
 					<div className="input-container">
-						<label>
+						<label htmlFor="brand">
 							Marka: <span className="required-asterisk">*</span>
 						</label>
 						<select
+							id="brand"
 							value={brandId}
 							onChange={(e) => setBrandId(parseInt(e.target.value))}
 							required
@@ -140,20 +147,23 @@ export default function AddAppForm({ userUid }) {
 						</select>
 					</div>
 					<FileInput
+						id="apkFile"
 						defaultFileInputLabel="Dodaj plik instalacyjny *"
 						inputFileAccept=".apk"
 						inputFileMultiple={false}
 						onFilesChanged={handleApkFileChanged}
 					/>
 					<FileInput
+						id="logoFile"
 						defaultFileInputLabel="Dodaj logo (256x256 px) *"
 						inputFileAccept=".png"
 						inputFileMultiple={false}
 						onFilesChanged={handleLogoFileChanged}
 					/>
 					<div className="input-container">
-						<label>Opis:</label>
+						<label htmlFor="description">Opis:</label>
 						<textarea
+							id="description"
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}
 							className="text-input"
@@ -162,6 +172,7 @@ export default function AddAppForm({ userUid }) {
 						/>
 					</div>
 					<FileInput
+						id="appPicturesFiles"
 						defaultFileInputLabel="Dodaj screenshoty"
 						inputFileRequired={false}
 						inputFileAccept="image/png, image/gif, image/jpeg"

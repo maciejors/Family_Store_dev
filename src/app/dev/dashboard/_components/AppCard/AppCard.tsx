@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import LastUpdatedLabel from '@/components/LastUpdatedLabel';
+import FormattedDateLabel from '@/components/FormattedDateLabel';
 import Icon from '@mdi/react';
 import { mdiUpload, mdiPencil, mdiLaunch } from '@mdi/js';
 import Dialog from '@/components/wrappers/Dialog';
-import UpdateAppForm from '@/app/dev/dashboard/_components/AppForms/UpdateAppForm';
-import EditAppForm from '@/app/dev/dashboard/_components/AppForms/EditAppForm';
+import UpdateAppForm from '../AppForms/UpdateAppForm';
+import EditAppForm from '../AppForms/EditAppForm';
 import AppPreview from '@/models/AppPreview';
 import Link from 'next/link';
 import IconButton from '@/components/buttons/IconButton';
@@ -33,7 +33,7 @@ export default function AppCard({ app }: AppCardProps) {
 					<h3>{app.name}</h3>
 					<p className="text-base text-gray-600">Wersja: {app.version}</p>
 					<span className="text-base text-gray-600">
-						<LastUpdatedLabel lastUpdatedIso={app.lastUpdated} prefix="Aktual. " />
+						<FormattedDateLabel dateIso={app.lastUpdated} prefix="Aktual. " />
 					</span>
 				</div>
 			</main>

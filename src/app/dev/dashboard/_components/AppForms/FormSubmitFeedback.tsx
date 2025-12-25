@@ -3,11 +3,11 @@ import './forms.css';
 import Icon from '@mdi/react';
 import { mdiClose, mdiCheck } from '@mdi/js';
 
-interface FormSubmitFeedbackProps {
+export type FormSubmitFeedbackProps = {
 	wasSubmitted: boolean;
 	isLoading: boolean;
 	isError: boolean;
-}
+};
 
 export default function FormSubmitFeedback({
 	wasSubmitted,

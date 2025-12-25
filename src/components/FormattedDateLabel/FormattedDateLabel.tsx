@@ -8,21 +8,19 @@ const formattingOptions: Intl.DateTimeFormatOptions = {
 	day: 'numeric',
 };
 
-export type LastUpdatedLabelProps = {
-	lastUpdatedIso: string;
+export type FormattedDateLabelProps = {
+	dateIso: string;
 	prefix: string;
 };
 
-export default function LastUpdatedLabel({
-	lastUpdatedIso,
-	prefix,
-}: LastUpdatedLabelProps) {
+export default function FormattedDateLabel({ dateIso, prefix }: FormattedDateLabelProps) {
 	const [labelToDisplay, setLabelToDisplay] = useState('');
 	useEffect(() => {
-		const date = new Date(lastUpdatedIso);
+		const date = new Date(dateIso);
 		const formattedDate = date.toLocaleDateString(navigator.language, formattingOptions);
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setLabelToDisplay(`${prefix !== undefined ? prefix : ''}${formattedDate}`);
-	}, [lastUpdatedIso, prefix]);
+	}, [dateIso, prefix]);
 
 	return <p>{labelToDisplay}</p>;
 }

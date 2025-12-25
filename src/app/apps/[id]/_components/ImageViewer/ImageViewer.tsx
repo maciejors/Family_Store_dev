@@ -1,6 +1,6 @@
-export interface ImageViewerProps {
+export type ImageViewerProps = {
 	imagesUrls: string[];
-}
+};
 
 export default function ImageViewer({ imagesUrls }: ImageViewerProps) {
 	return (
@@ -13,7 +13,6 @@ export default function ImageViewer({ imagesUrls }: ImageViewerProps) {
 					key={imgUrl}
 					src={imgUrl}
 					alt={`Image ${i + 1}/${imagesUrls.length}`}
-					fetchPriority="low"
 					loading="lazy"
 					decoding="async"
 					className="max-h-80 max-w-[90%] w-auto"

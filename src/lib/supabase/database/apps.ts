@@ -3,6 +3,9 @@ import AppDetails from '@/models/AppDetails';
 import AppPreview from '@/models/AppPreview';
 import AppsByBrand from '@/models/AppsByBrand';
 import AppUpdateDetails from '@/models/AppUpdateDetails';
+import EditAppData from '@/models/EditAppData';
+import NewAppData from '@/models/NewAppData';
+import UpdateAppData from '@/models/UpdateAppData';
 
 export async function getCurrentAppVersion(appId: number): Promise<string | null> {
 	const { data: app, error } = await supabase
@@ -64,7 +67,8 @@ export async function getAppsForBrand(brandId: number): Promise<AppPreview[]> {
       name, 
       brands!inner (name), 
       version, 
-      lastUpdated:last_updated`
+      lastUpdated:last_updated,
+			createdAt:created_at`
 		)
 		.eq('brand_id', brandId);
 
@@ -90,7 +94,8 @@ export async function getUserAppsByBrands(userUid: string): Promise<AppsByBrand[
       name, 
       brands!inner (id, name), 
       version, 
-      lastUpdated:last_updated`
+      lastUpdated:last_updated,
+			createdAt:created_at`
 		)
 		.eq('brands.owner_id', userUid);
 
@@ -130,6 +135,7 @@ export async function getAppDetails(appId: number): Promise<AppDetails> {
       brands (name), 
       version, 
       lastUpdated:last_updated,
+			createdAt:created_at,
       description,
       changelog`
 		)
@@ -176,15 +182,15 @@ async function uploadAppPictures(appId: number, picturesFiles: File[]) {
 /**
  * @returns new app Id
  */
-export async function addApp(
-	name: string,
-	brandId: number,
-	apkFile: File,
-	logoFile: File,
-	version: string,
-	description: string,
-	appPicturesFiles: File[]
-): Promise<number> {
+export async function addApp({
+	name,
+	brandId,
+	apkFile,
+	logoFile,
+	version,
+	description,
+	appPicturesFiles,
+}: NewAppData): Promise<number> {
 	const { data: newAppMetadata, error: metadataInsertError } = await supabase
 		.from('apps')
 		.insert([
@@ -221,9 +227,7 @@ export async function addApp(
 
 export async function updateApp(
 	appId: number,
-	apkFile: File,
-	newVersion: string,
-	changelog: string | null
+	{ apkFile, newVersion, changelog }: UpdateAppData
 ) {
 	const { error: apkUploadError } = await storageBucket.upload(
 		getApkStoragePath(appId),
@@ -243,12 +247,14 @@ export async function updateApp(
 
 export async function editApp(
 	appId: number,
-	newName: string,
-	newDescription: string,
-	newChangelog: string,
-	newLogoFile: File | undefined,
-	newPicturesFiles: File[],
-	picturesToDeleteNames: string[]
+	{
+		newName,
+		newDescription,
+		newChangelog,
+		newLogoFile,
+		newPicturesFiles,
+		picturesToDeleteNames,
+	}: EditAppData
 ) {
 	if (newLogoFile) {
 		const { error } = await storageBucket.upload(getLogoStoragePath(appId), newLogoFile, {

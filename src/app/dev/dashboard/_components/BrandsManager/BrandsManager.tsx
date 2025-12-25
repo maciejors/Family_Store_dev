@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
 	addBrand,
 	deleteBrand,
@@ -17,14 +17,15 @@ export type BrandsManagerProps = {
 export default function BrandsManager({ userUid }) {
 	const [brandsData, setBrandsData] = useState<Brand[] | null>(null);
 
-	async function fetchBrandsData() {
+	const fetchBrandsData = useCallback(async () => {
 		const fetchedData = await getBrandsForUser(userUid);
 		setBrandsData(fetchedData);
-	}
+	}, [userUid]);
 
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		fetchBrandsData();
-	}, []);
+	}, [fetchBrandsData]);
 
 	async function handleConfirmEditBrand(brandId: number, newBrandName: string) {
 		setBrandsData(null);

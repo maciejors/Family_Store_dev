@@ -1,4 +1,8 @@
-export default function validate(email?: string, password?: string, repeatPassword?: string) {
+export default function validate(
+	email?: string,
+	password?: string,
+	repeatPassword?: string
+) {
 	let isValid = true;
 	let message = '';
 
@@ -11,9 +15,11 @@ export default function validate(email?: string, password?: string, repeatPasswo
 	} else if (password !== repeatPassword) {
 		isValid = false;
 		message = 'Hasła nie są takie same';
-	} else if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/i)) {
+	} else if (
+		!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/i)
+	) {
 		isValid = false;
-		message = 'Twoje hasło jest do dupy, wymyśl coś trudniejszego';
+		message = 'Twoje hasło jest zbyt słabe, wymyśl coś trudniejszego';
 	}
 
 	return {

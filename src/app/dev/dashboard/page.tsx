@@ -9,9 +9,9 @@ import Dialog from '@/components/wrappers/Dialog';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import NoAppsInfo from './_components/NoAppsInfo';
-import BrandsManager from '@/app/dev/dashboard/_components/BrandsManager';
+import BrandsManager from './_components/BrandsManager';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
-import AddAppForm from '@/app/dev/dashboard/_components/AppForms/AddAppForm';
+import AddAppForm from './_components/AppForms/AddAppForm';
 import AppsByBrand from '@/models/AppsByBrand';
 import Button from '@/components/buttons/Button';
 import MainContainer from '@/components/wrappers/MainContainer';
@@ -21,23 +21,22 @@ export default function DashboardPage() {
 	let { currentUser, logOut } = useAuth();
 	const [appsData, setAppsData] = useState<AppsByBrand[] | null>(null);
 
-	async function onUserChanged() {
-		if (currentUser !== undefined) {
-			if (currentUser === null) {
-				push('/dev/auth');
-				return;
-			}
-			if (isLoggedInRegular(currentUser)) {
-				push('/dev/access-denied');
-				return;
-			}
-			const fetchedData = await getUserAppsByBrands(currentUser!.uid);
-			const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
-			setAppsData(dataToDisplay);
-		}
-	}
-
 	useEffect(() => {
+		async function onUserChanged() {
+			if (currentUser !== undefined) {
+				if (currentUser === null) {
+					push('/dev/auth');
+					return;
+				}
+				if (isLoggedInRegular(currentUser)) {
+					push('/dev/access-denied');
+					return;
+				}
+				const fetchedData = await getUserAppsByBrands(currentUser!.uid);
+				const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
+				setAppsData(dataToDisplay);
+			}
+		}
 		onUserChanged();
 	}, [currentUser]);
 
