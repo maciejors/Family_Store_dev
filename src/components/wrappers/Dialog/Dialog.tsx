@@ -6,15 +6,23 @@ import { ReactNode, useEffect } from 'react';
 import IconButton from '@/components/buttons/IconButton';
 import Card from '../Card';
 import Overlay from '../Overlay';
+import clsx from 'clsx';
 
 export type DialogProps = {
 	open: boolean;
 	handleClose: VoidFunction;
 	title: string;
 	children?: ReactNode;
+	className?: string;
 };
 
-export default function Dialog({ children, open, handleClose, title }: DialogProps) {
+export default function Dialog({
+	children,
+	open,
+	handleClose,
+	title,
+	className,
+}: DialogProps) {
 	function hideScrollbar() {
 		const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 		document.body.style.overflowY = 'hidden';
@@ -35,7 +43,7 @@ export default function Dialog({ children, open, handleClose, title }: DialogPro
 	return (
 		open && (
 			<Overlay>
-				<Card className="w-fit h-fit p-2 z-10 overflow-y-auto">
+				<Card className={clsx('p-2 z-10 overflow-y-auto', className)}>
 					<header className="flex justify-between gap-4 items-start">
 						<h3>{title}</h3>
 						<IconButton

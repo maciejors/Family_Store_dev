@@ -58,6 +58,7 @@ export default function DashboardPage() {
 								open={isBrandsDialogOpen}
 								handleClose={() => setIsBrandsDialogOpen(false)}
 								title="Zarządzanie markami"
+								className="w-80"
 							>
 								<BrandsManager userUid={currentUser.uid} />
 							</Dialog>

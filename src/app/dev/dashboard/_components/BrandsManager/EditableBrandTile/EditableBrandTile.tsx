@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
-import '../../AppForms/forms.css';
 import EditBrandForm from '../EditBrandForm';
 import Brand from '@/models/Brand';
 import IconButton from '@/components/buttons/IconButton';
@@ -46,7 +45,7 @@ export default function EditableBrandTile({
 				/>
 			) : (
 				<div className="flex gap-2 items-center">
-					<p className="text-xl">
+					<p className="text-xl py-px">
 						{brandData.name} ({brandData.appCount})
 					</p>
 					<IconButton
