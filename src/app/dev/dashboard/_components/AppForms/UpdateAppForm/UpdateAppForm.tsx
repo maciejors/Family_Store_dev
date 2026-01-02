@@ -1,14 +1,20 @@
 'use client';
 
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../forms.css';
 import { getAppUpdateDetails, updateApp } from '@/lib/supabase/database/apps';
-import FileInput from '../FileInput';
+import FileInput from '../../../../../../components/inputs/FileInput';
 import FormSubmitFeedback from '../FormSubmitFeedback';
 import Spinner from '@/components/loading/Spinner';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import { notifyUsersOnAppUpdate } from '../actions';
 import Button from '@/components/buttons/Button';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import UpdateAppData, { updateAppSchema } from '@/schemas/UpdateAppData';
+import TextInput from '@/components/inputs/TextInput';
+import TextArea from '@/components/inputs/TextArea';
+import { ZodError } from 'zod';
 
 export type UpdateAppFormProps = {
 	appId: number;
@@ -16,41 +22,36 @@ export type UpdateAppFormProps = {
 
 export default function UpdateAppForm({ appId }: UpdateAppFormProps) {
 	const [isDataFetching, setisDataFetching] = useState(true);
-
-	const [file, setFile] = useState<File | undefined>(undefined);
-	const [version, setVersion] = useState('');
 	const [appName, setAppName] = useState('');
-	const [changelog, setChangelog] = useState('');
 	const [currentVersion, setCurrentVersion] = useState('');
 
 	const [isUploading, setIsUploading] = useState(false);
 	const [isUploadError, setIsUploadError] = useState(false);
 	const [wasSubmitted, setWasSubmitted] = useState(false);
 
+	const {
+		register: formRegister,
+		handleSubmit,
+		formState: { errors },
+		setValue,
+	} = useForm({
+		resolver: zodResolver(updateAppSchema),
+	});
+
 	useEffect(() => {
-		getAppUpdateDetails(appId).then((defaults) => {
-			setChangelog(defaults.changelog ?? '');
-			setCurrentVersion(defaults.version);
-			setAppName(defaults.appName);
+		getAppUpdateDetails(appId).then((currentAppData) => {
+			setValue('changelog', currentAppData.changelog ?? '');
+			setCurrentVersion(currentAppData.version);
+			setAppName(currentAppData.appName);
 			setisDataFetching(false);
 		});
-	}, [appId]);
+	}, [appId, setValue]);
 
-	function handleApkFileChanged(files: File[]) {
-		const newApkFile = files[0]; // could be undefined but that's fine
-		setFile(newApkFile);
-	}
-
-	async function handleSubmit(e: FormEvent) {
-		e.preventDefault();
+	async function onSubmitValid(updateAppData: UpdateAppData) {
 		setIsUploading(true);
 		try {
-			await updateApp(appId, {
-				apkFile: file!,
-				newVersion: version.trim(),
-				changelog: changelog.trim(),
-			});
-			await notifyUsersOnAppUpdate(appId, appName.trim(), version.trim());
+			await updateApp(appId, updateAppData);
+			await notifyUsersOnAppUpdate(appId, appName, updateAppData.newVersion);
 			setIsUploadError(false);
 		} catch (error) {
 			console.error(error);
@@ -71,38 +72,31 @@ export default function UpdateAppForm({ appId }: UpdateAppFormProps) {
 
 	return (
 		<ConditionalSpinner isLoading={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
-			<form onSubmit={handleSubmit} className="app-form" aria-label="Update app form">
+			<form
+				onSubmit={handleSubmit(onSubmitValid)}
+				className="app-form"
+				aria-label="Update app form"
+			>
 				<FileInput
-					defaultFileInputLabel="Dodaj plik instalacyjny *"
-					inputFileAccept=".apk"
-					inputFileMultiple={false}
-					onFilesChanged={handleApkFileChanged}
+					{...formRegister('apkFile')}
+					noFilesLabel="Dodaj plik instalacyjny *"
+					accept=".apk"
+					multiple={false}
+					error={errors.apkFile?.message}
 				/>
-				<div className="input-container">
-					<label htmlFor="version">
-						Wersja: <span className="required-asterisk">*</span>
-					</label>
-					<input
-						id="version"
-						required
-						type="text"
-						value={version}
-						onChange={(e) => setVersion(e.target.value)}
-						placeholder={`Obecna wersja: ${currentVersion}`}
-						className="text-input"
-					/>
-				</div>
-				<div className="input-container">
-					<label htmlFor="changelog">Lista zmian:</label>
-					<textarea
-						id="changelog"
-						value={changelog}
-						onChange={(e) => setChangelog(e.target.value)}
-						className="text-input"
-						rows={10}
-						cols={70}
-					/>
-				</div>
+				<TextInput
+					{...formRegister('newVersion')}
+					label="Wersja: *"
+					placeholder={`Obecna wersja: ${currentVersion}`}
+					error={errors.newVersion?.message}
+				/>
+				<TextArea
+					{...formRegister('changelog')}
+					label="Lista zmian:"
+					error={errors.changelog?.message}
+					rows={10}
+					cols={70}
+				/>
 				<p className="required-asterisk">* pole wymagane</p>
 				<FormSubmitFeedback
 					wasSubmitted={wasSubmitted}

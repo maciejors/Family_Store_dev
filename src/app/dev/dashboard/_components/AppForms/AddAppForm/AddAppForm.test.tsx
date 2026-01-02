@@ -5,7 +5,7 @@ import * as brandsApi from '@/lib/supabase/database/brands';
 import * as appsApi from '@/lib/supabase/database/apps';
 import * as oneSignalApi from '@/lib/notifications/onesignal';
 import Brand from '@/models/Brand';
-import NewAppData from '@/models/NewAppData';
+import NewAppData from '@/schemas/NewAppData';
 import { getFakeApk, getFakePicture } from '@/__test-utils__/fakeFiles';
 
 const mockBrandsApi = brandsApi as jest.Mocked<typeof brandsApi>;
@@ -126,12 +126,12 @@ test('Should trim the text values', async () => {
 
 describe('Verify required fields', () => {
 	const requiredFields = [
-		{ key: 'name' },
-		{ key: 'version' },
-		// { key: 'apkFile' },
-		// { key: 'logoFile' },
+		{ key: 'name', errorText: /nazwa aplikacji jest wymagana/i },
+		{ key: 'version', errorText: /id wersji aplikacji jest wymagane/i },
+		{ key: 'apkFile', errorText: /plik instalacyjny jest wymagany/i },
+		{ key: 'logoFile', errorText: /logo aplikacji jest wymagane/i },
 	];
-	test.each(requiredFields)('Should require $key', async ({ key }) => {
+	test.each(requiredFields)('Should require $key', async ({ key, errorText }) => {
 		renderComponent();
 		await screen.findByRole('form');
 
@@ -142,6 +142,7 @@ describe('Verify required fields', () => {
 		await fillForm(formData);
 
 		await user.click(getSubmitButton());
+		expect(screen.getByText(errorText)).toBeInTheDocument();
 		expect(mockAppsApi.addApp).not.toHaveBeenCalled();
 		expect(mockOneSignalApi.sendPushNewApp).not.toHaveBeenCalled();
 	});

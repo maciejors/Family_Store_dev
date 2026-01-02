@@ -1,10 +1,10 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import EditAppForm from './EditAppForm';
 import * as appsApi from '@/lib/supabase/database/apps';
 import { getFakePicture } from '@/__test-utils__/fakeFiles';
 import AppDetails from '@/models/AppDetails';
-import EditAppData from '@/models/EditAppData';
+import EditAppData from '@/schemas/EditAppData';
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 

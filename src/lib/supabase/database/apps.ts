@@ -3,9 +3,9 @@ import AppDetails from '@/models/AppDetails';
 import AppPreview from '@/models/AppPreview';
 import AppsByBrand from '@/models/AppsByBrand';
 import AppUpdateDetails from '@/models/AppUpdateDetails';
-import EditAppData from '@/models/EditAppData';
-import NewAppData from '@/models/NewAppData';
-import UpdateAppData from '@/models/UpdateAppData';
+import EditAppData from '@/schemas/EditAppData';
+import NewAppData from '@/schemas/NewAppData';
+import UpdateAppData from '@/schemas/UpdateAppData';
 
 export async function getCurrentAppVersion(appId: number): Promise<string | null> {
 	const { data: app, error } = await supabase

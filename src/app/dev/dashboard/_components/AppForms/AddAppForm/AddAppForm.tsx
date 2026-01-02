@@ -1,16 +1,22 @@
 'use client';
 
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import '../forms.css';
 import { addApp } from '@/lib/supabase/database/apps';
 import { getBrandsForUser } from '@/lib/supabase/database/brands';
-import FileInput from '../FileInput';
+import FileInput from '../../../../../../components/inputs/FileInput';
 import FormSubmitFeedback from '../FormSubmitFeedback';
 import Spinner from '@/components/loading/Spinner';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import { notifyUsersOnNewApp } from '../actions';
-import BrandBase from '@/models/Brand';
+import Brand from '@/models/Brand';
 import Button from '@/components/buttons/Button';
+import NewAppData, { newAppSchema } from '@/schemas/NewAppData';
+import TextInput from '@/components/inputs/TextInput';
+import TextArea from '@/components/inputs/TextArea';
+import SelectBox from '@/components/inputs/SelectBox';
 
 export type AddAppFormProps = {
 	userUid: string;
@@ -18,29 +24,30 @@ export type AddAppFormProps = {
 
 export default function AddAppForm({ userUid }: AddAppFormProps) {
 	const [isDataFetching, setisDataFetching] = useState(true);
-
-	const [appName, setAppName] = useState('');
-	const [apkFile, setApkFile] = useState<File | undefined>(undefined);
-	const [logoFile, setLogoFile] = useState<File | undefined>(undefined);
-	const [appPicturesFiles, setAppPicturesFiles] = useState<File[]>([]);
-	const [version, setVersion] = useState('');
-	const [description, setDescription] = useState('');
-	const [brandId, setBrandId] = useState<number | undefined>(undefined);
-	const [userBrands, setUserBrands] = useState<BrandBase[]>([]);
+	const [userBrands, setUserBrands] = useState<Brand[]>([]);
 
 	const [isUploading, setIsUploading] = useState(false);
 	const [isUploadError, setIsUploadError] = useState(false);
 	const [wasSubmitted, setWasSubmitted] = useState(false);
 
+	const {
+		register: formRegister,
+		handleSubmit,
+		formState: { errors },
+		setValue,
+	} = useForm({
+		resolver: zodResolver(newAppSchema),
+	});
+
 	useEffect(() => {
 		getBrandsForUser(userUid).then((brands) => {
 			setUserBrands(brands);
 			if (brands.length > 0) {
-				setBrandId(brands[0].id);
+				setValue('brandId', brands[0].id);
 			}
 			setisDataFetching(false);
 		});
-	}, [userUid]);
+	}, [userUid, setValue]);
 
 	/**
 	 * Checks if the app is in the state that the app has been successfuly
@@ -52,35 +59,11 @@ export default function AddAppForm({ userUid }: AddAppFormProps) {
 		return !isUploading && wasSubmitted && !isUploadError;
 	}
 
-	function handleApkFileChanged(files: File[]) {
-		const newLogoFile = files[0]; // could be undefined but that's fine
-		setApkFile(newLogoFile);
-	}
-
-	function handleLogoFileChanged(files: File[]) {
-		const newLogoFile = files[0]; // could be undefined but that's fine
-		setLogoFile(newLogoFile);
-	}
-
-	function handleAppPicturesFilesChanged(files: File[]) {
-		const newAppPicturesFiles = files;
-		setAppPicturesFiles(newAppPicturesFiles);
-	}
-
-	async function handleSubmit(e: FormEvent) {
-		e.preventDefault();
+	async function onSubmitValid(newAppData: NewAppData) {
 		setIsUploading(true);
 		try {
-			const appId = await addApp({
-				name: appName.trim(),
-				brandId: brandId!,
-				apkFile: apkFile!,
-				logoFile: logoFile!,
-				version: version.trim(),
-				description: description.trim(),
-				appPicturesFiles,
-			});
-			await notifyUsersOnNewApp(appId, appName.trim());
+			const appId = await addApp(newAppData);
+			await notifyUsersOnNewApp(appId, newAppData.name);
 			setIsUploadError(false);
 		} catch (error) {
 			console.error(error);
@@ -100,84 +83,57 @@ export default function AddAppForm({ userUid }: AddAppFormProps) {
 				</div>
 			)}
 			{!isDataFetching && userBrands.length > 0 && (
-				<form onSubmit={handleSubmit} className="app-form" aria-label="Add app form">
-					<div className="input-container">
-						<label htmlFor="name">
-							Nazwa aplikacji: <span className="required-asterisk">*</span>
-						</label>
-						<input
-							id="name"
-							required
-							type="text"
-							value={appName}
-							onChange={(e) => setAppName(e.target.value)}
-							className="text-input"
-						/>
-					</div>
-					<div className="input-container">
-						<label htmlFor="version">
-							Wersja: <span className="required-asterisk">*</span>
-						</label>
-						<input
-							id="version"
-							required
-							type="text"
-							value={version}
-							onChange={(e) => setVersion(e.target.value)}
-							placeholder={`np. 1.0.0`}
-							className="text-input"
-						/>
-					</div>
-					<div className="input-container">
-						<label htmlFor="brand">
-							Marka: <span className="required-asterisk">*</span>
-						</label>
-						<select
-							id="brand"
-							value={brandId}
-							onChange={(e) => setBrandId(parseInt(e.target.value))}
-							required
-							className="text-input"
-						>
-							{userBrands.map((brand) => (
-								<option key={brand.id} value={brand.id}>
-									{brand.name}
-								</option>
-							))}
-						</select>
-					</div>
-					<FileInput
-						id="apkFile"
-						defaultFileInputLabel="Dodaj plik instalacyjny *"
-						inputFileAccept=".apk"
-						inputFileMultiple={false}
-						onFilesChanged={handleApkFileChanged}
+				<form
+					onSubmit={handleSubmit(onSubmitValid)}
+					className="app-form"
+					aria-label="Add app form"
+				>
+					<TextInput
+						{...formRegister('name')}
+						label="Nazwa aplikacji: *"
+						error={errors.name?.message}
+					/>
+					<TextInput
+						{...formRegister('version')}
+						label="Wersja: *"
+						placeholder="np. 1.0.0"
+						error={errors.version?.message}
+					/>
+					<SelectBox
+						{...formRegister('brandId')}
+						label="Marka: *"
+						options={userBrands}
+						valueMapper={(brand) => brand.id.toString()}
+						displayNameMapper={(brand) => brand.name}
+						error={errors.brandId?.message}
 					/>
 					<FileInput
-						id="logoFile"
-						defaultFileInputLabel="Dodaj logo (256x256 px) *"
-						inputFileAccept=".png"
-						inputFileMultiple={false}
-						onFilesChanged={handleLogoFileChanged}
+						{...formRegister('apkFile')}
+						noFilesLabel="Dodaj plik instalacyjny *"
+						accept=".apk"
+						multiple={false}
+						error={errors.apkFile?.message}
 					/>
-					<div className="input-container">
-						<label htmlFor="description">Opis:</label>
-						<textarea
-							id="description"
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-							className="text-input"
-							rows={10}
-							cols={70}
-						/>
-					</div>
 					<FileInput
-						id="appPicturesFiles"
-						defaultFileInputLabel="Dodaj screenshoty"
-						inputFileRequired={false}
-						inputFileAccept="image/png, image/gif, image/jpeg"
-						inputFileMultiple={true}
-						onFilesChanged={handleAppPicturesFilesChanged}
+						{...formRegister('logoFile')}
+						noFilesLabel="Dodaj logo (256x256 px) *"
+						accept=".png"
+						multiple={false}
+						error={errors.logoFile?.message}
+					/>
+					<TextArea
+						{...formRegister('description')}
+						label="Opis:"
+						error={errors.description?.message}
+						rows={10}
+						cols={70}
+					/>
+					<FileInput
+						{...formRegister('appPicturesFiles')}
+						noFilesLabel="Dodaj screenshoty"
+						accept="image/png, image/gif, image/jpeg"
+						multiple={true}
+						error={errors.appPicturesFiles?.message}
 					/>
 					<p className="required-asterisk">* pole wymagane</p>
 					<FormSubmitFeedback
