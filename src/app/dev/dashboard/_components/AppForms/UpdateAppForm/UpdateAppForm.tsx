@@ -14,7 +14,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import UpdateAppData, { updateAppSchema } from '@/schemas/UpdateAppData';
 import TextInput from '@/components/inputs/TextInput';
 import TextArea from '@/components/inputs/TextArea';
-import { ZodError } from 'zod';
 
 export type UpdateAppFormProps = {
 	appId: number;
