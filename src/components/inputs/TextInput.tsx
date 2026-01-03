@@ -1,12 +1,12 @@
 import React, { forwardRef } from 'react';
-import InputWrapper from './util/InputWrapper';
-import SharedTextboxProps from './util/SharedTextboxProps';
+import InputBoxWrapper from './util/InputBoxWrapper';
+import SharedInputBoxProps from './util/SharedInputBoxProps';
 
 export type TextInputProps = Pick<
 	React.InputHTMLAttributes<HTMLInputElement>,
 	'value' | 'onChange' | 'onBlur' | 'placeholder'
 > &
-	SharedTextboxProps & {
+	SharedInputBoxProps & {
 		type?: 'text' | 'email' | 'password';
 	};
 
@@ -15,9 +15,9 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function TextInpu
 	ref
 ) {
 	return (
-		<InputWrapper compact={compact} label={label} error={error}>
+		<InputBoxWrapper compact={compact} label={label} error={error}>
 			<input ref={ref} type={type} {...inputProps} />
-		</InputWrapper>
+		</InputBoxWrapper>
 	);
 });
 

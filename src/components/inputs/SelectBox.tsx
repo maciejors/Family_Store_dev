@@ -1,12 +1,12 @@
 import React, { forwardRef, ReactElement } from 'react';
-import InputWrapper from './util/InputWrapper';
-import SharedTextboxProps from './util/SharedTextboxProps';
+import InputBoxWrapper from './util/InputBoxWrapper';
+import SharedInputBoxProps from './util/SharedInputBoxProps';
 
 export type SelectBoxProps<T> = Pick<
 	React.SelectHTMLAttributes<HTMLSelectElement>,
 	'onChange' | 'onBlur'
 > &
-	SharedTextboxProps & {
+	SharedInputBoxProps & {
 		options: T[];
 		keyMapper?: (option: T) => React.Key;
 		valueMapper: (option: T) => string;
@@ -27,7 +27,7 @@ function selectBoxRenderFunc<T>(
 	ref: React.Ref<HTMLSelectElement>
 ) {
 	return (
-		<InputWrapper compact={compact} label={label} error={error}>
+		<InputBoxWrapper compact={compact} label={label} error={error}>
 			<select ref={ref} {...selectProps}>
 				{options.map((opt) => {
 					const value = valueMapper(opt);
@@ -40,7 +40,7 @@ function selectBoxRenderFunc<T>(
 					);
 				})}
 			</select>
-		</InputWrapper>
+		</InputBoxWrapper>
 	);
 }
 

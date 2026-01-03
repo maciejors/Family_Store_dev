@@ -1,21 +1,21 @@
 import React, { forwardRef } from 'react';
-import InputWrapper from './util/InputWrapper';
-import SharedTextboxProps from './util/SharedTextboxProps';
+import InputBoxWrapper from './util/InputBoxWrapper';
+import SharedInputBoxProps from './util/SharedInputBoxProps';
 
 export type TextAreaProps = Pick<
 	React.TextareaHTMLAttributes<HTMLTextAreaElement>,
 	'onChange' | 'onBlur' | 'rows' | 'cols'
 > &
-	SharedTextboxProps;
+	SharedInputBoxProps;
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(
 	{ compact, label, error, ...textAreaProps },
 	ref
 ) {
 	return (
-		<InputWrapper compact={compact} label={label} error={error}>
+		<InputBoxWrapper compact={compact} label={label} error={error}>
 			<textarea ref={ref} {...textAreaProps} />
-		</InputWrapper>
+		</InputBoxWrapper>
 	);
 });
 

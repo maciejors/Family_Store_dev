@@ -1,18 +1,18 @@
 import { cloneElement, ReactElement, useId } from 'react';
 import clsx from 'clsx';
-import SharedTextboxProps from './SharedTextboxProps';
+import SharedInputBoxProps from './SharedInputBoxProps';
 import ErrorLabel from './ErrorLabel';
 
-export type InputWrapperProps = SharedTextboxProps & {
+export type InputBoxWrapperProps = SharedInputBoxProps & {
 	children: ReactElement<HTMLElement>;
 };
 
-export default function InputWrapper({
+export default function InputBoxWrapper({
 	label,
 	error,
 	compact,
 	children,
-}: InputWrapperProps) {
+}: InputBoxWrapperProps) {
 	const id = useId();
 
 	const className = clsx(

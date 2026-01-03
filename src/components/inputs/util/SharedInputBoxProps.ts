@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
-type SharedTextboxProps = {
+type SharedInputBoxProps = {
 	label?: string | ReactNode;
 	error?: string | boolean;
 	compact?: boolean;
 };
 
-export default SharedTextboxProps;
+export default SharedInputBoxProps;
