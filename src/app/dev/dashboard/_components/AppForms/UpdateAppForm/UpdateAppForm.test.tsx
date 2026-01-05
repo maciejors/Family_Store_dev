@@ -5,7 +5,7 @@ import * as appsApi from '@/lib/supabase/database/apps';
 import * as oneSignalApi from '@/lib/notifications/onesignal';
 import { getFakeApk } from '@/__test-utils__/fakeFiles';
 import AppUpdateDetails from '@/models/AppUpdateDetails';
-import UpdateAppData from '@/models/UpdateAppData';
+import UpdateAppData from '@/schemas/UpdateAppData';
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 const mockOneSignalApi = oneSignalApi as jest.Mocked<typeof oneSignalApi>;
@@ -121,8 +121,8 @@ test('Should trim the text values', async () => {
 
 describe('Verify required fields', () => {
 	const requiredFields = [
-		{ key: 'newVersion' },
-		// { key: 'apkFile' },
+		{ key: 'newVersion', errorText: /id nowej wersji jest wymagane/i },
+		{ key: 'apkFile', errorText: /plik instalacyjny jest wymagany/i },
 	];
 	test.each(requiredFields)('Should require $key', async ({ key }) => {
 		renderComponent();

@@ -58,7 +58,7 @@ test('Should open the update dialog when clicked the relevant button', async () 
 	).toBeInTheDocument();
 });
 
-test('Should open the update dialog when clicked the relevant button', async () => {
+test('Should open the edit app dialog when clicked the relevant button', async () => {
 	renderComponent();
 
 	await user.click(

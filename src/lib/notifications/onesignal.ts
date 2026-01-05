@@ -50,6 +50,13 @@ async function sendPushToAll(
 			'Content-Type': 'application/json',
 			Authorization: `Basic ${API_KEY}`,
 		};
+
+		if (process.env.NODE_ENV !== 'production') {
+			console.log(`Notification triggered: ${requestBody}`);
+			console.log('Note: notifications are only sent in production mode');
+			return;
+		}
+
 		console.log('Sending push notification...');
 		const response = await axios.post(PUSH_ENDPOINT, requestBody, {
 			headers: requestHeaders,

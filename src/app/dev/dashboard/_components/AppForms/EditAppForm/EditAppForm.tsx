@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil, mdiDelete, mdiArrowULeftTop } from '@mdi/js';
 import '../forms.css';
@@ -8,8 +8,16 @@ import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
 import FormSubmitFeedback from '../FormSubmitFeedback';
 import Spinner from '@/components/loading/Spinner';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
-import FileInput from '../FileInput';
+import FileInput from '../../../../../../components/inputs/FileInput';
 import Button from '@/components/buttons/Button';
+import EditAppData, { editAppSchema } from '@/schemas/EditAppData';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import TextInput from '@/components/inputs/TextInput';
+import IconButton from '@/components/buttons/IconButton';
+import TextArea from '@/components/inputs/TextArea';
+import clsx from 'clsx';
+import ErrorLabel from '@/components/inputs/util/ErrorLabel';
 
 export type EditAppFormProps = {
 	appId: number;
@@ -18,58 +26,45 @@ export type EditAppFormProps = {
 export default function EditAppForm({ appId }: EditAppFormProps) {
 	const [isDataFetching, setisDataFetching] = useState(true);
 
-	const defaultLogoInputLabel = 'Dodaj nowe logo';
-	const defaultPicturesInputLabel = 'Dodaj zdjęcia';
-
-	const [logoInputLabel, setLogoInputLabel] = useState(defaultLogoInputLabel);
-	const [picturesInputLabel, setPicturesInputLabel] = useState(defaultPicturesInputLabel);
-
-	const [appName, setAppName] = useState('');
-
-	const [logoUrl, setLogoUrl] = useState('');
+	const [currentLogoUrl, setCurrentLogoUrl] = useState('');
 	const [isChangingLogo, setIsChangingLogo] = useState(false);
-	const [logoFile, setLogoFile] = useState<File | undefined>(undefined);
-
-	const [changelog, setChangelog] = useState('');
-	const [description, setDescription] = useState('');
 
 	const [pictureUrls, setPictureUrls] = useState<string[]>([]);
 	const [pictureNames, setPictureNames] = useState<string[]>([]);
-	const [picturesToDeleteFlags, setPicturesToDeleteFlags] = useState<boolean[]>([]);
-	const [newAppPicturesFiles, setNewAppPicturesFiles] = useState<File[]>([]);
 
 	const [isUploading, setIsUploading] = useState(false);
 	const [isUploadError, setIsUploadError] = useState(false);
 	const [wasSubmitted, setWasSubmitted] = useState(false);
 
+	const {
+		register: formRegister,
+		handleSubmit,
+		formState: { errors },
+		setValue,
+		getValues,
+		watch,
+	} = useForm({
+		resolver: zodResolver(editAppSchema),
+	});
+
+	const picturesToDeleteNames = watch('picturesToDeleteNames');
+
 	useEffect(() => {
 		getAppDetails(appId).then((defaults) => {
-			setAppName(defaults.name);
-			setLogoUrl(defaults.logoUrl ?? '');
-			setChangelog(defaults.changelog ?? '');
-			setDescription(defaults.description ?? '');
+			setValue('newName', defaults.name);
+			setValue('newChangelog', defaults.changelog ?? '');
+			setValue('newDescription', defaults.description ?? '');
+			setCurrentLogoUrl(defaults.logoUrl ?? '');
 			setPictureUrls(defaults.pictureUrls);
 			setPictureNames(defaults.pictureNames);
-			setPicturesToDeleteFlags(defaults.pictureUrls.map((_) => false));
 			setisDataFetching(false);
 		});
-	}, [appId]);
+	}, [appId, setValue]);
 
-	async function handleSubmit(e: FormEvent) {
-		e.preventDefault();
+	async function onSubmitValid(editAppData: EditAppData) {
 		setIsUploading(true);
 		try {
-			const picturesToDelete = pictureNames.filter(
-				(_, index) => picturesToDeleteFlags[index]
-			);
-			await editApp(appId, {
-				newName: appName.trim(),
-				newDescription: description.trim(),
-				newChangelog: changelog.trim(),
-				newLogoFile: isChangingLogo ? logoFile : undefined,
-				newPicturesFiles: newAppPicturesFiles,
-				picturesToDeleteNames: picturesToDelete,
-			});
+			await editApp(appId, editAppData);
 			setIsUploadError(false);
 		} catch (error) {
 			console.error(error);
@@ -88,141 +83,122 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 		return !isUploading && wasSubmitted && !isUploadError;
 	}
 
-	function showLogoEditor() {
-		setIsChangingLogo(true);
-	}
-
-	function hideLogoEditor() {
-		setIsChangingLogo(false);
-	}
-
-	function handleLogoFileChanged(files: File[]) {
-		const newLogoFile = files[0]; // could be undefined but that's fine
-		setLogoFile(newLogoFile);
-	}
-
-	function handleNewAppPicturesFilesChanged(files: File[]) {
-		const newAppPicturesFiles = files;
-		setNewAppPicturesFiles(newAppPicturesFiles);
-	}
-
-	function togglePictureToDelete(index: number) {
-		const flagsCopy = [...picturesToDeleteFlags];
-		flagsCopy[index] = !flagsCopy[index];
-		setPicturesToDeleteFlags(flagsCopy);
+	function togglePictureToDelete(name: string) {
+		let picturesToDeleteNames = getValues().picturesToDeleteNames ?? [];
+		if (picturesToDeleteNames.includes(name)) {
+			picturesToDeleteNames = picturesToDeleteNames.filter((n) => n !== name);
+		} else {
+			picturesToDeleteNames = [...picturesToDeleteNames, name];
+		}
+		setValue('picturesToDeleteNames', picturesToDeleteNames);
 	}
 
 	return (
 		<ConditionalSpinner isLoading={isDataFetching} extraSpinnerWrapperClasses="pt-8 pb-6">
-			<form onSubmit={handleSubmit} className="app-form" aria-label="Edit app form">
+			<form
+				onSubmit={handleSubmit(onSubmitValid)}
+				className="app-form"
+				aria-label="Edit app form"
+			>
+				<TextInput
+					{...formRegister('newName')}
+					label="Nazwa aplikacji: *"
+					error={errors.newName?.message}
+				/>
 				<div className="input-container">
-					<label htmlFor="name">
-						Nazwa aplikacji: <span className="required-asterisk">*</span>
-					</label>
-					<input
-						required
-						id="name"
-						type="text"
-						value={appName}
-						onChange={(e) => setAppName(e.target.value)}
-						className="text-input"
-					/>
-				</div>
-
-				<div className="input-container">
-					<label htmlFor="logo">
-						Logo aplikacji: <span className="required-asterisk">*</span>
-					</label>
+					<label htmlFor="logo">Logo aplikacji: *</label>
 					{!isChangingLogo && (
 						<div className="img-file-container">
-							<a className="file-button" href={logoUrl} target="_blank">
+							<a className="file-button" href={currentLogoUrl} target="_blank">
 								logo.png {/* It is always named that in the database */}
 							</a>
-							<button type="button" onClick={showLogoEditor} id="logo">
-								<Icon className="icon-button" path={mdiPencil} size={1} />
-							</button>
+							<IconButton
+								id="logo"
+								type="button"
+								onClick={() => setIsChangingLogo(true)}
+								icon={<Icon className="icon-button" path={mdiPencil} size={1} />}
+							/>
 						</div>
 					)}
 					{isChangingLogo && (
 						<div className="new-logo-input-container">
-							<button type="button" onClick={hideLogoEditor} className="btn btn-primary">
+							<Button
+								type="button"
+								variant="secondary"
+								className="w-fit"
+								onClick={() => setIsChangingLogo(false)}
+							>
 								Anuluj edycję loga
-							</button>
+							</Button>
 							<FileInput
-								defaultFileInputLabel="Dodaj logo (256x256 px) *"
-								inputFileAccept=".png"
-								inputFileMultiple={false}
-								onFilesChanged={handleLogoFileChanged}
-								inputFileRequired={isChangingLogo}
+								{...formRegister('newLogoFile')}
+								noFilesLabel="Dodaj logo (256x256 px) *"
+								accept=".png"
+								multiple={false}
+								error={errors.newLogoFile?.message}
 							/>
 						</div>
 					)}
 				</div>
-
-				<div className="input-container">
-					<label htmlFor="description">Opis:</label>
-					<textarea
-						id="description"
-						value={description}
-						onChange={(e) => setDescription(e.target.value)}
-						className="text-input"
-						rows={10}
-						cols={70}
-					/>
-				</div>
-
-				<div className="input-container">
-					<label htmlFor="changelog">Lista zmian:</label>
-					<textarea
-						id="changelog"
-						value={changelog}
-						onChange={(e) => setChangelog(e.target.value)}
-						className="text-input"
-						rows={10}
-						cols={70}
-					/>
-				</div>
-
+				<TextArea
+					{...formRegister('newDescription')}
+					label="Opis:"
+					error={errors.newDescription?.message}
+					rows={10}
+					cols={70}
+				/>
+				<TextArea
+					{...formRegister('newChangelog')}
+					label="Lista zmian:"
+					error={errors.newChangelog?.message}
+					rows={10}
+					cols={70}
+				/>
 				<div className="input-container">
 					<label>Screenshoty:</label>
 					<ul className="picture-list">
-						{pictureUrls.map((url, index) => (
-							<li className="picture-list-item" key={index}>
-								<a
-									className="picture-list-item-title file-button"
-									href={url}
-									target="_blank"
-								>
-									<span
-										className={
-											picturesToDeleteFlags[index] ? 'picture-marked-to-delete' : ''
-										}
+						{pictureNames.map((name, index) => {
+							const isMarkedToDelete = picturesToDeleteNames?.includes(name) ?? false;
+							return (
+								<li className="picture-list-item" key={index}>
+									<a
+										className="picture-list-item-title file-button"
+										href={pictureUrls[index]}
+										target="_blank"
 									>
-										{pictureNames[index]}
-									</span>
-								</a>
-								<button
-									type="button"
-									onClick={() => togglePictureToDelete(index)}
-									aria-label={`${
-										picturesToDeleteFlags[index] ? 'undo ' : ''
-									}delete picture ${pictureNames[index]}`}
-								>
-									<Icon
-										className="icon-button"
-										path={picturesToDeleteFlags[index] ? mdiArrowULeftTop : mdiDelete}
-										size={1}
+										<span
+											className={clsx(isMarkedToDelete && 'picture-marked-to-delete')}
+										>
+											{name}
+										</span>
+									</a>
+									<IconButton
+										type="button"
+										onClick={() => togglePictureToDelete(name)}
+										aria-label={`${
+											isMarkedToDelete ? 'undo ' : ''
+										}delete picture ${name}`}
+										icon={
+											<Icon
+												className="icon-button"
+												path={isMarkedToDelete ? mdiArrowULeftTop : mdiDelete}
+												size={1}
+											/>
+										}
 									/>
-								</button>
-							</li>
-						))}
+								</li>
+							);
+						})}
 					</ul>
+					{errors.picturesToDeleteNames && (
+						<ErrorLabel>{errors.picturesToDeleteNames?.message}</ErrorLabel>
+					)}
 					<FileInput
-						defaultFileInputLabel="Dodaj nowe screenshoty"
-						inputFileRequired={false}
-						inputFileAccept="image/png, image/gif, image/jpeg"
-						inputFileMultiple={true}
-						onFilesChanged={handleNewAppPicturesFilesChanged}
+						{...formRegister('newPicturesFiles')}
+						noFilesLabel="Dodaj nowe screenshoty"
+						accept="image/png, image/gif, image/jpeg"
+						multiple={true}
+						error={errors.newPicturesFiles?.message}
 					/>
 				</div>
 				<p className="required-asterisk">* pole wymagane</p>
