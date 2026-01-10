@@ -16,6 +16,7 @@ import TextArea from '@/components/inputs/TextArea';
 import clsx from 'clsx';
 import ErrorLabel from '@/components/inputs/util/ErrorLabel';
 import AppFormTemplate from '../AppFormTemplate';
+import GenericInputWrapper from '@/components/inputs/util/GenericInputWrapper';
 
 export type EditAppFormProps = {
 	appId: number;
@@ -81,8 +82,7 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 				label="Nazwa aplikacji: *"
 				error={errors.newName?.message}
 			/>
-			<div className="input-container">
-				<label htmlFor="logo">Logo aplikacji: *</label>
+			<GenericInputWrapper label="Logo aplikacji: *" labelHtmlFor="logo">
 				{!isChangingLogo && (
 					<div className="img-file-container">
 						<a className="file-button" href={currentLogoUrl} target="_blank">
@@ -115,7 +115,7 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 						/>
 					</div>
 				)}
-			</div>
+			</GenericInputWrapper>
 			<TextArea
 				{...formRegister('newDescription')}
 				label="Opis:"
@@ -130,8 +130,7 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 				rows={10}
 				cols={70}
 			/>
-			<div className="input-container">
-				<label>Screenshoty:</label>
+			<GenericInputWrapper label="Screenshoty:">
 				<ul className="picture-list">
 					{pictureNames.map((name, index) => {
 						const isMarkedToDelete = picturesToDeleteNames?.includes(name) ?? false;
@@ -172,7 +171,7 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 					multiple={true}
 					error={errors.newPicturesFiles?.message}
 				/>
-			</div>
+			</GenericInputWrapper>
 		</AppFormTemplate>
 	);
 }
