@@ -1,9 +1,5 @@
 @reference '../../../../../globals.css';
 
-.input-container {
-	@apply flex flex-col items-start w-full;
-}
-
 .img-file-container {
 	@apply flex flex-row items-center gap-1;
 }
@@ -21,7 +17,7 @@
 }
 
 .picture-list {
-	@apply flex flex-col mb-2;
+	@apply flex flex-col mb-2 w-fit;
 }
 
 .picture-list-item {
