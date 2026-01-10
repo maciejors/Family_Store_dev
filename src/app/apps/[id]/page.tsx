@@ -67,7 +67,7 @@ export default async function AppDetailsPage(props: { params: any }) {
 				</header>
 				<main className={styles['app-details']}>
 					<p>{app.description}</p>
-					<ImageViewer imagesUrls={app.pictureUrls} />
+					<ImageViewer imagesUrls={app.pictures.map((p) => p.url)} />
 					{app.changelog && (
 						<Card className="py-2 px-4">
 							<h6>Lista zmian:</h6>
