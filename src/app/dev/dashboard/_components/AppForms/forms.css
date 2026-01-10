@@ -17,7 +17,7 @@
 }
 
 .picture-list {
-	@apply flex flex-col mb-2;
+	@apply flex flex-col mb-2 w-fit;
 }
 
 .picture-list-item {
