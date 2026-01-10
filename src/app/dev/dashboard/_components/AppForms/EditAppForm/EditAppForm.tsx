@@ -17,7 +17,7 @@ import IconButton from '@/components/buttons/IconButton';
 import TextArea from '@/components/inputs/TextArea';
 import ErrorLabel from '@/components/inputs/util/ErrorLabel';
 import GenericInputWrapper from '@/components/inputs/util/GenericInputWrapper';
-import LogoEditor from './LogoEditor';
+import LogoEditor from './inputs/LogoEditor';
 import AppDetails from '@/models/AppDetails';
 
 export type EditAppFormProps = {
