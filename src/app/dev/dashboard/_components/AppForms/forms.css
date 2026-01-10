@@ -1,9 +1,5 @@
 @reference '../../../../../globals.css';
 
-form.app-form {
-	@apply flex flex-col items-center gap-4 p-2 mt-4 text-lg;
-}
-
 .input-container {
 	@apply flex flex-col items-start w-full;
 }
@@ -12,8 +8,7 @@ form.app-form {
 	@apply flex flex-row items-center gap-1;
 }
 
-.img-file-container .icon-button,
-.picture-list .icon-button {
+.icon-button {
 	@apply text-primary hover:text-primary-hover;
 }
 
@@ -23,30 +18,6 @@ form.app-form {
 
 .new-logo-input-container .btn {
 	@apply w-fit;
-}
-
-.file-button {
-	@apply m-1;
-}
-
-.required-asterisk {
-	@apply text-red-600;
-}
-
-p.required-asterisk {
-	@apply w-full text-base;
-}
-
-.text-input {
-	@apply border-2 rounded-sm shadow-inner bg-white w-full;
-}
-
-.text-input-invalid {
-	@apply border-red-500;
-}
-
-textarea.text-input {
-	@apply resize-y;
 }
 
 .picture-list {
@@ -67,25 +38,5 @@ textarea.text-input {
 }
 
 .file-button {
-	@apply text-primary hover:underline;
-}
-
-.icon-button:hover {
-	@apply text-gray-700 cursor-pointer;
-}
-
-.submit-btn {
-	@apply w-64 h-12;
-}
-
-.submit-message-container {
-	@apply flex flex-row gap-1 items-center;
-}
-
-.submit-error {
-	@apply text-sm text-red-500;
-}
-
-.submit-success {
-	@apply text-sm text-green-500;
+	@apply m-1 text-primary hover:underline;
 }
