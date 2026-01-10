@@ -17,27 +17,25 @@ import IconButton from '@/components/buttons/IconButton';
 import TextArea from '@/components/inputs/TextArea';
 import ErrorLabel from '@/components/inputs/util/ErrorLabel';
 import GenericInputWrapper from '@/components/inputs/util/GenericInputWrapper';
+import LogoEditor from './LogoEditor';
+import AppDetails from '@/models/AppDetails';
 
 export type EditAppFormProps = {
 	appId: number;
 };
 
 export default function EditAppForm({ appId }: EditAppFormProps) {
-	const [isDataFetching, setisDataFetching] = useState(true);
-
-	const [currentLogoUrl, setCurrentLogoUrl] = useState('');
-	const [isChangingLogo, setIsChangingLogo] = useState(false);
-
-	const [pictureUrls, setPictureUrls] = useState<string[]>([]);
-	const [pictureNames, setPictureNames] = useState<string[]>([]);
+	const [initAppDetails, setInitAppDetails] = useState<AppDetails>();
 
 	const {
 		register: formRegister,
+		unregister: formUnregister,
 		handleSubmit,
 		formState: { errors },
 		setValue,
 		getValues,
 		watch,
+		reset,
 	} = useForm({
 		resolver: zodResolver(editAppSchema),
 	});
@@ -55,14 +53,13 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 	}
 
 	useEffect(() => {
-		getAppDetails(appId).then((defaults) => {
-			setValue('newName', defaults.name);
-			setValue('newChangelog', defaults.changelog ?? '');
-			setValue('newDescription', defaults.description ?? '');
-			setCurrentLogoUrl(defaults.logoUrl ?? '');
-			setPictureUrls(defaults.pictureUrls);
-			setPictureNames(defaults.pictureNames);
-			setisDataFetching(false);
+		getAppDetails(appId).then((appDetails) => {
+			setInitAppDetails(appDetails);
+			reset({
+				newName: appDetails.name,
+				newChangelog: appDetails.changelog ?? '',
+				newDescription: appDetails.description ?? '',
+			});
 		});
 	}, [appId, setValue]);
 
@@ -74,7 +71,7 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 		<AppFormTemplate
 			onSubmit={handleSubmit(onSubmitValid)}
 			name="Edit app form"
-			isLoading={isDataFetching}
+			isLoading={!initAppDetails}
 			submitBtnText="Zapisz zmiany"
 		>
 			<TextInput
@@ -82,43 +79,12 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 				label="Nazwa aplikacji: *"
 				error={errors.newName?.message}
 			/>
-			<GenericInputWrapper label="Logo aplikacji: *" labelHtmlFor="logo">
-				{!isChangingLogo && (
-					<div className="flex flex-row items-center gap-1">
-						<a href={currentLogoUrl} target="_blank">
-							<TextButton component="span" className="m-1">
-								logo.png {/* It is always named that in the database */}
-							</TextButton>
-						</a>
-						<IconButton
-							id="logo"
-							type="button"
-							color="primary"
-							onClick={() => setIsChangingLogo(true)}
-							icon={<Icon path={mdiPencil} size={1} />}
-						/>
-					</div>
-				)}
-				{isChangingLogo && (
-					<div className="flex flex-col gap-4 mt-2 w-full">
-						<Button
-							type="button"
-							variant="secondary"
-							className="w-fit"
-							onClick={() => setIsChangingLogo(false)}
-						>
-							Anuluj edycję loga
-						</Button>
-						<FileInput
-							{...formRegister('newLogoFile')}
-							noFilesLabel="Dodaj logo (256x256 px) *"
-							accept=".png"
-							multiple={false}
-							error={errors.newLogoFile?.message}
-						/>
-					</div>
-				)}
-			</GenericInputWrapper>
+			<LogoEditor
+				{...formRegister('newLogoFile')}
+				logoUnsetter={() => formUnregister('newLogoFile')}
+				currentLogoUrl={initAppDetails?.logoUrl ?? ''}
+				error={errors.newLogoFile?.message}
+			/>
 			<TextArea
 				{...formRegister('newDescription')}
 				label="Opis:"
@@ -135,13 +101,13 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 			/>
 			<GenericInputWrapper label="Screenshoty:">
 				<ul className="flex flex-col mb-2 w-fit">
-					{pictureNames.map((name, index) => {
+					{initAppDetails?.pictureNames.map((name, index) => {
 						const isMarkedToDelete = picturesToDeleteNames?.includes(name) ?? false;
 						return (
 							<li className="flex items-center ml-2" key={index}>
 								<a
 									className="grow text-primary m-1"
-									href={pictureUrls[index]}
+									href={initAppDetails!.pictureUrls[index]}
 									target="_blank"
 								>
 									<TextButton
