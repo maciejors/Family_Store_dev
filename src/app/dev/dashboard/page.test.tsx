@@ -6,6 +6,7 @@ import User from '@/models/User';
 import AppsByBrand from '@/models/AppsByBrand';
 import DashboardPage from './page';
 import { push } from '@/__mocks__/next/navigation';
+import { setupComponent } from '@/__test-utils__/rendering';
 
 jest.mock('next/link');
 jest.mock('next/image');
@@ -94,7 +95,9 @@ function renderComponent({
 		mockUser,
 		mockLogout,
 		mockAppsByBrand,
-		renderResult: render(<DashboardPage />),
+		renderResult: setupComponent(<DashboardPage />)
+			.applyQueryClient()
+			.render(),
 	};
 }
 

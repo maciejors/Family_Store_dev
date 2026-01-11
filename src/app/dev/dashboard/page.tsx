@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
 import AppList from './_components/AppList';
@@ -12,14 +13,25 @@ import NoAppsInfo from './_components/NoAppsInfo';
 import BrandsManager from './_components/BrandsManager';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import AddAppForm from './_components/AppForms/AddAppForm';
-import AppsByBrand from '@/models/AppsByBrand';
 import Button from '@/components/buttons/Button';
 import MainContainer from '@/components/wrappers/MainContainer';
 
 export default function DashboardPage() {
 	const { push } = useRouter();
 	let { currentUser, logOut } = useAuth();
-	const [appsData, setAppsData] = useState<AppsByBrand[] | null>(null);
+
+	const {
+		data: appsData,
+		isPending: areAppsPending,
+		refetch: fetchUserAppsByBrand,
+	} = useQuery({
+		queryKey: ['appsByBrand', currentUser?.uid],
+		queryFn: async () => {
+			const fetchedData = await getUserAppsByBrands(currentUser!.uid);
+			return fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps
+		},
+		enabled: false,
+	});
 
 	useEffect(() => {
 		async function onUserChanged() {
@@ -32,9 +44,7 @@ export default function DashboardPage() {
 					push('/dev/access-denied');
 					return;
 				}
-				const fetchedData = await getUserAppsByBrands(currentUser!.uid);
-				const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
-				setAppsData(dataToDisplay);
+				fetchUserAppsByBrand();
 			}
 		}
 		onUserChanged();
@@ -81,7 +91,10 @@ export default function DashboardPage() {
 					</div>
 				</header>
 				<main className="w-full">
-					<ConditionalSpinner isLoading={!appsData} extraSpinnerWrapperClasses="pt-16">
+					<ConditionalSpinner
+						isLoading={areAppsPending}
+						extraSpinnerWrapperClasses="pt-16"
+					>
 						{appsData &&
 							appsData.length > 0 &&
 							appsData.map(({ brandId, brandName, apps }) => (

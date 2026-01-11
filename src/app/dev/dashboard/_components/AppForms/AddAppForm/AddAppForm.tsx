@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery } from '@tanstack/react-query';
 import { addApp } from '@/lib/supabase/database/apps';
 import { getBrandsForUser } from '@/lib/supabase/database/brands';
 import { notifyUsersOnNewApp } from '../actions';
-import Brand from '@/models/Brand';
 import NewAppData, { newAppSchema } from '@/schemas/NewAppData';
 import FileInput from '@/components/inputs/FileInput';
 import TextInput from '@/components/inputs/TextInput';
@@ -19,27 +19,18 @@ export type AddAppFormProps = {
 };
 
 export default function AddAppForm({ userUid }: AddAppFormProps) {
-	const [isDataFetching, setisDataFetching] = useState(true);
-	const [userBrands, setUserBrands] = useState<Brand[]>([]);
-
 	const {
 		register: formRegister,
 		handleSubmit,
 		formState: { errors },
-		setValue,
 	} = useForm({
 		resolver: zodResolver(newAppSchema),
 	});
 
-	useEffect(() => {
-		getBrandsForUser(userUid).then((brands) => {
-			setUserBrands(brands);
-			if (brands.length > 0) {
-				setValue('brandId', brands[0].id);
-			}
-			setisDataFetching(false);
-		});
-	}, [userUid, setValue]);
+	const { data: userBrands, isPending: isDataPending } = useQuery({
+		queryKey: ['brands', userUid],
+		queryFn: () => getBrandsForUser(userUid),
+	});
 
 	async function onSubmitValid(newAppData: NewAppData) {
 		const appId = await addApp(newAppData);
@@ -48,7 +39,7 @@ export default function AddAppForm({ userUid }: AddAppFormProps) {
 
 	return (
 		<>
-			{!isDataFetching && userBrands.length === 0 ? (
+			{userBrands && userBrands.length === 0 ? (
 				<div className="flex flex-col items-center text-base p-4">
 					<p>Brak marek powiązanych z tym kontem.</p>
 					<p>Aby dodać aplikację, należy posiadać przynajmniej jedną markę.</p>
@@ -57,7 +48,7 @@ export default function AddAppForm({ userUid }: AddAppFormProps) {
 				<AppFormTemplate
 					onSubmit={handleSubmit(onSubmitValid)}
 					name="Add app form"
-					isLoading={isDataFetching}
+					isLoading={isDataPending}
 					submitBtnText="Dodaj aplikację"
 				>
 					<TextInput
@@ -74,7 +65,7 @@ export default function AddAppForm({ userUid }: AddAppFormProps) {
 					<SelectBox
 						{...formRegister('brandId')}
 						label="Marka: *"
-						options={userBrands}
+						options={userBrands ?? []}
 						valueMapper={(brand) => brand.id.toString()}
 						displayNameMapper={(brand) => brand.name}
 						error={errors.brandId?.message}
