@@ -1,5 +1,0 @@
-@reference '../../globals.css';
-
-.editable-brand-tile {
-	@apply flex flex-row gap-2 items-center;
-}

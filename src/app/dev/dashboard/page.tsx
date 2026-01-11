@@ -4,40 +4,39 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
-import AppList from './AppList';
-import Dialog from '@/components/shared/wrappers/Dialog';
+import AppList from './_components/AppList';
+import Dialog from '@/components/wrappers/Dialog';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
-import NoAppsInfo from './NoAppsInfo';
-import BrandsManager from '@/components/BrandsManager';
-import ConditionalSpinner from '@/components/shared/loading/ConditionalSpinner';
-import AddAppForm from '@/components/AppForms/AddAppForm';
+import NoAppsInfo from './_components/NoAppsInfo';
+import BrandsManager from './_components/BrandsManager';
+import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
+import AddAppForm from './_components/AppForms/AddAppForm';
 import AppsByBrand from '@/models/AppsByBrand';
-import Button from '@/components/shared/buttons/Button';
-import MainContainer from '@/components/shared/wrappers/MainContainer';
+import Button from '@/components/buttons/Button';
+import MainContainer from '@/components/wrappers/MainContainer';
 
-export default function Dashboard() {
+export default function DashboardPage() {
 	const { push } = useRouter();
 	let { currentUser, logOut } = useAuth();
 	const [appsData, setAppsData] = useState<AppsByBrand[] | null>(null);
 
-	async function onUserChanged() {
-		if (currentUser !== undefined) {
-			if (currentUser === null) {
-				push('/dev/auth');
-				return;
-			}
-			if (isLoggedInRegular(currentUser)) {
-				push('/dev/access-denied');
-				return;
-			}
-			const fetchedData = await getUserAppsByBrands(currentUser!.uid);
-			const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
-			setAppsData(dataToDisplay);
-		}
-	}
-
 	useEffect(() => {
+		async function onUserChanged() {
+			if (currentUser !== undefined) {
+				if (currentUser === null) {
+					push('/dev/auth');
+					return;
+				}
+				if (isLoggedInRegular(currentUser)) {
+					push('/dev/access-denied');
+					return;
+				}
+				const fetchedData = await getUserAppsByBrands(currentUser!.uid);
+				const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
+				setAppsData(dataToDisplay);
+			}
+		}
 		onUserChanged();
 	}, [currentUser]);
 
@@ -59,12 +58,13 @@ export default function Dashboard() {
 								open={isBrandsDialogOpen}
 								handleClose={() => setIsBrandsDialogOpen(false)}
 								title="Zarządzanie markami"
+								className="w-80"
 							>
 								<BrandsManager userUid={currentUser.uid} />
 							</Dialog>
 						</>
 						<>
-							<Button className="h-full" onClick={() => setIsAddAppDialogOpen(false)}>
+							<Button className="h-full" onClick={() => setIsAddAppDialogOpen(true)}>
 								Dodaj aplikację
 							</Button>
 							<Dialog

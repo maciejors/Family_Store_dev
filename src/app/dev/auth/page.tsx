@@ -3,47 +3,21 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import authStyles from './authStyles.module.css';
 import useAuth from '@/hooks/useAuth';
 import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
-import validate from './validation';
-import Button from '@/components/shared/buttons/Button';
-import MainContainer from '@/components/shared/wrappers/MainContainer';
+import Button from '@/components/buttons/Button';
+import MainContainer from '@/components/wrappers/MainContainer';
+import LoginForm from './_components/LoginForm';
+import RegisterForm from './_components/RegisterForm';
 
 export default function AuthPage() {
-	const { currentUser, logIn, register } = useAuth();
+	const { currentUser } = useAuth();
 	const { push } = useRouter();
 
 	const [isLogin, setIsLogin] = useState(true);
-	const [alertMessage, setAlertMessage] = useState('');
 
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [repeatPassword, setRepeatPassword] = useState('');
-
-	function changeAuthType(event: FormEvent) {
-		event.preventDefault();
+	function changeAuthType() {
 		setIsLogin(!isLogin);
-		setAlertMessage('');
-	}
-
-	async function submit(event: FormEvent) {
-		event.preventDefault();
-		try {
-			if (isLogin) {
-				await logIn(email, password);
-			} else {
-				const validation = validate(email, password, repeatPassword);
-				if (!validation.isValid) {
-					setAlertMessage(validation.message);
-					return;
-				}
-				await register(email, password);
-			}
-		} catch (error) {
-			console.error(error);
-			setAlertMessage(error.message ?? 'An unknown error occurred');
-		}
 	}
 
 	useEffect(() => {
@@ -57,13 +31,13 @@ export default function AuthPage() {
 				return;
 			}
 		}
-	}, [currentUser]);
+	}, [currentUser, push]);
 
 	return (
 		currentUser !== undefined &&
 		currentUser === null && (
 			<MainContainer fillScreen>
-				<form className="p-10 shadow-md rounded-sm bg-white w-96">
+				<div className="p-10 shadow-md rounded-sm bg-white w-96">
 					<header>
 						<Image
 							className="mx-auto mb-5 h-auto w-auto"
@@ -75,66 +49,14 @@ export default function AuthPage() {
 						/>
 					</header>
 					<main className="flex flex-col">
-						<h3>{isLogin ? 'Logowanie' : 'Rejestracja'}</h3>
-						{alertMessage ? <p className="text-red-700 mt-2">{alertMessage}</p> : ''}
-						<label className={authStyles.label} htmlFor="email">
-							Email
-						</label>
-						<input
-							className={authStyles.input}
-							id="email"
-							type="email"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							required
-						/>
-						<label className={authStyles.label} htmlFor="password">
-							Hasło
-						</label>
-						<input
-							className={authStyles.input}
-							id="password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							type="password"
-							required
-						/>
-						{isLogin ? (
-							<a
-								className={`${authStyles.label} mt-5 underline self-end`}
-								href={undefined}
-							>
-								Nie pamiętasz hasła?
-							</a>
-						) : (
-							<>
-								<label className={authStyles.label} htmlFor="repeat">
-									Powtórz hasło
-								</label>
-								<input
-									className={authStyles.input}
-									id="repeat"
-									value={repeatPassword}
-									onChange={(e) => setRepeatPassword(e.target.value)}
-									type="password"
-									required
-								/>
-							</>
-						)}
-						<Button onClick={(event) => submit(event)} className="mt-5 w-full">
-							{isLogin ? 'Zaloguj się' : 'Utwórz konto'}
-						</Button>
+						{isLogin ? <LoginForm /> : <RegisterForm />}
 					</main>
 					<footer>
-						<Button
-							onClick={(event) => changeAuthType(event)}
-							variant="secondary"
-							className="mt-3 w-full"
-						>
+						<Button onClick={changeAuthType} variant="secondary" className="mt-3 w-full">
 							{isLogin ? 'Nie mam konta' : 'Mam już konto'}
 						</Button>
 					</footer>
-				</form>
+				</div>
 			</MainContainer>
 		)
 	);
