@@ -40,7 +40,7 @@ export default function RegisterForm() {
 	}
 
 	return (
-		<form className="flex flex-col" onSubmit={handleSubmit(onSubmitValid)}>
+		<form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmitValid)}>
 			<h3>Rejestracja</h3>
 			<TextInput
 				{...formRegister('email')}

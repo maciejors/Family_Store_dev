@@ -16,11 +16,7 @@ export default function GenericInputWrapper({
 }: GenericInputWrapperProps) {
 	return (
 		<div className="flex flex-col w-full">
-			{label && (
-				<label className="mt-3" htmlFor={labelHtmlFor}>
-					{label}
-				</label>
-			)}
+			{label && <label htmlFor={labelHtmlFor}>{label}</label>}
 			{children}
 			{error && error !== true && <ErrorLabel>{error}</ErrorLabel>}
 		</div>
