@@ -6,6 +6,7 @@ import * as oneSignalApi from '@/lib/notifications/onesignal';
 import { getFakeApk } from '@/__test-utils__/fakeFiles';
 import AppUpdateDetails from '@/models/AppUpdateDetails';
 import UpdateAppData from '@/schemas/UpdateAppData';
+import { setupComponent } from '@/__test-utils__/rendering';
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 const mockOneSignalApi = oneSignalApi as jest.Mocked<typeof oneSignalApi>;
@@ -55,7 +56,12 @@ function renderComponent(autoMockAppUpdateDetails: boolean = true) {
 	if (autoMockAppUpdateDetails) {
 		mockAppsApi.getAppUpdateDetails.mockResolvedValue(MOCK_APP_UPDATE_DETAILS);
 	}
-	return { appId, renderResult: render(<UpdateAppForm appId={appId} />) };
+	return {
+		appId,
+		renderResult: setupComponent(<UpdateAppForm appId={appId} />)
+			.applyQueryClient()
+			.render(),
+	};
 }
 
 test('Should display a spinner when data fetch is loading', () => {

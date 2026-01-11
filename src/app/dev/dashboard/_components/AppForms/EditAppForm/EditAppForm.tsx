@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
 import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
 import AppFormTemplate from '../AppFormTemplate';
 import EditAppData, { editAppSchema } from '@/schemas/EditAppData';
@@ -10,7 +11,6 @@ import FileInput from '@/components/inputs/FileInput';
 import TextInput from '@/components/inputs/TextInput';
 import TextArea from '@/components/inputs/TextArea';
 import LogoEditor from './inputs/LogoEditor';
-import AppDetails from '@/models/AppDetails';
 import PictureDeletePicker from './inputs/PictureDeletePicker';
 
 export type EditAppFormProps = {
@@ -18,8 +18,6 @@ export type EditAppFormProps = {
 };
 
 export default function EditAppForm({ appId }: EditAppFormProps) {
-	const [initAppDetails, setInitAppDetails] = useState<AppDetails>();
-
 	const {
 		register: formRegister,
 		unregister: formUnregister,
@@ -31,16 +29,20 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 		resolver: zodResolver(editAppSchema),
 	});
 
+	const { data: initAppDetails } = useQuery({
+		queryKey: ['app', appId],
+		queryFn: () => getAppDetails(appId),
+	});
+
 	useEffect(() => {
-		getAppDetails(appId).then((appDetails) => {
-			setInitAppDetails(appDetails);
+		if (initAppDetails) {
 			reset({
-				newName: appDetails.name,
-				newChangelog: appDetails.changelog ?? '',
-				newDescription: appDetails.description ?? '',
+				newName: initAppDetails.name,
+				newChangelog: initAppDetails.changelog ?? '',
+				newDescription: initAppDetails.description ?? '',
 			});
-		});
-	}, [appId, reset]);
+		}
+	}, [initAppDetails, reset]);
 
 	async function onSubmitValid(editAppData: EditAppData) {
 		await editApp(appId, editAppData);

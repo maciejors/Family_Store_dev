@@ -5,6 +5,7 @@ import * as appsApi from '@/lib/supabase/database/apps';
 import { getFakePicture } from '@/__test-utils__/fakeFiles';
 import AppDetails from '@/models/AppDetails';
 import EditAppData from '@/schemas/EditAppData';
+import { setupComponent } from '@/__test-utils__/rendering';
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 
@@ -95,7 +96,12 @@ function renderComponent(autoMockAppDetails: boolean = true) {
 	if (autoMockAppDetails) {
 		mockAppsApi.getAppDetails.mockResolvedValue(MOCK_APP_DATA);
 	}
-	return { appId, renderResult: render(<EditAppForm appId={appId} />) };
+	return {
+		appId,
+		renderResult: setupComponent(<EditAppForm appId={appId} />)
+			.applyQueryClient()
+			.render(),
+	};
 }
 
 test('Should display a spinner when data fetch is loading', () => {
