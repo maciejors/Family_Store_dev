@@ -19,11 +19,10 @@ const MOCK_APP_DATA: AppDetails = {
 	brandName: 'SuperBrand',
 	description: 'Super app',
 	changelog: 'New changes were made',
-	pictureNames: ['fake-picture-1.png', 'fake-picture-2.png', 'fake-picture-3.png'],
-	pictureUrls: [
-		'https://localhost/fake-picture-url-1.png',
-		'https://localhost/fake-picture-url-2.png',
-		'https://localhost/fake-picture-url-3.png',
+	pictures: [
+		{ filename: 'fake-picture-1.png', url: 'https://localhost/fake-picture-url-1.png' },
+		{ filename: 'fake-picture-2.png', url: 'https://localhost/fake-picture-url-2.png' },
+		{ filename: 'fake-picture-3.png', url: 'https://localhost/fake-picture-url-3.png' },
 	],
 };
 

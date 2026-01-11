@@ -8,18 +8,20 @@ export type IconButtonProps = Omit<
 > & {
 	icon: ReactElement;
 	component?: 'button' | 'span';
+	color?: 'text' | 'primary';
 };
 
 export default function IconButton({
 	icon,
 	component = 'button',
+	color = 'text',
 	className,
 	...otherProps
 }: IconButtonProps) {
 	const Component = component;
 	return (
 		<Component
-			className={clsx(btnStyles.btn, 'hover:text-gray-700', className)}
+			className={clsx(btnStyles.btn, btnStyles[`icon-button-color-${color}`], className)}
 			{...otherProps}
 		>
 			{icon}

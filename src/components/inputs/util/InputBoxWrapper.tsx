@@ -1,7 +1,7 @@
 import { cloneElement, ReactElement, useId } from 'react';
 import clsx from 'clsx';
 import SharedInputBoxProps from './SharedInputBoxProps';
-import ErrorLabel from './ErrorLabel';
+import GenericInputWrapper from './GenericInputWrapper';
 
 export type InputBoxWrapperProps = SharedInputBoxProps & {
 	children: ReactElement<HTMLElement>;
@@ -27,14 +27,8 @@ export default function InputBoxWrapper({
 	});
 
 	return (
-		<div className="flex flex-col w-full">
-			{label && (
-				<label className="mt-3" htmlFor={id}>
-					{label}
-				</label>
-			)}
+		<GenericInputWrapper labelHtmlFor={id} label={label} error={error}>
 			{child}
-			{error && error !== true && <ErrorLabel>{error}</ErrorLabel>}
-		</div>
+		</GenericInputWrapper>
 	);
 }
