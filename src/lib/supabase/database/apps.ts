@@ -1,5 +1,6 @@
 import { getFileUrl, storageBucket, supabase } from '../supabaseSetup';
 import AppDetails from '@/models/AppDetails';
+import AppPicture from '@/models/AppPicture';
 import AppPreview from '@/models/AppPreview';
 import AppsByBrand from '@/models/AppsByBrand';
 import AppUpdateDetails from '@/models/AppUpdateDetails';
@@ -42,21 +43,16 @@ function getApkDownloadUrl(appId: number): string {
 	return getFileUrl(getApkStoragePath(appId));
 }
 
-async function getAppPictures(appId: number): Promise<{
-	pictureNames: string[];
-	pictureUrls: string[];
-}> {
+async function getAppPictures(appId: number): Promise<AppPicture[]> {
 	const picturesPath = getAppPicturesStoragePath(appId);
 	const { data: picturesData, error } = await storageBucket.list(picturesPath);
 
 	if (error) throw error;
 
-	const pictureNames = picturesData!.map((p) => p.name);
-	const pictureUrls = pictureNames.map((name) => getFileUrl(`${picturesPath}/${name}`));
-	return {
-		pictureNames,
-		pictureUrls,
-	};
+	return picturesData!.map((p) => ({
+		filename: p.name,
+		url: getFileUrl(`${picturesPath}/${p.name}`),
+	}));
 }
 
 export async function getAppsForBrand(brandId: number): Promise<AppPreview[]> {
@@ -144,13 +140,12 @@ export async function getAppDetails(appId: number): Promise<AppDetails> {
 
 	if (error) throw error;
 
-	const appPicturesData = await getAppPictures(appId);
 	return {
 		...fetchedApp,
 		brandName: fetchedApp.brands.name,
 		logoUrl: getLogoUrl(appId),
 		downloadUrl: getApkDownloadUrl(appId),
-		...appPicturesData,
+		pictures: await getAppPictures(appId),
 	};
 }
 
