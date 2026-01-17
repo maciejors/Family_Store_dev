@@ -29,14 +29,8 @@ export default function DashboardPage() {
 			const fetchedData = await getUserAppsByBrands(currentUser!.uid);
 			return fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps
 		},
-		enabled: false,
+		enabled: canViewPage,
 	});
-
-	useEffect(() => {
-		if (currentUser) {
-			fetchUserAppsByBrand();
-		}
-	}, [currentUser]);
 
 	const [isBrandsDialogOpen, setIsBrandsDialogOpen] = useState(false);
 	const [isAddAppDialogOpen, setIsAddAppDialogOpen] = useState(false);
