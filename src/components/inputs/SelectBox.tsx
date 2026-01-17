@@ -47,6 +47,6 @@ function selectBoxRenderFunc<T>(
 const SelectBox = forwardRef(selectBoxRenderFunc) as <T>(
 	p: SelectBoxProps<T>,
 	ref?: React.Ref<HTMLSelectElement>
-) => ReactElement;
+) => ReactElement<any>;
 
 export default SelectBox;
