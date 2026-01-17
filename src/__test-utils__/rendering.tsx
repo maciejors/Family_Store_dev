@@ -2,14 +2,14 @@ import { render, RenderResult } from '@testing-library/react';
 import { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export function setupComponent(component: ReactElement) {
+export function setupComponent(component: ReactElement<any>) {
 	return new RenderBuilder(component);
 }
 
 class RenderBuilder {
-	private currentComponent: ReactElement;
+	private currentComponent: ReactElement<any>;
 
-	constructor(component: ReactElement) {
+	constructor(component: ReactElement<any>) {
 		this.currentComponent = component;
 	}
 
@@ -17,7 +17,7 @@ class RenderBuilder {
 		return render(this.currentComponent);
 	}
 
-	applyWrapper(wrapper: (component: ReactElement) => ReactElement) {
+	applyWrapper(wrapper: (component: ReactElement<any>) => ReactElement<any>) {
 		this.currentComponent = wrapper(this.currentComponent);
 		return this;
 	}
