@@ -7,6 +7,7 @@ import AppsByBrand from '@/models/AppsByBrand';
 import DashboardPage from './page';
 import { push } from '@/__mocks__/next/navigation';
 import { setupComponent } from '@/__test-utils__/rendering';
+import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
 
 jest.mock('next/link');
 jest.mock('next/image');
@@ -24,7 +25,7 @@ const MOCK_USER_DATA: User = {
 	uid: '123',
 	email: 'test@example.com',
 	displayName: 'Frank Lampard',
-	isDev: true,
+	role: ROLE_DEV,
 };
 
 const MOCK_APPS_DATA: AppsByBrand[] = [
@@ -184,7 +185,7 @@ test('Should redirect to auth page if user is not logged in', async () => {
 });
 
 test('Should redirect to access denied page if user is not a developer', async () => {
-	renderComponent({ mockUser: { ...MOCK_USER_DATA, isDev: false } });
+	renderComponent({ mockUser: { ...MOCK_USER_DATA, role: ROLE_USER } });
 	await waitFor(() => {
 		expect(push).toHaveBeenCalledWith('/dev/access-denied');
 	});

@@ -7,7 +7,7 @@ Steps:
 1. Run the command:
 
 ```bash
-npx supabase gen types typescript --project-id ggbpzyvanxsbpypmmzrd --schema public > src/lib/supabase/dbTypes.ts
+npx supabase gen types typescript --yes --project-id ggbpzyvanxsbpypmmzrd --schema public > src/lib/supabase/dbTypes.ts
 ```
 
-2. Remeber to reformat the generated file with prettier
+2. Reformat the generated file with prettier

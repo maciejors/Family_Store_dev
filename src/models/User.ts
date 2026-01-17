@@ -1,6 +1,8 @@
+import Role from './Role';
+
 export default interface User {
 	uid: string;
 	email: string;
 	displayName: string;
-	isDev: boolean;
+	role: Role;
 }
