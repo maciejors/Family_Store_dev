@@ -102,14 +102,17 @@ export type Database = {
 			roles: {
 				Row: {
 					id: number;
+					key: string;
 					name: string;
 				};
 				Insert: {
 					id?: number;
+					key: string;
 					name: string;
 				};
 				Update: {
 					id?: number;
+					key?: string;
 					name?: string;
 				};
 				Relationships: [];

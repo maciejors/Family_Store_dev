@@ -4,6 +4,7 @@ import useAuth from '@/hooks/useAuth';
 import AccessDeniedPage from './page';
 import User from '@/models/User';
 import { push } from '@/__mocks__/next/navigation';
+import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
 
 jest.mock('next/navigation');
 jest.mock('@/hooks/useAuth');
@@ -14,7 +15,7 @@ const MOCK_USER_DATA: User = {
 	uid: '123',
 	email: 'test@example.com',
 	displayName: 'Frank Lampard',
-	isDev: false,
+	role: ROLE_USER,
 };
 
 function renderComponent(mockUser: User | null = MOCK_USER_DATA) {
@@ -34,20 +35,22 @@ function renderComponent(mockUser: User | null = MOCK_USER_DATA) {
 	};
 }
 
-test('Should render info on access denied and a button to log out', () => {
+test('Should render info on access denied and a button to log out', async () => {
 	renderComponent();
-	expect(screen.getByRole('heading', { name: /odmowa dostępu/i })).toBeInTheDocument();
+	expect(
+		await screen.findByRole('heading', { name: /odmowa dostępu/i })
+	).toBeInTheDocument();
 	expect(screen.getByRole('button', { name: /wyloguj/i })).toBeInTheDocument();
 });
 
 test('Should log out when clicked on the button', async () => {
 	const { mockLogout } = renderComponent();
-	await user.click(screen.getByRole('button', { name: /wyloguj/i }));
+	await user.click(await screen.findByRole('button', { name: /wyloguj/i }));
 	expect(mockLogout).toHaveBeenCalled();
 });
 
 test('Should redirect developers to dashboard', async () => {
-	renderComponent({ ...MOCK_USER_DATA, isDev: true });
+	renderComponent({ ...MOCK_USER_DATA, role: ROLE_DEV });
 	await waitFor(() => {
 		expect(push).toHaveBeenCalledWith('/dev/dashboard');
 	});

@@ -1,41 +1,23 @@
 'use client';
 
-import React, { FormEvent, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import useAuth from '@/hooks/useAuth';
-import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
+import useAccess from '@/hooks/useAccess';
 import Button from '@/components/buttons/Button';
 import MainContainer from '@/components/wrappers/MainContainer';
 import LoginForm from './_components/LoginForm';
 import RegisterForm from './_components/RegisterForm';
 
 export default function AuthPage() {
-	const { currentUser } = useAuth();
-	const { push } = useRouter();
-
+	const canViewPage = useAccess(['anon']);
 	const [isLogin, setIsLogin] = useState(true);
 
 	function changeAuthType() {
 		setIsLogin(!isLogin);
 	}
 
-	useEffect(() => {
-		if (currentUser !== undefined) {
-			if (isLoggedInRegular(currentUser)) {
-				push('/dev/access-denied');
-				return;
-			}
-			if (isLoggedInDeveloper(currentUser)) {
-				push('/dev/dashboard');
-				return;
-			}
-		}
-	}, [currentUser, push]);
-
 	return (
-		currentUser !== undefined &&
-		currentUser === null && (
+		canViewPage && (
 			<MainContainer fillScreen>
 				<div className="p-10 shadow-md rounded-sm bg-white w-96">
 					<header>

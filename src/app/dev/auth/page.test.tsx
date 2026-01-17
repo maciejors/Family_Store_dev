@@ -3,6 +3,7 @@ import user from '@testing-library/user-event';
 import useAuth from '@/hooks/useAuth';
 import AuthPage from './page';
 import { push } from '@/__mocks__/next/navigation';
+import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
 
 jest.mock('next/router');
 jest.mock('@/hooks/useAuth');
@@ -44,7 +45,7 @@ test('Should redirect authenticated non-developers to access denied page', async
 			email: 'test@example.com',
 			uid: '123',
 			displayName: 'Frank',
-			isDev: false,
+			role: ROLE_USER,
 		},
 	});
 	renderComponent();
@@ -60,7 +61,7 @@ test('Should redirect authenticated developes to dashboard page', async () => {
 			email: 'test@example.com',
 			uid: '123',
 			displayName: 'Frank',
-			isDev: true,
+			role: ROLE_DEV,
 		},
 	});
 	renderComponent();

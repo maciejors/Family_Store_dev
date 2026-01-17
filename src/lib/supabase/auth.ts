@@ -1,23 +1,23 @@
 import { supabase } from './supabaseSetup';
 import { AuthResponse } from '@supabase/supabase-js';
 import User from '@/models/User';
+import Role from '@/models/Role';
 
-async function isDeveloper(userId: string): Promise<boolean> {
+async function getRole(userId: string): Promise<Role> {
 	type LocalQueryResult = {
 		id: string;
-		roles: { name: string };
+		roles: Role;
 	};
 
-	const { data: userData } = await supabase
+	const { data: userData, error } = await supabase
 		.from('users')
-		.select('id, roles (name)')
+		.select('id, roles (key, name)')
 		.eq('id', userId)
 		.single<LocalQueryResult>();
 
-	if (userData) {
-		return userData.roles.name === 'Dev';
-	}
-	return false;
+	if (error) throw error;
+
+	return userData!.roles;
 }
 
 async function handleAuthResponseWithUser(authResponse: AuthResponse): Promise<User> {
@@ -26,12 +26,11 @@ async function handleAuthResponseWithUser(authResponse: AuthResponse): Promise<U
 	}
 	const responseUser = authResponse.data.user!;
 	const userId = responseUser.id;
-	const isDev = await isDeveloper(userId);
 	return {
 		uid: userId,
 		email: responseUser.email!,
 		displayName: responseUser.email!.split('@')[0], // for now
-		isDev,
+		role: await getRole(userId),
 	};
 }
 

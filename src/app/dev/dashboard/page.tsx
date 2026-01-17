@@ -3,12 +3,11 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
+import useAccess from '@/hooks/useAccess';
 import AppList from './_components/AppList';
 import Dialog from '@/components/wrappers/Dialog';
 import useAuth from '@/hooks/useAuth';
-import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import NoAppsInfo from './_components/NoAppsInfo';
 import BrandsManager from './_components/BrandsManager';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
@@ -17,8 +16,8 @@ import Button from '@/components/buttons/Button';
 import MainContainer from '@/components/wrappers/MainContainer';
 
 export default function DashboardPage() {
-	const { push } = useRouter();
 	let { currentUser, logOut } = useAuth();
+	const canViewPage = useAccess(['dev']);
 
 	const {
 		data: appsData,
@@ -30,32 +29,15 @@ export default function DashboardPage() {
 			const fetchedData = await getUserAppsByBrands(currentUser!.uid);
 			return fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps
 		},
-		enabled: false,
+		enabled: canViewPage,
 	});
-
-	useEffect(() => {
-		async function onUserChanged() {
-			if (currentUser !== undefined) {
-				if (currentUser === null) {
-					push('/dev/auth');
-					return;
-				}
-				if (isLoggedInRegular(currentUser)) {
-					push('/dev/access-denied');
-					return;
-				}
-				fetchUserAppsByBrand();
-			}
-		}
-		onUserChanged();
-	}, [currentUser]);
 
 	const [isBrandsDialogOpen, setIsBrandsDialogOpen] = useState(false);
 	const [isAddAppDialogOpen, setIsAddAppDialogOpen] = useState(false);
 
 	return (
-		currentUser &&
-		isLoggedInDeveloper(currentUser) && (
+		canViewPage &&
+		currentUser && (
 			<MainContainer>
 				<header className="flex flex-row justify-between mt-4 mb-8 w-full">
 					<h2>Moje aplikacje</h2>
