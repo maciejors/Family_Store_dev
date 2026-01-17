@@ -14,13 +14,8 @@ export type FormattedDateLabelProps = {
 };
 
 export default function FormattedDateLabel({ dateIso, prefix }: FormattedDateLabelProps) {
-	const [labelToDisplay, setLabelToDisplay] = useState('');
-	useEffect(() => {
-		const date = new Date(dateIso);
-		const formattedDate = date.toLocaleDateString(navigator.language, formattingOptions);
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		setLabelToDisplay(`${prefix !== undefined ? prefix : ''}${formattedDate}`);
-	}, [dateIso, prefix]);
-
+	const date = new Date(dateIso);
+	const formattedDate = date.toLocaleDateString(navigator.language, formattingOptions);
+	const labelToDisplay = `${prefix !== undefined ? prefix : ''}${formattedDate}`;
 	return <p>{labelToDisplay}</p>;
 }

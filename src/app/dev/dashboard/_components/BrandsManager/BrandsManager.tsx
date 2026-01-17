@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import {
 	addBrand,
 	deleteBrand,
@@ -7,46 +7,40 @@ import {
 } from '@/lib/supabase/database/brands';
 import EditableBrandTile from './EditableBrandTile';
 import BrandAddingHandler from './BrandAddingHandler';
-import Brand from '@/models/Brand';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
+import { useQuery } from '@tanstack/react-query';
 
 export type BrandsManagerProps = {
 	userUid: string;
 };
 
 export default function BrandsManager({ userUid }) {
-	const [brandsData, setBrandsData] = useState<Brand[] | null>(null);
-
-	const fetchBrandsData = useCallback(async () => {
-		const fetchedData = await getBrandsForUser(userUid);
-		setBrandsData(fetchedData);
-	}, [userUid]);
-
-	useEffect(() => {
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		fetchBrandsData();
-	}, [fetchBrandsData]);
+	const {
+		data: brandsData,
+		isFetching: areBrandsFetching,
+		refetch: fetchBrandsData,
+	} = useQuery({
+		queryKey: ['brands', userUid],
+		queryFn: () => getBrandsForUser(userUid),
+	});
 
 	async function handleConfirmEditBrand(brandId: number, newBrandName: string) {
-		setBrandsData(null);
 		await updateBrand(brandId, newBrandName);
 		await fetchBrandsData();
 	}
 
 	async function handleDeleteBrand(brandId: number) {
-		setBrandsData(null);
 		await deleteBrand(brandId);
 		await fetchBrandsData();
 	}
 
 	async function handleConfirmAddBrand(brandName: string) {
-		setBrandsData(null);
 		await addBrand(userUid, brandName);
 		await fetchBrandsData();
 	}
 
 	return (
-		<ConditionalSpinner isLoading={!brandsData} spinnerSize={48} spinnerWidth={5}>
+		<ConditionalSpinner isLoading={areBrandsFetching} spinnerSize={48} spinnerWidth={5}>
 			<ul className="pt-2 flex flex-col gap-2">
 				{brandsData &&
 					brandsData.map((brand) => (

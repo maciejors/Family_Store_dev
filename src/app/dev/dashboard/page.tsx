@@ -2,50 +2,42 @@
 
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
+import useAccess from '@/hooks/useAccess';
 import AppList from './_components/AppList';
 import Dialog from '@/components/wrappers/Dialog';
 import useAuth from '@/hooks/useAuth';
-import { isLoggedInDeveloper, isLoggedInRegular } from '@/lib/utils/userFunctions';
 import NoAppsInfo from './_components/NoAppsInfo';
 import BrandsManager from './_components/BrandsManager';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import AddAppForm from './_components/AppForms/AddAppForm';
-import AppsByBrand from '@/models/AppsByBrand';
 import Button from '@/components/buttons/Button';
 import MainContainer from '@/components/wrappers/MainContainer';
 
 export default function DashboardPage() {
-	const { push } = useRouter();
 	let { currentUser, logOut } = useAuth();
-	const [appsData, setAppsData] = useState<AppsByBrand[] | null>(null);
+	const canViewPage = useAccess(['dev']);
 
-	useEffect(() => {
-		async function onUserChanged() {
-			if (currentUser !== undefined) {
-				if (currentUser === null) {
-					push('/dev/auth');
-					return;
-				}
-				if (isLoggedInRegular(currentUser)) {
-					push('/dev/access-denied');
-					return;
-				}
-				const fetchedData = await getUserAppsByBrands(currentUser!.uid);
-				const dataToDisplay = fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps;
-				setAppsData(dataToDisplay);
-			}
-		}
-		onUserChanged();
-	}, [currentUser]);
+	const {
+		data: appsData,
+		isPending: areAppsPending,
+		refetch: fetchUserAppsByBrand,
+	} = useQuery({
+		queryKey: ['appsByBrand', currentUser?.uid],
+		queryFn: async () => {
+			const fetchedData = await getUserAppsByBrands(currentUser!.uid);
+			return fetchedData.filter(({ apps }) => apps.length > 0); // skip brands with no apps
+		},
+		enabled: canViewPage,
+	});
 
 	const [isBrandsDialogOpen, setIsBrandsDialogOpen] = useState(false);
 	const [isAddAppDialogOpen, setIsAddAppDialogOpen] = useState(false);
 
 	return (
-		currentUser &&
-		isLoggedInDeveloper(currentUser) && (
+		canViewPage &&
+		currentUser && (
 			<MainContainer>
 				<header className="flex flex-row justify-between mt-4 mb-8 w-full">
 					<h2>Moje aplikacje</h2>
@@ -81,7 +73,10 @@ export default function DashboardPage() {
 					</div>
 				</header>
 				<main className="w-full">
-					<ConditionalSpinner isLoading={!appsData} extraSpinnerWrapperClasses="pt-16">
+					<ConditionalSpinner
+						isLoading={areAppsPending}
+						extraSpinnerWrapperClasses="pt-16"
+					>
 						{appsData &&
 							appsData.length > 0 &&
 							appsData.map(({ brandId, brandName, apps }) => (

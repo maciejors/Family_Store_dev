@@ -7,6 +7,7 @@ import * as oneSignalApi from '@/lib/notifications/onesignal';
 import Brand from '@/models/Brand';
 import NewAppData from '@/schemas/NewAppData';
 import { getFakeApk, getFakePicture } from '@/__test-utils__/fakeFiles';
+import { setupComponent } from '@/__test-utils__/rendering';
 
 const mockBrandsApi = brandsApi as jest.Mocked<typeof brandsApi>;
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
@@ -73,7 +74,9 @@ function renderComponent(autoMockBrands: boolean = true) {
 	return {
 		userUid,
 		newAppId,
-		renderResult: render(<AddAppForm userUid={userUid} />),
+		renderResult: setupComponent(<AddAppForm userUid={userUid} />)
+			.applyQueryClient()
+			.render(),
 	};
 }
 

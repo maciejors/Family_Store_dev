@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { getAppUpdateDetails, updateApp } from '@/lib/supabase/database/apps';
 import { notifyUsersOnAppUpdate } from '../actions';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery } from '@tanstack/react-query';
 import UpdateAppData, { updateAppSchema } from '@/schemas/UpdateAppData';
 import FileInput from '@/components/inputs/FileInput';
 import TextInput from '@/components/inputs/TextInput';
@@ -16,10 +17,6 @@ export type UpdateAppFormProps = {
 };
 
 export default function UpdateAppForm({ appId }: UpdateAppFormProps) {
-	const [isDataFetching, setisDataFetching] = useState(true);
-	const [appName, setAppName] = useState('');
-	const [currentVersion, setCurrentVersion] = useState('');
-
 	const {
 		register: formRegister,
 		handleSubmit,
@@ -29,25 +26,31 @@ export default function UpdateAppForm({ appId }: UpdateAppFormProps) {
 		resolver: zodResolver(updateAppSchema),
 	});
 
+	const { data: currentAppData, isPending: isDataPending } = useQuery({
+		queryKey: ['app', appId],
+		queryFn: () => getAppUpdateDetails(appId),
+	});
+
 	useEffect(() => {
-		getAppUpdateDetails(appId).then((currentAppData) => {
+		if (currentAppData) {
 			setValue('changelog', currentAppData.changelog ?? '');
-			setCurrentVersion(currentAppData.version);
-			setAppName(currentAppData.appName);
-			setisDataFetching(false);
-		});
-	}, [appId, setValue]);
+		}
+	}, [currentAppData, setValue]);
 
 	async function onSubmitValid(updateAppData: UpdateAppData) {
 		await updateApp(appId, updateAppData);
-		await notifyUsersOnAppUpdate(appId, appName, updateAppData.newVersion);
+		await notifyUsersOnAppUpdate(
+			appId,
+			currentAppData!.appName,
+			updateAppData.newVersion
+		);
 	}
 
 	return (
 		<AppFormTemplate
 			onSubmit={handleSubmit(onSubmitValid)}
 			name="Update app form"
-			isLoading={isDataFetching}
+			isLoading={isDataPending}
 			submitBtnText="Wydaj aktualizację"
 		>
 			<FileInput
@@ -60,7 +63,7 @@ export default function UpdateAppForm({ appId }: UpdateAppFormProps) {
 			<TextInput
 				{...formRegister('newVersion')}
 				label="Wersja: *"
-				placeholder={`Obecna wersja: ${currentVersion}`}
+				placeholder={`Obecna wersja: ${currentAppData?.version}`}
 				error={errors.newVersion?.message}
 			/>
 			<TextArea

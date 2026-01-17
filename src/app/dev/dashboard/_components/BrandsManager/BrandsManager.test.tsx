@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import BrandsManager from './BrandsManager';
 import Brand from '@/models/Brand';
 import * as brandsApi from '@/lib/supabase/database/brands';
+import { setupComponent } from '@/__test-utils__/rendering';
 
 const mockedBrandsApi = brandsApi as jest.Mocked<typeof brandsApi>;
 
@@ -15,7 +16,9 @@ function renderComponent(injectMockData = true) {
 	if (injectMockData) {
 		mockedBrandsApi.getBrandsForUser.mockResolvedValue(MOCK_BRANDS);
 	}
-	render(<BrandsManager userUid={1} />);
+	setupComponent(<BrandsManager userUid={1} />)
+		.applyQueryClient()
+		.render();
 }
 
 test('Displays fetched data and action buttons', async () => {
