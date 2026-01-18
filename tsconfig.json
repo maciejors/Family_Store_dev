@@ -20,7 +20,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "plugins": [
       {
         "name": "next"
@@ -38,7 +38,8 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "setupTests.ts"
+    "setupTests.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

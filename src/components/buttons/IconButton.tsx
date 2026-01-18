@@ -6,7 +6,7 @@ export type IconButtonProps = Omit<
 	ButtonHTMLAttributes<HTMLButtonElement>,
 	'children'
 > & {
-	icon: ReactElement;
+	icon: ReactElement<any>;
 	component?: 'button' | 'span';
 	color?: 'text' | 'primary';
 };

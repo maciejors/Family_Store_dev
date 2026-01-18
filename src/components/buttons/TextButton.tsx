@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import btnStyles from './buttons.module.css';
 
 export type TextButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-	startIcon?: ReactElement;
+	startIcon?: ReactElement<any>;
 	component?: 'button' | 'span';
 };
 

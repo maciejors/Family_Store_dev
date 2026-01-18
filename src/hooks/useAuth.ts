@@ -11,10 +11,23 @@ function useAuth() {
 	const currentUser = useSelector((state: RootState) => state.auth.authUser);
 	const dispatch = useDispatch();
 
+	function validateUserObj(user: Object | null): boolean {
+		if (!user) {
+			// we treat nulls as valid users
+			return true;
+		}
+		// Important check after `isDev` was changed to `role`
+		return Object.keys(user).includes('role');
+	}
+
 	useEffect(() => {
 		const userStr = localStorage.getItem(LOCAL_STORAGE_KEY);
-		const user = userStr === null ? null : (JSON.parse(userStr) as User);
-		dispatch(loadInitState(user));
+		const user = userStr === null ? null : JSON.parse(userStr);
+		if (!validateUserObj(user)) {
+			localStorage.clear();
+			return;
+		}
+		dispatch(loadInitState(user as User));
 	}, [dispatch]);
 
 	async function logIn(email: string, password: string) {
