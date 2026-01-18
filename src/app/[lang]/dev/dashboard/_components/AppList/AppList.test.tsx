@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import AppList, { AppListProps } from './AppList';
 
-jest.mock('next/link');
+jest.mock('@/i18n/navigation');
 jest.mock('next/image');
 
 const MOCK_DATA: AppListProps = {

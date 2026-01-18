@@ -3,8 +3,8 @@ import user from '@testing-library/user-event';
 import AppCard from './AppCard';
 import AppPreview from '@/models/AppPreview';
 
-jest.mock('next/link');
 jest.mock('next/image');
+jest.mock('@/i18n/navigation');
 jest.mock('@/components/FormattedDateLabel');
 jest.mock('../AppForms/EditAppForm');
 jest.mock('../AppForms/UpdateAppForm');

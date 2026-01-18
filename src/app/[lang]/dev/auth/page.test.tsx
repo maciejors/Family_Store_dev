@@ -2,11 +2,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import useAuth from '@/hooks/useAuth';
 import AuthPage from './page';
-import { push } from '@/__mocks__/next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
 
-jest.mock('next/router');
+jest.mock('@/i18n/navigation');
 jest.mock('@/hooks/useAuth');
+
+const mockPush = jest.fn();
+(useRouter as jest.Mock).mockReturnValue({ push: mockPush });
 
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 const mockLogIn = jest.fn();
@@ -50,7 +53,7 @@ test('Should redirect authenticated non-developers to access denied page', async
 	});
 	renderComponent();
 	await waitFor(() => {
-		expect(push).toHaveBeenCalledWith('/dev/access-denied');
+		expect(mockPush).toHaveBeenCalledWith('/dev/access-denied');
 	});
 });
 
@@ -66,6 +69,6 @@ test('Should redirect authenticated developes to dashboard page', async () => {
 	});
 	renderComponent();
 	await waitFor(() => {
-		expect(push).toHaveBeenCalledWith('/dev/dashboard');
+		expect(mockPush).toHaveBeenCalledWith('/dev/dashboard');
 	});
 });

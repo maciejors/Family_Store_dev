@@ -3,13 +3,16 @@ import user from '@testing-library/user-event';
 import useAuth from '@/hooks/useAuth';
 import AccessDeniedPage from './page';
 import User from '@/models/User';
-import { push } from '@/__mocks__/next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
 
-jest.mock('next/navigation');
+jest.mock('@/i18n/navigation');
 jest.mock('@/hooks/useAuth');
 
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
+
+const mockPush = jest.fn();
+(useRouter as jest.Mock).mockReturnValue({ push: mockPush });
 
 const MOCK_USER_DATA: User = {
 	uid: '123',
@@ -52,13 +55,13 @@ test('Should log out when clicked on the button', async () => {
 test('Should redirect developers to dashboard', async () => {
 	renderComponent({ ...MOCK_USER_DATA, role: ROLE_DEV });
 	await waitFor(() => {
-		expect(push).toHaveBeenCalledWith('/dev/dashboard');
+		expect(mockPush).toHaveBeenCalledWith('/dev/dashboard');
 	});
 });
 
 test('Should redirect anonymous users to auth page', async () => {
 	renderComponent(null);
 	await waitFor(() => {
-		expect(push).toHaveBeenCalledWith('/dev/auth');
+		expect(mockPush).toHaveBeenCalledWith('/dev/auth');
 	});
 });
