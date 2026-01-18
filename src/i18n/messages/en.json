@@ -1,1 +1,5 @@
-{}
+{
+	"AccessDenied": {
+		"title": "Access denied"
+	}
+}

@@ -25,7 +25,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 	}
 
 	return (
-		<html lang="en">
+		<html lang={lang}>
 			<body className={font.className}>
 				<NextIntlClientProvider>
 					<ClientWrapper>{children}</ClientWrapper>

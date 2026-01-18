@@ -1,10 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import useAuth from '@/hooks/useAuth';
 import AccessDeniedPage from './page';
 import User from '@/models/User';
 import { useRouter } from '@/i18n/navigation';
 import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
+import { setupComponent } from '@/__test-utils__/rendering';
 
 jest.mock('@/i18n/navigation');
 jest.mock('@/hooks/useAuth');
@@ -34,7 +35,9 @@ function renderComponent(mockUser: User | null = MOCK_USER_DATA) {
 	return {
 		mockUser,
 		mockLogout,
-		renderResult: render(<AccessDeniedPage />),
+		renderResult: setupComponent(<AccessDeniedPage />)
+			.applyLocale('pl')
+			.render(),
 	};
 }
 
