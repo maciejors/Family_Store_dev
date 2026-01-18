@@ -7,7 +7,7 @@ import Dialog from '@/components/wrappers/Dialog';
 import UpdateAppForm from '../AppForms/UpdateAppForm';
 import EditAppForm from '../AppForms/EditAppForm';
 import AppPreview from '@/models/AppPreview';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import IconButton from '@/components/buttons/IconButton';
 import Card from '@/components/wrappers/Card';
 

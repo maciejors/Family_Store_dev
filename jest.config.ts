@@ -9,13 +9,14 @@ const config: Config = {
 	preset: 'ts-jest',
 	testEnvironment: 'jsdom',
 	transform: {
-		'.(ts|tsx)': [
+		'^.+\\.(ts|tsx|js|jsx)$': [
 			'ts-jest',
 			{
 				tsconfig: 'tsconfig.jest.json',
 			},
 		],
 	},
+	transformIgnorePatterns: ['\\.json$', 'node_modules/(?!next-intl)/'],
 	moduleNameMapper: {
 		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
 		'^@/(.*)$': '<rootDir>/src/$1',

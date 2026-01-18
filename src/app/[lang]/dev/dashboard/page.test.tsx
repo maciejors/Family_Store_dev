@@ -1,17 +1,16 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import * as appsApi from '@/lib/supabase/database/apps';
 import useAuth from '@/hooks/useAuth';
 import User from '@/models/User';
 import AppsByBrand from '@/models/AppsByBrand';
 import DashboardPage from './page';
-import { push } from '@/__mocks__/next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { setupComponent } from '@/__test-utils__/rendering';
 import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
 
-jest.mock('next/link');
 jest.mock('next/image');
-jest.mock('next/navigation');
+jest.mock('@/i18n/navigation');
 jest.mock('@/hooks/useAuth');
 jest.mock('./_components/BrandsManager');
 jest.mock('./_components/AppForms/AddAppForm');
@@ -20,6 +19,9 @@ jest.mock('./_components/AppForms/UpdateAppForm');
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
+
+const mockPush = jest.fn();
+(useRouter as jest.Mock).mockReturnValue({ push: mockPush });
 
 const MOCK_USER_DATA: User = {
 	uid: '123',
@@ -180,13 +182,13 @@ test('Should trigger the logout function when the logout button clicked', async 
 test('Should redirect to auth page if user is not logged in', async () => {
 	renderComponent({ mockUser: null });
 	await waitFor(() => {
-		expect(push).toHaveBeenCalledWith('/dev/auth');
+		expect(mockPush).toHaveBeenCalledWith('/dev/auth');
 	});
 });
 
 test('Should redirect to access denied page if user is not a developer', async () => {
 	renderComponent({ mockUser: { ...MOCK_USER_DATA, role: ROLE_USER } });
 	await waitFor(() => {
-		expect(push).toHaveBeenCalledWith('/dev/access-denied');
+		expect(mockPush).toHaveBeenCalledWith('/dev/access-denied');
 	});
 });

@@ -1,5 +1,3 @@
-'use client';
-
 import MessagePage from '@/components/MessagePage';
 import React from 'react';
 

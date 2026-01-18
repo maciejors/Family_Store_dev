@@ -22,5 +22,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Debug - print node & npm versions
+      run: |
+        node -v
+        npm -v
     - run: npm ci
     - run: npm test
