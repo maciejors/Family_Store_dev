@@ -8,5 +8,6 @@
 	"bracketSpacing": true,
 	"bracketSameLine": false,
 	"pluginSearchDirs": ["."],
-	"overrides": [{ "files": "*.jsx" }]
+	"overrides": [{ "files": "*.jsx" }],
+	"plugins": ["prettier-plugin-organize-imports"]
 }
