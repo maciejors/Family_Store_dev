@@ -162,9 +162,7 @@ test('Should display an info if there are no apps (but some brands)', async () =
 test('Should display the brands manager dialog when the relevant button clicked', async () => {
 	renderComponent();
 	await user.click(screen.getByRole('button', { name: /zarządzaj markami/i }));
-	expect(
-		screen.getByRole('heading', { name: /zarządzanie markami/i })
-	).toBeInTheDocument();
+	expect(screen.getByRole('heading', { name: /marki/i })).toBeInTheDocument();
 });
 
 test('Should display the add application dialog when the relevant button clicked', async () => {

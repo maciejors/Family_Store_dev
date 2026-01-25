@@ -45,7 +45,7 @@
 	"DashboardPage": {
 		"myApps": "Moje aplikacje",
 		"manageBrands": "Zarządzaj markami",
-		"managingBrands": "Zarządzanie markami",
+		"brands": "Marki",
 		"addApp": "Dodaj aplikację",
 		"logOut": "Wyloguj się"
 	},
@@ -97,6 +97,7 @@
 		"labelChangelog": "Lista zmian:",
 		"labelNewPicturesFiles": "Dodaj nowe screenshoty",
 
+		"labelAppPictures": "Screenshoty:",
 		"deletePicture": "Usuń obrazek {filename}",
 		"undoDeletePicture": "Cofnij usunięcie obrazka {filename}",
 

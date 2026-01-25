@@ -33,7 +33,7 @@ export default function PictureDeletePicker({
 	}
 
 	return (
-		<GenericInputWrapper label="Screenshoty:" error={error}>
+		<GenericInputWrapper label={t('labelAppPictures')} error={error}>
 			<ul className="flex flex-col mb-2 w-fit">
 				{allPictures.map(({ filename, url }, index) => {
 					const isMarkedToDelete = picturesToDeleteNames?.includes(filename) ?? false;

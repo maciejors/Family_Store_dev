@@ -46,7 +46,7 @@ export default function DashboardPage() {
 							<Dialog
 								open={isBrandsDialogOpen}
 								handleClose={() => setIsBrandsDialogOpen(false)}
-								title={t('managingBrands')}
+								title={t('brands')}
 								className="w-80"
 							>
 								<BrandsManager userUid={currentUser.uid} />

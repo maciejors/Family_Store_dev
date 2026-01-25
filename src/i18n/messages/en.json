@@ -43,9 +43,9 @@
 		"passwordsDifferent": "Passwords do not match"
 	},
 	"DashboardPage": {
-		"myApps": "My apps",
+		"myApps": "My applications",
 		"manageBrands": "Manage brands",
-		"managingBrands": "Brand management",
+		"brands": "Brands",
 		"addApp": "Add application",
 		"logOut": "Log out"
 	},
@@ -97,6 +97,7 @@
 		"labelChangelog": "Changelog:",
 		"labelNewPicturesFiles": "Add new screenshots",
 
+		"labelAppPictures": "Screenshots:",
 		"deletePicture": "Delete image {filename}",
 		"undoDeletePicture": "Undo deletion of image {filename}",
 
