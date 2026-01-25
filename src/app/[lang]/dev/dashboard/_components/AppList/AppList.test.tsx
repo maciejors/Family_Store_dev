@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { setupComponent } from '@/__test-utils__/rendering';
+import { screen } from '@testing-library/react';
 import AppList, { AppListProps } from './AppList';
 
 jest.mock('@/i18n/navigation');
-jest.mock('next/image');
 
 const MOCK_DATA: AppListProps = {
 	brandName: 'SuperBrand',
@@ -11,23 +11,25 @@ const MOCK_DATA: AppListProps = {
 			id: 1,
 			name: 'My app 1',
 			version: '1.0',
-			lastUpdated: '2020-04-01T10:00:00',
-			createdAt: '2019-10-02T10:00:00',
+			lastUpdated: new Date('2020-04-01T10:00:00'),
+			createdAt: new Date('2019-10-02T10:00:00'),
 			logoUrl: 'https://localhost/fake-logo-url-1.png',
 		},
 		{
 			id: 2,
 			name: 'My app 2',
 			version: '2.1.1',
-			lastUpdated: '2022-06-22T10:00:00',
-			createdAt: '2022-06-22T10:00:00',
+			lastUpdated: new Date('2022-06-22T10:00:00'),
+			createdAt: new Date('2022-06-22T10:00:00'),
 			logoUrl: 'https://localhost/fake-logo-url-2.png',
 		},
 	],
 };
 
 function renderComponent() {
-	render(<AppList {...MOCK_DATA} />);
+	setupComponent(<AppList {...MOCK_DATA} />)
+		.applyLocale()
+		.render();
 }
 
 test('Should display a brand header and a list of apps', () => {
@@ -38,6 +40,6 @@ test('Should display a brand header and a list of apps', () => {
 		expect(
 			screen.getByRole('heading', { name: new RegExp(app.name) })
 		).toBeInTheDocument();
-		expect(screen.getByText(new RegExp(app.version))).toBeInTheDocument();
+		expect(screen.getByText(new RegExp(`Version: ${app.version}`))).toBeInTheDocument();
 	}
 });

@@ -1,10 +1,11 @@
-import React from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function NoAppsInfo() {
+	const t = useTranslations('NoAppsInfo');
 	return (
 		<div className="w-full py-16 flex flex-col gap-2 items-center text-center">
-			<h3>Witaj w Family Store Dev!</h3>
-			<p>Obecnie nie ma żadnych aplikacji powiązanych z tym kontem.</p>
+			<h3>{t('welcome')}</h3>
+			<p>{t('noApps')}</p>
 		</div>
 	);
 }

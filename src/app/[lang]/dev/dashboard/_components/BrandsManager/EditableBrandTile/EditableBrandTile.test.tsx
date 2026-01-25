@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { setupComponent } from '@/__test-utils__/rendering';
+import Brand from '@/models/Brand';
+import { screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import EditableBrandTile, { EditableBrandTileProps } from './EditableBrandTile';
-import Brand from '@/models/Brand';
 
 function renderComponent(propsOverrides: Partial<EditableBrandTileProps> = {}) {
 	const mockBrand: Brand = { id: 1, name: 'SuperBrand', appCount: 0 };
@@ -13,7 +14,9 @@ function renderComponent(propsOverrides: Partial<EditableBrandTileProps> = {}) {
 	};
 	return {
 		brand: mockBrand,
-		renderResult: render(<EditableBrandTile {...props} />),
+		renderResult: setupComponent(<EditableBrandTile {...props} />)
+			.applyLocale()
+			.render(),
 	};
 }
 

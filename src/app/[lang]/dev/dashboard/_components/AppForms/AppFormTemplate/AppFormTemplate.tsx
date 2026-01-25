@@ -1,10 +1,11 @@
-import React, { ReactNode, useState } from 'react';
-import clsx from 'clsx';
-import Icon from '@mdi/react';
-import { mdiClose, mdiCheck } from '@mdi/js';
 import Button from '@/components/buttons/Button';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import Spinner from '@/components/loading/Spinner';
+import { mdiCheck, mdiClose } from '@mdi/js';
+import Icon from '@mdi/react';
+import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
+import React, { ReactNode, useState } from 'react';
 
 export type AppFormTemplateProps = {
 	children: ReactNode;
@@ -21,6 +22,8 @@ export default function AppFormTemplate({
 	name,
 	submitBtnText,
 }: AppFormTemplateProps) {
+	const t = useTranslations('AppForms');
+
 	const [isUploading, setIsUploading] = useState(false);
 	const [isUploadError, setIsUploadError] = useState(false);
 	const [wasSubmitted, setWasSubmitted] = useState(false);
@@ -56,18 +59,18 @@ export default function AppFormTemplate({
 				aria-label={name}
 			>
 				{children}
-				<p className="text-red-600 w-full text-base">* pole wymagane</p>
+				<p className="text-red-600 w-full text-base">{t('requiredField')}</p>
 				{!isUploading && wasSubmitted && (
 					<div className={submitFeedbackClassName}>
 						{isUploadError ? (
 							<>
 								<Icon path={mdiClose} size={1} />
-								<p>Wystąpił błąd</p>
+								<p>{t('errorOccurred')}</p>
 							</>
 						) : (
 							<>
 								<Icon path={mdiCheck} size={1} />
-								<p>Sukces</p>
+								<p>{t('success')}</p>
 							</>
 						)}
 					</div>

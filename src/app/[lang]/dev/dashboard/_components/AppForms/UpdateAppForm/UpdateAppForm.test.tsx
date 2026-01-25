@@ -1,12 +1,12 @@
-import { render, screen } from '@testing-library/react';
-import user from '@testing-library/user-event';
-import UpdateAppForm from './UpdateAppForm';
-import * as appsApi from '@/lib/supabase/database/apps';
-import * as oneSignalApi from '@/lib/notifications/onesignal';
 import { getFakeApk } from '@/__test-utils__/fakeFiles';
+import { setupComponent } from '@/__test-utils__/rendering';
+import * as oneSignalApi from '@/lib/notifications/onesignal';
+import * as appsApi from '@/lib/supabase/database/apps';
 import AppUpdateDetails from '@/models/AppUpdateDetails';
 import UpdateAppData from '@/schemas/UpdateAppData';
-import { setupComponent } from '@/__test-utils__/rendering';
+import { screen } from '@testing-library/react';
+import user from '@testing-library/user-event';
+import UpdateAppForm from './UpdateAppForm';
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 const mockOneSignalApi = oneSignalApi as jest.Mocked<typeof oneSignalApi>;
@@ -60,6 +60,7 @@ function renderComponent(autoMockAppUpdateDetails: boolean = true) {
 		appId,
 		renderResult: setupComponent(<UpdateAppForm appId={appId} />)
 			.applyQueryClient()
+			.applyLocale('pl')
 			.render(),
 	};
 }

@@ -1,7 +1,7 @@
-import { render, RenderResult } from '@testing-library/react';
-import { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { render, RenderResult } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
+import { ReactElement } from 'react';
 
 export function setupComponent(component: ReactElement<any>) {
 	return new RenderBuilder(component);

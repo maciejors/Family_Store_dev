@@ -1,11 +1,11 @@
+import { setupComponent } from '@/__test-utils__/rendering';
+import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
+import useAuth from '@/hooks/useAuth';
+import { useRouter } from '@/i18n/navigation';
+import User from '@/models/User';
 import { screen, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
-import useAuth from '@/hooks/useAuth';
 import AccessDeniedPage from './page';
-import User from '@/models/User';
-import { useRouter } from '@/i18n/navigation';
-import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
-import { setupComponent } from '@/__test-utils__/rendering';
 
 jest.mock('@/i18n/navigation');
 jest.mock('@/hooks/useAuth');

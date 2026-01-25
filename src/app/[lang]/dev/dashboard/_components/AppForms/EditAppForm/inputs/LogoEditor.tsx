@@ -1,11 +1,12 @@
-import React, { forwardRef, useState } from 'react';
-import Icon from '@mdi/react';
-import { mdiPencil } from '@mdi/js';
 import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import TextButton from '@/components/buttons/TextButton';
 import FileInput, { FileInputProps } from '@/components/inputs/FileInput';
 import GenericInputWrapper from '@/components/inputs/util/GenericInputWrapper';
+import { mdiPencil } from '@mdi/js';
+import Icon from '@mdi/react';
+import { useTranslations } from 'next-intl';
+import { forwardRef, useState } from 'react';
 
 export type LogoEditorProps = {
 	currentLogoUrl: string;
@@ -16,6 +17,7 @@ const LogoEditor = forwardRef<HTMLInputElement, LogoEditorProps>(function LogoEd
 	{ currentLogoUrl, error, logoUnsetter, ...otherFileInputProps },
 	ref
 ) {
+	const t = useTranslations('AppForms');
 	const [isChangingLogo, setIsChangingLogo] = useState(false);
 
 	function cancelEditingLogo() {
@@ -24,7 +26,7 @@ const LogoEditor = forwardRef<HTMLInputElement, LogoEditorProps>(function LogoEd
 	}
 
 	return (
-		<GenericInputWrapper label="Logo aplikacji: *" labelHtmlFor="logo">
+		<GenericInputWrapper label={t('labelLogoEditor')} labelHtmlFor="logo">
 			{!isChangingLogo && (
 				<div className="flex flex-row items-center gap-1">
 					<a href={currentLogoUrl} target="_blank">
@@ -49,12 +51,12 @@ const LogoEditor = forwardRef<HTMLInputElement, LogoEditorProps>(function LogoEd
 						className="w-fit"
 						onClick={cancelEditingLogo}
 					>
-						Anuluj edycję loga
+						{t('cancelEditLogo')}
 					</Button>
 					<FileInput
 						{...otherFileInputProps}
 						ref={ref}
-						noFilesLabel="Dodaj logo (256x256 px) *"
+						noFilesLabel={t('labelLogoFile')}
 						accept=".png"
 						multiple={false}
 						error={error}

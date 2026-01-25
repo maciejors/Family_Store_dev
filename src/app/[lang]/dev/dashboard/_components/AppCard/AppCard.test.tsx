@@ -1,11 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { setupComponent } from '@/__test-utils__/rendering';
+import AppPreview from '@/models/AppPreview';
+import { screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import AppCard from './AppCard';
-import AppPreview from '@/models/AppPreview';
 
-jest.mock('next/image');
 jest.mock('@/i18n/navigation');
-jest.mock('@/components/FormattedDateLabel');
 jest.mock('../AppForms/EditAppForm');
 jest.mock('../AppForms/UpdateAppForm');
 
@@ -13,23 +12,27 @@ const MOCK_APP: AppPreview = {
 	id: 1,
 	name: 'My app 1',
 	version: '1.0',
-	lastUpdated: '2020-04-01T10:00:00',
-	createdAt: '2019-10-02T10:00:00',
+	lastUpdated: new Date('2020-04-01T10:00:00'),
+	createdAt: new Date('2019-10-02T10:00:00'),
 	logoUrl: 'https://localhost/fake-logo-url-1.png',
 };
 
 function renderComponent() {
-	render(<AppCard app={MOCK_APP} />);
+	setupComponent(<AppCard app={MOCK_APP} />)
+		.applyLocale()
+		.render();
 }
 
 test("Should display the app's data", () => {
 	renderComponent();
 
 	expect(screen.getByRole('heading', { name: MOCK_APP.name })).toBeInTheDocument();
-	expect(screen.getByText(`Wersja: ${MOCK_APP.version}`)).toBeInTheDocument();
-	expect(screen.getByText(`Aktual. ${MOCK_APP.lastUpdated}`)).toBeInTheDocument();
+	expect(screen.getByText(`Version: ${MOCK_APP.version}`)).toBeInTheDocument();
+	expect(
+		screen.getByText(`Updated: ${MOCK_APP.lastUpdated.toISOString()}`)
+	).toBeInTheDocument();
 
-	const logo = screen.getByRole('img', { name: `${MOCK_APP.name} logo` });
+	const logo = screen.getByRole('img', { name: `${MOCK_APP.name}'s logo` });
 	expect(logo).toBeInTheDocument();
 	expect(logo).toHaveAttribute('src', MOCK_APP.logoUrl);
 
@@ -50,19 +53,15 @@ test("Should display the app's data", () => {
 test('Should open the update dialog when clicked the relevant button', async () => {
 	renderComponent();
 
-	await user.click(
-		screen.getByRole('button', { name: new RegExp(`Update ${MOCK_APP.name}`) })
-	);
-	expect(
-		screen.getByRole('heading', { name: /dodaj aktualizację/i })
-	).toBeInTheDocument();
+	const updateLabel = new RegExp(`Update ${MOCK_APP.name}`);
+	await user.click(screen.getByRole('button', { name: updateLabel }));
+	expect(screen.getByRole('heading', { name: updateLabel })).toBeInTheDocument();
 });
 
 test('Should open the edit app dialog when clicked the relevant button', async () => {
 	renderComponent();
 
-	await user.click(
-		screen.getByRole('button', { name: new RegExp(`Edit ${MOCK_APP.name}`) })
-	);
-	expect(screen.getByRole('heading', { name: /edytuj aplikację/i })).toBeInTheDocument();
+	const editLabel = new RegExp(`Edit ${MOCK_APP.name}`);
+	await user.click(screen.getByRole('button', { name: editLabel }));
+	expect(screen.getByRole('heading', { name: editLabel })).toBeInTheDocument();
 });

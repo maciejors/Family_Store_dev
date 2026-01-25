@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { setupComponent } from '@/__test-utils__/rendering';
+import { screen } from '@testing-library/react';
 import ImageViewer from './ImageViewer';
 
 function renderComponent() {
@@ -9,7 +10,9 @@ function renderComponent() {
 	];
 	return {
 		imageUrls,
-		renderResult: render(<ImageViewer imagesUrls={imageUrls} />),
+		renderResult: setupComponent(<ImageViewer imagesUrls={imageUrls} />)
+			.applyLocale()
+			.render(),
 	};
 }
 

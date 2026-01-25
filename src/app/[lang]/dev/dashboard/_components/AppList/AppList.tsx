@@ -1,6 +1,5 @@
-import React from 'react';
-import AppCard from '../AppCard';
 import AppPreview from '@/models/AppPreview';
+import AppCard from '../AppCard';
 
 export type AppListProps = {
 	brandName: string;

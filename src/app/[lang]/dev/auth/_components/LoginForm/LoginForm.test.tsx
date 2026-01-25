@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react';
-import user from '@testing-library/user-event';
+import { setupComponent } from '@/__test-utils__/rendering';
 import useAuth from '@/hooks/useAuth';
+import { screen } from '@testing-library/react';
+import user from '@testing-library/user-event';
 import LoginForm from './LoginForm';
 
 jest.mock('@/hooks/useAuth');
@@ -16,7 +17,9 @@ const mockUseAuthReturnValue = {
 mockUseAuth.mockReturnValue(mockUseAuthReturnValue);
 
 function renderComponent() {
-	return render(<LoginForm />);
+	return setupComponent(<LoginForm />)
+		.applyLocale('pl')
+		.render();
 }
 
 type FormData = {

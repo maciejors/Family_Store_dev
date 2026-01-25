@@ -1,11 +1,11 @@
-import React from 'react';
-import clsx from 'clsx';
-import Icon from '@mdi/react';
-import { mdiArrowULeftTop, mdiDelete } from '@mdi/js';
 import IconButton from '@/components/buttons/IconButton';
 import TextButton from '@/components/buttons/TextButton';
 import GenericInputWrapper from '@/components/inputs/util/GenericInputWrapper';
 import AppPicture from '@/models/AppPicture';
+import { mdiArrowULeftTop, mdiDelete } from '@mdi/js';
+import Icon from '@mdi/react';
+import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 
 export type PictureDeletePickerProps = {
 	allPictures: AppPicture[];
@@ -20,6 +20,8 @@ export default function PictureDeletePicker({
 	onPicturesToDeleteNamesChange,
 	error,
 }: PictureDeletePickerProps) {
+	const t = useTranslations('AppForms');
+
 	function togglePictureToDelete(name: string) {
 		let newNames = picturesToDeleteNames ?? [];
 		if (newNames.includes(name)) {
@@ -49,9 +51,9 @@ export default function PictureDeletePicker({
 								type="button"
 								color="primary"
 								onClick={() => togglePictureToDelete(filename)}
-								aria-label={`${
-									isMarkedToDelete ? 'undo ' : ''
-								}delete picture ${filename}`}
+								aria-label={t(isMarkedToDelete ? 'undoDeletePicture' : 'deletePicture', {
+									filename,
+								})}
 								icon={
 									<Icon path={isMarkedToDelete ? mdiArrowULeftTop : mdiDelete} size={1} />
 								}

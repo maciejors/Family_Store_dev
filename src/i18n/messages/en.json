@@ -1,5 +1,117 @@
 {
 	"AccessDenied": {
-		"title": "Access denied"
+		"title": "Access denied",
+		"description": "This part of the platform is available only to users with a developer account",
+		"logOut": "Log out"
+	},
+	"NotFound": {
+		"title": "Page not found :/",
+		"titleApp": "App not found :/"
+	},
+	"Error": {
+		"title": "An unknown error occurred :/"
+	},
+	"AppPage": {
+		"image": "Image {curr}/{total}",
+		"logo": "{appName}'s logo",
+		"version": "Version: {version}",
+		"author": "Author: {brandName}",
+		"download": "Download",
+		"lastUpdatedDate": "Last updated: {date}",
+		"publishedDate": "Published: {date}",
+		"changelog": "Changelog:"
+	},
+	"AuthPage": {
+		"FamilyStoreLogo": "Family Store's Logo",
+		"noAccount": "I don't have an account",
+		"haveAccount": "I already have an account",
+
+		"registerTitle": "Register",
+		"loginTitle": "Log in",
+		"email": "Email",
+		"password": "Password",
+		"repeatPassword": "Repeat password",
+		"createAccount": "Create an account",
+		"logIn": "Log in",
+
+		"invalidEmail": "Invalid email address",
+		"providePassword": "Please provide a password",
+		"passwordRequired": "Password is required",
+		"passwordTooShort": "Password must be at least 8 characters long",
+		"passwordTooSimple": "Password must contain at least 1 letter, 1 number, and 1 special character",
+		"pleaseRepeatPassword": "Please repeat the password",
+		"passwordsDifferent": "Passwords do not match"
+	},
+	"DashboardPage": {
+		"myApps": "My apps",
+		"manageBrands": "Manage brands",
+		"managingBrands": "Brand management",
+		"addApp": "Add application",
+		"logOut": "Log out"
+	},
+	"NoAppsInfo": {
+		"welcome": "Welcome to Family Store Dev!",
+		"noApps": "There are currently no applications associated with this account."
+	},
+	"AppCard": {
+		"logo": "{appName}'s logo",
+		"version": "Version: {version}",
+		"lastUpdatedDate": "Updated: {date}",
+		"linkToApp": "Link to {appName}'s page",
+		"updateApp": "Update {appName}",
+		"editApp": "Edit {appName}"
+	},
+	"BrandsManager": {
+		"add": "Add",
+		"edit": "Edit",
+		"delete": "Delete",
+		"brandName": "Brand name",
+		"confirm": "Confirm",
+		"cancel": "Cancel"
+	},
+	"AppForms": {
+		"requiredField": "* required field",
+		"success": "Success",
+		"errorOccurred": "An error occurred",
+
+		"noBrandsTitle": "No brands associated with this account.",
+		"noBrandsDescription": "To add an application, you must have at least one brand.",
+		"addAppFormName": "Add app form",
+		"addApp": "Add the application",
+
+		"editAppFormName": "Edit app form",
+		"saveChanges": "Save changes",
+
+		"updateAppFormName": "Update app form",
+		"publishUpdate": "Publish the update",
+
+		"labelName": "Application name: *",
+		"labelVersion": "Version: *",
+		"placeholderVersion": "e.g. 1.0.0",
+		"placeholderNewVersion": "Current version: {currVersion}",
+		"labelBrandId": "Brand: *",
+		"labelApkFile": "Add installation file *",
+		"labelLogoFile": "Add logo (256x256 px) *",
+		"labelDescription": "Description:",
+		"labelAppPicturesFiles": "Add screenshots",
+		"labelChangelog": "Changelog:",
+		"labelNewPicturesFiles": "Add new screenshots",
+
+		"deletePicture": "Delete image {filename}",
+		"undoDeletePicture": "Undo deletion of image {filename}",
+
+		"labelLogoEditor": "Application logo: *",
+		"cancelEditLogo": "Cancel logo edit"
+	},
+	"AppSchemas": {
+		"fileTooLarge": "File is too large",
+		"apkWrongMime": "Installation file must be a .apk file",
+		"imageWrongMime": "Image must be in .png or .jpg format",
+		"nameRequired": "Application name is required",
+		"logoRequired": "Application logo is required",
+		"brandRequired": "Brand is required",
+		"apkRequired": "Installation file is required",
+		"versionRequired": "Application version ID is required",
+		"newVersionRequired": "New version ID is required"
 	}
 }

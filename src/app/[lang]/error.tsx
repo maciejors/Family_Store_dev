@@ -1,8 +1,9 @@
 'use client';
 
 import MessagePage from '@/components/MessagePage';
-import React from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function DefaultErrorPage() {
-	return <MessagePage title="An unknown error occurred :/" />;
+	const t = useTranslations('Error');
+	return <MessagePage title={t('title')} />;
 }

@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import user from '@testing-library/user-event';
-import useAuth from '@/hooks/useAuth';
-import AuthPage from './page';
-import { useRouter } from '@/i18n/navigation';
+import { setupComponent } from '@/__test-utils__/rendering';
 import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
+import useAuth from '@/hooks/useAuth';
+import { useRouter } from '@/i18n/navigation';
+import { screen, waitFor } from '@testing-library/react';
+import user from '@testing-library/user-event';
+import AuthPage from './page';
 
 jest.mock('@/i18n/navigation');
 jest.mock('@/hooks/useAuth');
@@ -23,7 +24,9 @@ const mockUseAuthReturnValue = {
 mockUseAuth.mockReturnValue(mockUseAuthReturnValue);
 
 function renderComponent() {
-	return render(<AuthPage />);
+	return setupComponent(<AuthPage />)
+		.applyLocale('pl')
+		.render();
 }
 
 test('Should allow to switch back and forth between login and register', async () => {
