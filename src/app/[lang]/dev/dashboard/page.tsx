@@ -1,29 +1,26 @@
 'use client';
 
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
-import useAccess from '@/hooks/useAccess';
-import AppList from './_components/AppList';
-import Dialog from '@/components/wrappers/Dialog';
-import useAuth from '@/hooks/useAuth';
-import NoAppsInfo from './_components/NoAppsInfo';
-import BrandsManager from './_components/BrandsManager';
-import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
-import AddAppForm from './_components/AppForms/AddAppForm';
 import Button from '@/components/buttons/Button';
+import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
+import Dialog from '@/components/wrappers/Dialog';
 import MainContainer from '@/components/wrappers/MainContainer';
+import useAccess from '@/hooks/useAccess';
+import useAuth from '@/hooks/useAuth';
+import { getUserAppsByBrands } from '@/lib/supabase/database/apps';
+import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import AddAppForm from './_components/AppForms/AddAppForm';
+import AppList from './_components/AppList';
+import BrandsManager from './_components/BrandsManager';
+import NoAppsInfo from './_components/NoAppsInfo';
 
 export default function DashboardPage() {
 	let { currentUser, logOut } = useAuth();
 	const canViewPage = useAccess(['dev']);
+	const t = useTranslations('DashboardPage');
 
-	const {
-		data: appsData,
-		isPending: areAppsPending,
-		refetch: fetchUserAppsByBrand,
-	} = useQuery({
+	const { data: appsData, isPending: areAppsPending } = useQuery({
 		queryKey: ['appsByBrand', currentUser?.uid],
 		queryFn: async () => {
 			const fetchedData = await getUserAppsByBrands(currentUser!.uid);
@@ -40,16 +37,16 @@ export default function DashboardPage() {
 		currentUser && (
 			<MainContainer>
 				<header className="flex flex-row justify-between mt-4 mb-8 w-full">
-					<h2>Moje aplikacje</h2>
+					<h2>{t('myApps')}</h2>
 					<div className="flex flex-row gap-4">
 						<>
 							<Button className="h-full" onClick={() => setIsBrandsDialogOpen(true)}>
-								Zarządzaj markami
+								{t('manageBrands')}
 							</Button>
 							<Dialog
 								open={isBrandsDialogOpen}
 								handleClose={() => setIsBrandsDialogOpen(false)}
-								title="Zarządzanie markami"
+								title={t('brands')}
 								className="w-80"
 							>
 								<BrandsManager userUid={currentUser.uid} />
@@ -57,18 +54,18 @@ export default function DashboardPage() {
 						</>
 						<>
 							<Button className="h-full" onClick={() => setIsAddAppDialogOpen(true)}>
-								Dodaj aplikację
+								{t('addApp')}
 							</Button>
 							<Dialog
 								open={isAddAppDialogOpen}
 								handleClose={() => setIsAddAppDialogOpen(false)}
-								title="Dodaj aplikację"
+								title={t('addApp')}
 							>
 								<AddAppForm userUid={currentUser.uid} />
 							</Dialog>
 						</>
 						<Button variant="secondary" onClick={logOut}>
-							Wyloguj się
+							{t('logOut')}
 						</Button>
 					</div>
 				</header>

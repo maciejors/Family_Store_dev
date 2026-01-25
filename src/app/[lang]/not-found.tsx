@@ -1,6 +1,7 @@
 import MessagePage from '@/components/MessagePage';
-import React from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function DefaultNotFoundPage() {
-	return <MessagePage title="Page not found :/" />;
+	const t = useTranslations('NotFound');
+	return <MessagePage title={t('title')} />;
 }

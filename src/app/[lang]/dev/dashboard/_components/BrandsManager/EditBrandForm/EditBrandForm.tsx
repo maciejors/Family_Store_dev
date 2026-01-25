@@ -1,8 +1,9 @@
-import React, { FormEvent, useState } from 'react';
-import Icon from '@mdi/react';
-import { mdiCheck, mdiClose } from '@mdi/js';
 import IconButton from '@/components/buttons/IconButton';
 import TextInput from '@/components/inputs/TextInput';
+import { mdiCheck, mdiClose } from '@mdi/js';
+import Icon from '@mdi/react';
+import { useTranslations } from 'next-intl';
+import { FormEvent, useState } from 'react';
 
 export type EditBrandFormProps = {
 	defaultBrandName: string;
@@ -17,6 +18,8 @@ export default function EditBrandForm({
 }: EditBrandFormProps) {
 	const [newNameInput, setNewNameInput] = useState(defaultBrandName);
 	const [isInputValid, setIsInputValid] = useState(true);
+
+	const t = useTranslations('BrandsManager');
 
 	function validateInput() {
 		const isValid = newNameInput !== '';
@@ -42,20 +45,20 @@ export default function EditBrandForm({
 				type="text"
 				value={newNameInput}
 				onChange={(e) => setNewNameInput(e.target.value)}
-				placeholder="Nazwa marki"
+				placeholder={t('brandName')}
 				error={!isInputValid}
 				compact
 			/>
 			<IconButton
 				type="submit"
 				icon={<Icon path={mdiCheck} size={1} />}
-				aria-label="confirm"
+				aria-label={t('confirm')}
 			/>
 			<IconButton
 				type="button"
 				onClick={handleCancel}
 				icon={<Icon path={mdiClose} size={1} />}
-				aria-label="cancel"
+				aria-label={t('cancel')}
 			/>
 		</form>
 	);

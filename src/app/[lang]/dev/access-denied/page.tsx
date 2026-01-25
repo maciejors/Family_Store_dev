@@ -1,9 +1,9 @@
 'use client';
 
-import useAuth from '@/hooks/useAuth';
-import useAccess from '@/hooks/useAccess';
 import Button from '@/components/buttons/Button';
 import MessagePage from '@/components/MessagePage';
+import useAccess from '@/hooks/useAccess';
+import useAuth from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
 
 export default function AccessDeniedPage() {
@@ -14,10 +14,8 @@ export default function AccessDeniedPage() {
 	return (
 		canViewPage && (
 			<MessagePage title={t('title')}>
-				<p className="text-center">
-					Ta część platformy jest dostępna jedynie dla użytkowników z kontem dewelopera.
-				</p>
-				<Button onClick={logOut}>Wyloguj się</Button>
+				<p className="text-center">{t('description')}</p>
+				<Button onClick={logOut}>{t('logOut')}</Button>
 			</MessagePage>
 		)
 	);

@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import BrandsManager from './BrandsManager';
-import Brand from '@/models/Brand';
-import * as brandsApi from '@/lib/supabase/database/brands';
 import { setupComponent } from '@/__test-utils__/rendering';
+import * as brandsApi from '@/lib/supabase/database/brands';
+import Brand from '@/models/Brand';
+import { screen } from '@testing-library/react';
+import BrandsManager from './BrandsManager';
 
 const mockedBrandsApi = brandsApi as jest.Mocked<typeof brandsApi>;
 
@@ -18,13 +18,14 @@ function renderComponent(injectMockData = true) {
 	}
 	setupComponent(<BrandsManager userUid={1} />)
 		.applyQueryClient()
+		.applyLocale()
 		.render();
 }
 
 test('Displays fetched data and action buttons', async () => {
 	renderComponent();
 
-	expect(await screen.findByRole('button', { name: /dodaj/i })).toBeInTheDocument();
+	expect(await screen.findByRole('button', { name: /add/i })).toBeInTheDocument();
 	for (const brand of MOCK_BRANDS) {
 		expect(screen.getByText(new RegExp(brand.name))).toBeInTheDocument();
 		expect(screen.getByText(new RegExp(brand.appCount.toString()))).toBeInTheDocument();

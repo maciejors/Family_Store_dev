@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import Icon from '@mdi/react';
-import { mdiPencil, mdiDelete } from '@mdi/js';
-import EditBrandForm from '../EditBrandForm';
-import Brand from '@/models/Brand';
 import IconButton from '@/components/buttons/IconButton';
+import Brand from '@/models/Brand';
+import { mdiDelete, mdiPencil } from '@mdi/js';
+import Icon from '@mdi/react';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import EditBrandForm from '../EditBrandForm';
 
 export type EditableBrandTileProps = {
 	brandData: Brand;
@@ -17,6 +18,7 @@ export default function EditableBrandTile({
 	onDelete,
 }: EditableBrandTileProps) {
 	const [isEditing, setIsEditing] = useState(false);
+	const t = useTranslations('BrandsManager');
 
 	function showEditor() {
 		setIsEditing(true);
@@ -51,13 +53,13 @@ export default function EditableBrandTile({
 					<IconButton
 						onClick={showEditor}
 						icon={<Icon path={mdiPencil} size={1} />}
-						aria-label="edit"
+						aria-label={t('edit')}
 					/>
 					{brandData.appCount == 0 && (
 						<IconButton
 							onClick={handleDelete}
 							icon={<Icon path={mdiDelete} size={1} />}
-							aria-label="delete"
+							aria-label={t('delete')}
 						/>
 					)}
 				</div>

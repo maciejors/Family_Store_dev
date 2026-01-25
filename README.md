@@ -60,5 +60,4 @@ We are actively working on enhancing Family Store Dev with the following feature
 
 ## For developers:
 
-- Running the app: `npm run dev`
-- Running all tests: `npm test`
+See [CONTRIBUTING.md](CONTRIBUTING.md)

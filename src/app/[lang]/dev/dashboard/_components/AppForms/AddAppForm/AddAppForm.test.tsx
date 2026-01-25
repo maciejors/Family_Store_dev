@@ -1,13 +1,13 @@
-import { render, screen } from '@testing-library/react';
-import user from '@testing-library/user-event';
-import AddAppForm from './AddAppForm';
-import * as brandsApi from '@/lib/supabase/database/brands';
-import * as appsApi from '@/lib/supabase/database/apps';
-import * as oneSignalApi from '@/lib/notifications/onesignal';
-import Brand from '@/models/Brand';
-import NewAppData from '@/schemas/NewAppData';
 import { getFakeApk, getFakePicture } from '@/__test-utils__/fakeFiles';
 import { setupComponent } from '@/__test-utils__/rendering';
+import * as oneSignalApi from '@/lib/notifications/onesignal';
+import * as appsApi from '@/lib/supabase/database/apps';
+import * as brandsApi from '@/lib/supabase/database/brands';
+import Brand from '@/models/Brand';
+import NewAppData from '@/schemas/NewAppData';
+import { screen } from '@testing-library/react';
+import user from '@testing-library/user-event';
+import AddAppForm from './AddAppForm';
 
 const mockBrandsApi = brandsApi as jest.Mocked<typeof brandsApi>;
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
@@ -76,6 +76,7 @@ function renderComponent(autoMockBrands: boolean = true) {
 		newAppId,
 		renderResult: setupComponent(<AddAppForm userUid={userUid} />)
 			.applyQueryClient()
+			.applyLocale('pl')
 			.render(),
 	};
 }

@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { setupComponent } from '@/__test-utils__/rendering';
+import { screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import EditBrandForm, { EditBrandFormProps } from './EditBrandForm';
 
@@ -9,7 +10,9 @@ function renderComponent(propsOverrides: Partial<EditBrandFormProps> = {}) {
 		onCancel: jest.fn(),
 		...propsOverrides,
 	};
-	render(<EditBrandForm {...props} />);
+	setupComponent(<EditBrandForm {...props} />)
+		.applyLocale()
+		.render();
 }
 
 test('Should display a textbox and buttons to confirm/cancel', () => {

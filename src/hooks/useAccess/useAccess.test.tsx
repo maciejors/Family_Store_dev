@@ -1,9 +1,9 @@
-import { renderHook } from '@testing-library/react';
-import useAccess, { RoleRedirect } from './useAccess';
-import useAuth from '../useAuth';
+import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
 import { useRouter } from '@/i18n/navigation';
 import User from '@/models/User';
-import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
+import { renderHook } from '@testing-library/react';
+import useAuth from '../useAuth';
+import useAccess, { RoleRedirect } from './useAccess';
 
 jest.mock('@/i18n/navigation');
 jest.mock('@/hooks/useAuth');

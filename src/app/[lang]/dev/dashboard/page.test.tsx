@@ -1,15 +1,14 @@
-import { screen, waitFor } from '@testing-library/react';
-import user from '@testing-library/user-event';
-import * as appsApi from '@/lib/supabase/database/apps';
-import useAuth from '@/hooks/useAuth';
-import User from '@/models/User';
-import AppsByBrand from '@/models/AppsByBrand';
-import DashboardPage from './page';
-import { useRouter } from '@/i18n/navigation';
 import { setupComponent } from '@/__test-utils__/rendering';
 import { ROLE_DEV, ROLE_USER } from '@/__test-utils__/roles';
+import useAuth from '@/hooks/useAuth';
+import { useRouter } from '@/i18n/navigation';
+import * as appsApi from '@/lib/supabase/database/apps';
+import AppsByBrand from '@/models/AppsByBrand';
+import User from '@/models/User';
+import { screen, waitFor } from '@testing-library/react';
+import user from '@testing-library/user-event';
+import DashboardPage from './page';
 
-jest.mock('next/image');
 jest.mock('@/i18n/navigation');
 jest.mock('@/hooks/useAuth');
 jest.mock('./_components/BrandsManager');
@@ -39,16 +38,16 @@ const MOCK_APPS_DATA: AppsByBrand[] = [
 				id: 1,
 				name: 'My app 1',
 				version: '1.0',
-				lastUpdated: '2020-04-01T10:00:00',
-				createdAt: '2020-02-10T10:00:00',
+				lastUpdated: new Date('2020-04-01T10:00:00'),
+				createdAt: new Date('2020-02-10T10:00:00'),
 				logoUrl: 'https://localhost/fake-logo-url-1.png',
 			},
 			{
 				id: 2,
 				name: 'My app 2',
 				version: '2.1.1',
-				lastUpdated: '2022-06-22T10:00:00',
-				createdAt: '2021-02-10T10:00:00',
+				lastUpdated: new Date('2022-06-22T10:00:00'),
+				createdAt: new Date('2021-02-10T10:00:00'),
 				logoUrl: 'https://localhost/fake-logo-url-2.png',
 			},
 		],
@@ -62,8 +61,8 @@ const MOCK_APPS_DATA: AppsByBrand[] = [
 				id: 3,
 				name: 'My app 3',
 				version: '1.6.0',
-				lastUpdated: '2023-11-11T12:00:00',
-				createdAt: '2023-11-11T12:00:00',
+				lastUpdated: new Date('2023-11-11T12:00:00'),
+				createdAt: new Date('2023-11-11T12:00:00'),
 				logoUrl: 'https://localhost/fake-logo-url-3.png',
 			},
 		],
@@ -100,6 +99,7 @@ function renderComponent({
 		mockAppsByBrand,
 		renderResult: setupComponent(<DashboardPage />)
 			.applyQueryClient()
+			.applyLocale('pl')
 			.render(),
 	};
 }
@@ -162,9 +162,7 @@ test('Should display an info if there are no apps (but some brands)', async () =
 test('Should display the brands manager dialog when the relevant button clicked', async () => {
 	renderComponent();
 	await user.click(screen.getByRole('button', { name: /zarządzaj markami/i }));
-	expect(
-		screen.getByRole('heading', { name: /zarządzanie markami/i })
-	).toBeInTheDocument();
+	expect(screen.getByRole('heading', { name: /marki/i })).toBeInTheDocument();
 });
 
 test('Should display the add application dialog when the relevant button clicked', async () => {

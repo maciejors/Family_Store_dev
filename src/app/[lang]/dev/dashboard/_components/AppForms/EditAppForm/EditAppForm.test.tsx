@@ -1,11 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import user from '@testing-library/user-event';
-import EditAppForm from './EditAppForm';
-import * as appsApi from '@/lib/supabase/database/apps';
 import { getFakePicture } from '@/__test-utils__/fakeFiles';
+import { setupComponent } from '@/__test-utils__/rendering';
+import * as appsApi from '@/lib/supabase/database/apps';
 import AppDetails from '@/models/AppDetails';
 import EditAppData from '@/schemas/EditAppData';
-import { setupComponent } from '@/__test-utils__/rendering';
+import { screen } from '@testing-library/react';
+import user from '@testing-library/user-event';
+import EditAppForm from './EditAppForm';
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 
@@ -13,8 +13,8 @@ const MOCK_APP_DATA: AppDetails = {
 	id: 1,
 	name: 'My app 1',
 	version: '1.0',
-	lastUpdated: '2020-04-01T10:00:00',
-	createdAt: '2019-10-02T10:00:00',
+	lastUpdated: new Date('2020-04-01T10:00:00'),
+	createdAt: new Date('2019-10-02T10:00:00'),
 	logoUrl: 'https://localhost/fake-logo-url-1.png',
 	downloadUrl: 'https://localhost/fake-app-url.apk',
 	brandName: 'SuperBrand',
@@ -84,7 +84,7 @@ async function fillForm(data: Partial<EditAppData>) {
 		for (const pictureName of data.picturesToDeleteNames) {
 			await user.click(
 				screen.getByRole('button', {
-					name: new RegExp(`^delete picture ${pictureName}`, 'i'),
+					name: new RegExp(`^usuń obrazek ${pictureName}`, 'i'),
 				})
 			);
 		}
@@ -100,6 +100,7 @@ function renderComponent(autoMockAppDetails: boolean = true) {
 		appId,
 		renderResult: setupComponent(<EditAppForm appId={appId} />)
 			.applyQueryClient()
+			.applyLocale('pl')
 			.render(),
 	};
 }
@@ -137,7 +138,7 @@ test('Should display all form contents, with pre-populated values', async () => 
 	for (const pictureName of MOCK_INPUT.picturesToDeleteNames) {
 		expect(
 			screen.getByRole('button', {
-				name: new RegExp(`^delete picture ${pictureName}`, 'i'),
+				name: new RegExp(`^usuń obrazek ${pictureName}`, 'i'),
 			})
 		).toBeInTheDocument();
 	}
@@ -212,12 +213,12 @@ test('Should allow to toggle pictures to delete', async () => {
 	for (const pictureName of MOCK_INPUT.picturesToDeleteNames) {
 		await user.click(
 			screen.getByRole('button', {
-				name: new RegExp(`^delete picture ${pictureName}`, 'i'),
+				name: new RegExp(`^usuń obrazek ${pictureName}`, 'i'),
 			})
 		);
 
 		const undoDeleteBtn = screen.getByRole('button', {
-			name: new RegExp(`^undo delete picture ${pictureName}`, 'i'),
+			name: new RegExp(`^cofnij usunięcie obrazka ${pictureName}`, 'i'),
 		});
 		expect(undoDeleteBtn).toBeInTheDocument();
 		await user.click(undoDeleteBtn);

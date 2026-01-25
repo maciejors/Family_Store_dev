@@ -1,8 +1,7 @@
-'use client';
-
 import MessagePage from '@/components/MessagePage';
-import React from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function AppNotFoundPage() {
-	return <MessagePage title="App not found :/" />;
+	const t = useTranslations('NotFound');
+	return <MessagePage title={t('titleApp')} />;
 }

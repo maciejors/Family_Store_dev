@@ -1,4 +1,3 @@
-import { getFileUrl, storageBucket, supabase } from '../supabaseSetup';
 import AppDetails from '@/models/AppDetails';
 import AppPicture from '@/models/AppPicture';
 import AppPreview from '@/models/AppPreview';
@@ -7,6 +6,7 @@ import AppUpdateDetails from '@/models/AppUpdateDetails';
 import EditAppData from '@/schemas/EditAppData';
 import NewAppData from '@/schemas/NewAppData';
 import UpdateAppData from '@/schemas/UpdateAppData';
+import { getFileUrl, storageBucket, supabase } from '../supabaseSetup';
 
 export async function getCurrentAppVersion(appId: number): Promise<string | null> {
 	const { data: app, error } = await supabase
@@ -74,6 +74,8 @@ export async function getAppsForBrand(brandId: number): Promise<AppPreview[]> {
 		return {
 			...app,
 			brandName: app.brands.name,
+			lastUpdated: new Date(app.lastUpdated),
+			createdAt: new Date(app.createdAt),
 			logoUrl: getLogoUrl(app.id),
 		};
 	});
@@ -102,6 +104,8 @@ export async function getUserAppsByBrands(userUid: string): Promise<AppsByBrand[
 	fetchedApps.forEach((app) => {
 		const appPreview: AppPreview = {
 			...app,
+			lastUpdated: new Date(app.lastUpdated),
+			createdAt: new Date(app.createdAt),
 			logoUrl: getLogoUrl(app.id),
 		};
 
@@ -143,6 +147,8 @@ export async function getAppDetails(appId: number): Promise<AppDetails> {
 	return {
 		...fetchedApp,
 		brandName: fetchedApp.brands.name,
+		lastUpdated: new Date(fetchedApp.lastUpdated),
+		createdAt: new Date(fetchedApp.createdAt),
 		logoUrl: getLogoUrl(appId),
 		downloadUrl: getApkDownloadUrl(appId),
 		pictures: await getAppPictures(appId),

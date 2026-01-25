@@ -1,14 +1,16 @@
+import Translator from '@/models/Translator';
 import z from 'zod';
-import { fileListToSingleFile, uploadableApk } from './util/files';
+import { fileListToSingleFile, ZodFileExtras } from './util/files';
 
-export const updateAppSchema = z.object({
-	apkFile: z.preprocess(
-		fileListToSingleFile,
-		uploadableApk('Plik instalacyjny jest wymagany')
-	),
-	newVersion: z.string().trim().min(1, 'ID nowej wersji jest wymagane'),
-	changelog: z.string().trim(),
-});
+export const createUpdateAppSchema = (t: Translator) => {
+	const zFile = new ZodFileExtras(t);
 
-type UpdateAppData = z.infer<typeof updateAppSchema>;
+	return z.object({
+		apkFile: z.preprocess(fileListToSingleFile, zFile.apk(t('apkRequired'))),
+		newVersion: z.string().trim().min(1, t('newVersionRequired')),
+		changelog: z.string().trim(),
+	});
+};
+
+type UpdateAppData = z.infer<ReturnType<typeof createUpdateAppSchema>>;
 export default UpdateAppData;

@@ -1,5 +1,118 @@
 {
 	"AccessDenied": {
-		"title": "Odmowa dostępu"
+		"title": "Odmowa dostępu",
+		"description": "Ta część platformy jest dostępna jedynie dla użytkowników z kontem dewelopera.",
+		"logOut": "Wyloguj się"
+	},
+	"NotFound": {
+		"title": "Strona nie znaleziona :/",
+		"titleApp": "Aplikacja nie znaleziona :/"
+	},
+	"Error": {
+		"title": "Wystąpił nieznany błąd :/"
+	},
+	"AppPage": {
+		"image": "Zdjęcie {curr}/{total}",
+		"logo": "Logo {appName}",
+		"version": "Wersja: {version}",
+		"author": "Autor: {brandName}",
+		"download": "Pobierz",
+		"lastUpdatedDate": "Ostatnia aktualizacja: {date}",
+		"publishedDate": "Opublikowano: {date}",
+		"changelog": "Lista zmian:"
+	},
+	"AuthPage": {
+		"FamilyStoreLogo": "Logo Family Store",
+		"noAccount": "Nie mam konta",
+		"haveAccount": "Mam już konto",
+
+		"registerTitle": "Rejestracja",
+		"loginTitle": "Logowanie",
+		"email": "Email",
+		"password": "Hasło",
+		"repeatPassword": "Powtórz hasło",
+		"createAccount": "Utwórz konto",
+		"logIn": "Zaloguj się",
+
+		"invalidEmail": "Adres e-mail jest nieprawidłowy",
+		"providePassword": "Proszę podać hasło",
+		"passwordRequired": "Hasło jest wymagane",
+		"passwordTooShort": "Hasło musi mieć przynajmniej 8 znaków",
+		"passwordTooSimple": "Hasło musi zawierać przynajmniej 1 literę, 1 cyfrę, oraz 1 znak specjalny",
+		"pleaseRepeatPassword": "Proszę powtórzyć hasło",
+		"passwordsDifferent": "Hasła nie są takie same"
+	},
+	"DashboardPage": {
+		"myApps": "Moje aplikacje",
+		"manageBrands": "Zarządzaj markami",
+		"brands": "Marki",
+		"addApp": "Dodaj aplikację",
+		"logOut": "Wyloguj się"
+	},
+	"NoAppsInfo": {
+		"welcome": "Witaj w Family Store Dev!",
+		"noApps": "Obecnie nie ma żadnych aplikacji powiązanych z tym kontem."
+	},
+	"AppCard": {
+		"logo": "Logo {appName}",
+		"version": "Wersja: {version}",
+		"lastUpdatedDate": "Aktual. {date}",
+		"linkToApp": "Link do strony {appName}",
+		"updateApp": "Zaaktualizuj {appName}",
+		"editApp": "Edytuj {appName}"
+	},
+	"BrandsManager": {
+		"add": "Dodaj",
+		"edit": "Edytuj",
+		"delete": "Usuń",
+		"brandName": "Nazwa marki",
+		"confirm": "Zatwierdź",
+		"cancel": "Anuluj"
+	},
+	"AppForms": {
+		"requiredField": "* pole wymagane",
+		"success": "Sukces",
+		"errorOccurred": "Wystąpił błąd",
+
+		"noBrandsTitle": "Brak marek powiązanych z tym kontem.",
+		"noBrandsDescription": "Aby dodać aplikację, należy posiadać przynajmniej jedną markę.",
+		"addAppFormName": "Formularz dodawania aplikacji",
+		"addApp": "Dodaj aplikację",
+
+		"editAppFormName": "Formularz edytowania aplikacji",
+		"saveChanges": "Zapisz zmiany",
+
+		"updateAppFormName": "Formularz aktualizowania aplikacji",
+		"publishUpdate": "Wydaj aktualizację",
+
+		"labelName": "Nazwa aplikacji: *",
+		"labelVersion": "Wersja: *",
+		"placeholderVersion": "np. 1.0.0",
+		"placeholderNewVersion": "Obecna wersja: {currVersion}",
+		"labelBrandId": "Marka: *",
+		"labelApkFile": "Dodaj plik instalacyjny *",
+		"labelLogoFile": "Dodaj logo (256x256 px) *",
+		"labelDescription": "Opis:",
+		"labelAppPicturesFiles": "Dodaj screenshoty",
+		"labelChangelog": "Lista zmian:",
+		"labelNewPicturesFiles": "Dodaj nowe screenshoty",
+
+		"labelAppPictures": "Screenshoty:",
+		"deletePicture": "Usuń obrazek {filename}",
+		"undoDeletePicture": "Cofnij usunięcie obrazka {filename}",
+
+		"labelLogoEditor": "Logo aplikacji: *",
+		"cancelEditLogo": "Anuluj edycję loga"
+	},
+	"AppSchemas": {
+		"fileTooLarge": "Plik jest zbyt duży",
+		"apkWrongMime": "Plik instalacyjny musi być plikiem .apk",
+		"imageWrongMime": "Zdjęcie musi być w formacie .png lub .jpg",
+		"nameRequired": "Nazwa aplikacji jest wymagana",
+		"logoRequired": "Logo aplikacji jest wymagane",
+		"brandRequired": "Marka jest wymagana",
+		"apkRequired": "Plik instalacyjny jest wymagany",
+		"versionRequired": "ID wersji aplikacji jest wymagane",
+		"newVersionRequired": "ID nowej wersji jest wymagane"
 	}
 }

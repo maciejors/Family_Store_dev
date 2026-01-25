@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
-import { useQuery } from '@tanstack/react-query';
-import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
-import AppFormTemplate from '../AppFormTemplate';
-import EditAppData, { editAppSchema } from '@/schemas/EditAppData';
 import FileInput from '@/components/inputs/FileInput';
-import TextInput from '@/components/inputs/TextInput';
 import TextArea from '@/components/inputs/TextArea';
+import TextInput from '@/components/inputs/TextInput';
+import { editApp, getAppDetails } from '@/lib/supabase/database/apps';
+import EditAppData, { createEditAppSchema } from '@/schemas/EditAppData';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import AppFormTemplate from '../AppFormTemplate';
 import LogoEditor from './inputs/LogoEditor';
 import PictureDeletePicker from './inputs/PictureDeletePicker';
 
@@ -18,6 +19,7 @@ export type EditAppFormProps = {
 };
 
 export default function EditAppForm({ appId }: EditAppFormProps) {
+	const t = useTranslations('AppForms');
 	const {
 		register: formRegister,
 		unregister: formUnregister,
@@ -26,7 +28,7 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 		formState: { errors },
 		reset,
 	} = useForm({
-		resolver: zodResolver(editAppSchema),
+		resolver: zodResolver(createEditAppSchema(useTranslations('AppSchemas'))),
 	});
 
 	const { data: initAppDetails } = useQuery({
@@ -51,13 +53,13 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 	return (
 		<AppFormTemplate
 			onSubmit={handleSubmit(onSubmitValid)}
-			name="Edit app form"
+			name={t('editAppFormName')}
 			isLoading={!initAppDetails}
-			submitBtnText="Zapisz zmiany"
+			submitBtnText={t('saveChanges')}
 		>
 			<TextInput
 				{...formRegister('newName')}
-				label="Nazwa aplikacji: *"
+				label={t('labelName')}
 				error={errors.newName?.message}
 			/>
 			<LogoEditor
@@ -68,14 +70,14 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 			/>
 			<TextArea
 				{...formRegister('newDescription')}
-				label="Opis:"
+				label={t('labelDescription')}
 				error={errors.newDescription?.message}
 				rows={10}
 				cols={70}
 			/>
 			<TextArea
 				{...formRegister('newChangelog')}
-				label="Lista zmian:"
+				label={t('labelChangelog')}
 				error={errors.newChangelog?.message}
 				rows={10}
 				cols={70}
@@ -94,7 +96,7 @@ export default function EditAppForm({ appId }: EditAppFormProps) {
 			/>
 			<FileInput
 				{...formRegister('newPicturesFiles')}
-				noFilesLabel="Dodaj nowe screenshoty"
+				noFilesLabel={t('labelNewPicturesFiles')}
 				accept="image/png, image/gif, image/jpeg"
 				multiple={true}
 				error={errors.newPicturesFiles?.message}

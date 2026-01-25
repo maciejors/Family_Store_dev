@@ -1,14 +1,13 @@
-import React from 'react';
+import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import {
 	addBrand,
 	deleteBrand,
-	updateBrand,
 	getBrandsForUser,
+	updateBrand,
 } from '@/lib/supabase/database/brands';
-import EditableBrandTile from './EditableBrandTile';
-import BrandAddingHandler from './BrandAddingHandler';
-import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
 import { useQuery } from '@tanstack/react-query';
+import BrandAddingHandler from './BrandAddingHandler';
+import EditableBrandTile from './EditableBrandTile';
 
 export type BrandsManagerProps = {
 	userUid: string;

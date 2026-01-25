@@ -1,16 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import useAccess from '@/hooks/useAccess';
 import Button from '@/components/buttons/Button';
 import MainContainer from '@/components/wrappers/MainContainer';
+import useAccess from '@/hooks/useAccess';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useState } from 'react';
 import LoginForm from './_components/LoginForm';
 import RegisterForm from './_components/RegisterForm';
 
 export default function AuthPage() {
 	const canViewPage = useAccess(['anon']);
 	const [isLogin, setIsLogin] = useState(true);
+	const t = useTranslations('AuthPage');
 
 	function changeAuthType() {
 		setIsLogin(!isLogin);
@@ -24,7 +26,7 @@ export default function AuthPage() {
 						<Image
 							className="mx-auto mb-5 h-auto w-auto"
 							src={'/logo.png'}
-							alt={'Family Store logo'}
+							alt={t('FamilyStoreLogo')}
 							width={60}
 							height={60}
 							priority
@@ -35,7 +37,7 @@ export default function AuthPage() {
 					</main>
 					<footer>
 						<Button onClick={changeAuthType} variant="secondary" className="mt-3 w-full">
-							{isLogin ? 'Nie mam konta' : 'Mam już konto'}
+							{t(isLogin ? 'noAccount' : 'haveAccount')}
 						</Button>
 					</footer>
 				</div>

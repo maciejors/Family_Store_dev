@@ -1,38 +1,42 @@
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/components/buttons/Button';
 import TextInput from '@/components/inputs/TextInput';
 import useAuth from '@/hooks/useAuth';
+import Translator from '@/models/Translator';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-const registerSchema = z
-	.object({
-		email: z.email('Adres e-mail jest nieprawidłowy'),
-		password: z
-			.string()
-			.min(1, 'Hasło jest wymagane')
-			.min(8, 'Hasło musi mieć przynajmniej 8 znaków')
-			.regex(
-				/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/i,
-				'Hasło musi zawierać przynajmniej 1 literę, 1 cyfrę, oraz 1 znak specjalny'
-			),
-		repeatPassword: z.string().min(1, 'Proszę powtórzyć hasło'),
-	})
-	.refine((data) => data.password === data.repeatPassword, {
-		message: 'Hasła nie są takie same',
-		path: ['repeatPassword'],
-	});
-type RegisterSchemaType = z.infer<typeof registerSchema>;
+const createRegisterSchema = (t: Translator) =>
+	z
+		.object({
+			email: z.email(t('invalidEmail')),
+			password: z
+				.string()
+				.min(1, t('passwordRequired'))
+				.min(8, t('passwordTooShort'))
+				.regex(
+					/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/i,
+					t('passwordTooSimple')
+				),
+			repeatPassword: z.string().min(1, t('pleaseRepeatPassword')),
+		})
+		.refine((data) => data.password === data.repeatPassword, {
+			message: t('passwordsDifferent'),
+			path: ['repeatPassword'],
+		});
+type RegisterSchemaType = z.infer<ReturnType<typeof createRegisterSchema>>;
 
 export default function RegisterForm() {
 	const { register } = useAuth();
+	const t = useTranslations('AuthPage');
 
 	const {
 		register: formRegister,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<RegisterSchemaType>({
-		resolver: zodResolver(registerSchema),
+		resolver: zodResolver(createRegisterSchema(t)),
 	});
 
 	async function onSubmitValid({ email, password }: RegisterSchemaType) {
@@ -41,27 +45,27 @@ export default function RegisterForm() {
 
 	return (
 		<form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmitValid)}>
-			<h3>Rejestracja</h3>
+			<h3>{t('registerTitle')}</h3>
 			<TextInput
 				{...formRegister('email')}
 				type="email"
-				label="Email"
+				label={t('email')}
 				error={errors.email?.message}
 			/>
 			<TextInput
 				{...formRegister('password')}
 				type="password"
-				label="Hasło"
+				label={t('password')}
 				error={errors.password?.message}
 			/>
 			<TextInput
 				{...formRegister('repeatPassword')}
 				type="password"
-				label="Powtórz Hasło"
+				label={t('repeatPassword')}
 				error={errors.repeatPassword?.message}
 			/>
 			<Button type="submit" className="mt-5 w-full">
-				Utwórz konto
+				{t('createAccount')}
 			</Button>
 		</form>
 	);

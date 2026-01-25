@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import FileInput from '@/components/inputs/FileInput';
+import TextArea from '@/components/inputs/TextArea';
+import TextInput from '@/components/inputs/TextInput';
 import { getAppUpdateDetails, updateApp } from '@/lib/supabase/database/apps';
-import { notifyUsersOnAppUpdate } from '../actions';
-import { useForm } from 'react-hook-form';
+import UpdateAppData, { createUpdateAppSchema } from '@/schemas/UpdateAppData';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
-import UpdateAppData, { updateAppSchema } from '@/schemas/UpdateAppData';
-import FileInput from '@/components/inputs/FileInput';
-import TextInput from '@/components/inputs/TextInput';
-import TextArea from '@/components/inputs/TextArea';
+import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { notifyUsersOnAppUpdate } from '../actions';
 import AppFormTemplate from '../AppFormTemplate';
 
 export type UpdateAppFormProps = {
@@ -17,13 +18,14 @@ export type UpdateAppFormProps = {
 };
 
 export default function UpdateAppForm({ appId }: UpdateAppFormProps) {
+	const t = useTranslations('AppForms');
 	const {
 		register: formRegister,
 		handleSubmit,
 		formState: { errors },
 		setValue,
 	} = useForm({
-		resolver: zodResolver(updateAppSchema),
+		resolver: zodResolver(createUpdateAppSchema(useTranslations('AppSchemas'))),
 	});
 
 	const { data: currentAppData, isPending: isDataPending } = useQuery({
@@ -49,26 +51,28 @@ export default function UpdateAppForm({ appId }: UpdateAppFormProps) {
 	return (
 		<AppFormTemplate
 			onSubmit={handleSubmit(onSubmitValid)}
-			name="Update app form"
+			name={t('updateAppFormName')}
 			isLoading={isDataPending}
-			submitBtnText="Wydaj aktualizację"
+			submitBtnText={t('publishUpdate')}
 		>
 			<FileInput
 				{...formRegister('apkFile')}
-				noFilesLabel="Dodaj plik instalacyjny *"
+				noFilesLabel={t('labelApkFile')}
 				accept=".apk"
 				multiple={false}
 				error={errors.apkFile?.message}
 			/>
 			<TextInput
 				{...formRegister('newVersion')}
-				label="Wersja: *"
-				placeholder={`Obecna wersja: ${currentAppData?.version}`}
+				label={t('labelVersion')}
+				placeholder={t('placeholderNewVersion', {
+					currVersion: currentAppData?.version ?? '',
+				})}
 				error={errors.newVersion?.message}
 			/>
 			<TextArea
 				{...formRegister('changelog')}
-				label="Lista zmian:"
+				label={t('labelChangelog')}
 				error={errors.changelog?.message}
 				rows={10}
 				cols={70}

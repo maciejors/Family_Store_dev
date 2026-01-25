@@ -1,4 +1,5 @@
-import { render, screen, within } from '@testing-library/react';
+import { setupComponent } from '@/__test-utils__/rendering';
+import { screen, within } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import AppFormTemplate, { AppFormTemplateProps } from './AppFormTemplate';
 
@@ -17,11 +18,13 @@ function renderComponent(
 		},
 	};
 	return {
-		renderResult: render(
+		renderResult: setupComponent(
 			<AppFormTemplate {...props}>
 				<div data-testid={childrenTestId}></div>
 			</AppFormTemplate>
-		),
+		)
+			.applyLocale('pl')
+			.render(),
 		childrenTestId,
 		...props,
 	};

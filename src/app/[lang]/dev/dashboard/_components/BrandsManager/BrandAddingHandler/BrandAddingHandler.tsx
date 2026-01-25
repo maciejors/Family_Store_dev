@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import EditBrandForm from '../EditBrandForm';
-import Icon from '@mdi/react';
-import { mdiPlus } from '@mdi/js';
 import TextButton from '@/components/buttons/TextButton';
+import { mdiPlus } from '@mdi/js';
+import Icon from '@mdi/react';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import EditBrandForm from '../EditBrandForm';
 
 export type BrandAddingHandlerProps = {
 	onConfirmAddBrand: (brandName: string) => Promise<any>;
@@ -12,6 +13,7 @@ export default function BrandAddingHandler({
 	onConfirmAddBrand,
 }: BrandAddingHandlerProps) {
 	const [isAddingBrand, setIsAddingBrand] = useState(false);
+	const t = useTranslations('BrandsManager');
 
 	function showEditor() {
 		setIsAddingBrand(true);
@@ -34,7 +36,7 @@ export default function BrandAddingHandler({
 		<>
 			{!isAddingBrand && (
 				<TextButton onClick={showEditor} startIcon={<Icon path={mdiPlus} size={1} />}>
-					Dodaj
+					{t('add')}
 				</TextButton>
 			)}
 			{isAddingBrand && (
