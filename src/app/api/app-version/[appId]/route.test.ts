@@ -1,9 +1,9 @@
 /**
  * @jest-environment node
  */
+import * as appsApi from '@/lib/supabase/database/apps';
 import { NextRequest } from 'next/server';
 import { GET } from './route';
-import * as appsApi from '@/lib/supabase/database/apps';
 
 const mockAppsApi = appsApi as jest.Mocked<typeof appsApi>;
 
@@ -12,14 +12,19 @@ async function makeRequest(appId: string) {
 	return await GET(req, { params: Promise.resolve({ appId }) });
 }
 
-test('Should return a version for an existing app', async () => {
+test('Should return the version and URL for an existing app', async () => {
+	const appId = '1';
+	const expectedUrl = `https://family-store.vercel.app/apps/${appId}`;
 	const expectedVersion = '1.6.3';
 	mockAppsApi.getCurrentAppVersion.mockResolvedValueOnce(expectedVersion);
 
-	const response = await makeRequest('1');
+	const response = await makeRequest(appId);
 	expect(response.status).toBe(200);
 	const body = await response.json();
-	expect(body.version).toBe(expectedVersion);
+	expect(body).toEqual({
+		version: expectedVersion,
+		url: expectedUrl,
+	});
 });
 
 test('Should return 404 when there is no app with the specified appId', async () => {
