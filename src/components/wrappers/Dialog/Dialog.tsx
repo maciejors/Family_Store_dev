@@ -43,7 +43,7 @@ export default function Dialog({
 	return (
 		open && (
 			<Overlay>
-				<Card className={clsx('p-2 z-10 overflow-y-auto dark:bg-md-grey-900', className)}>
+				<Card className={clsx('p-2 z-10 overflow-y-auto', className)}>
 					<header className="flex justify-between gap-4 items-start">
 						<h3>{title}</h3>
 						<IconButton

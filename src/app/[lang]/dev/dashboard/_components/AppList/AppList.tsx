@@ -9,7 +9,7 @@ export type AppListProps = {
 export default function AppList({ brandName, apps }: AppListProps) {
 	return (
 		<div className="w-full">
-			<h5 className="w-full border-b border-md-grey-700 text-md-grey-700 dark:border-md-grey-300 dark:text-md-grey-300">
+			<h5 className="w-full border-b border-secondary text-secondary dark:border-secondary-dark dark:text-secondary-dark">
 				{brandName}
 			</h5>
 			<div className="grid grid-flow-row gap-8 py-6 grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">

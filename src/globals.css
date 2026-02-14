@@ -8,7 +8,9 @@
 	--color-primary-hover: #6c00d9;
 	--color-primary-active: #8a40d5;
 	--color-accent: var(--color-md-grey-600);
-	--color-accent-dark: var(--color-md-grey-400);
+	--color-accent-dark: var(--color-md-grey-500);
+	--color-secondary: var(--color-md-grey-700);
+	--color-secondary-dark: var(--color-md-grey-400);
 }
 
 /*
@@ -30,7 +32,7 @@
 }
 
 body {
-	@apply bg-md-grey-200 dark:bg-md-grey-900 dark:text-md-grey-50;
+	@apply bg-md-grey-200 dark:bg-[#090909] dark:text-md-grey-100;
 	@apply overflow-x-hidden;
 }
 
