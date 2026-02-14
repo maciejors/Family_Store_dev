@@ -9,6 +9,19 @@ import { screen, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import DashboardPage from './page';
 
+// https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+Object.defineProperty(window, 'matchMedia', {
+	writable: true,
+	value: jest.fn().mockImplementation((query) => ({
+		matches: false,
+		media: query,
+		onchange: null,
+		addEventListener: jest.fn(),
+		removeEventListener: jest.fn(),
+		dispatchEvent: jest.fn(),
+	})),
+});
+
 jest.mock('@/i18n/navigation');
 jest.mock('@/hooks/useAuth');
 jest.mock('./_components/BrandsManager');
@@ -111,6 +124,9 @@ test('Should display the header and apps', async () => {
 	expect(screen.getByRole('button', { name: /zarządzaj markami/i })).toBeInTheDocument();
 	expect(screen.getByRole('button', { name: /dodaj aplikację/i })).toBeInTheDocument();
 	expect(screen.getByRole('button', { name: /wyloguj się/i })).toBeInTheDocument();
+	expect(
+		screen.getByRole('button', { name: /toggle color scheme/i })
+	).toBeInTheDocument();
 
 	const brandsWithApps = mockAppsByBrand!.filter((b) => b.apps.length > 0);
 	for (const { brandName, apps: appsForBrand } of brandsWithApps) {

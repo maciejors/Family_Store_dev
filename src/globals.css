@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import 'tailwind-md-colors';
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @theme {
 	--color-primary: #6600cd;
 	--color-primary-hover: #6c00d9;
