@@ -26,7 +26,7 @@
 }
 
 .btn-secondary {
-	@apply text-primary border-primary bg-white dark:bg-md-grey-900;
+	@apply text-primary border-primary bg-white dark:bg-transparent;
 }
 
 .btn-secondary:hover {
@@ -42,7 +42,7 @@
 }
 
 .icon-button-color-text {
-	@apply text-inherit hover:text-md-grey-700 dark:hover:text-md-grey-300;
+	@apply text-inherit hover:text-md-grey-700 dark:hover:text-md-grey-400;
 }
 
 .icon-button-color-primary {
