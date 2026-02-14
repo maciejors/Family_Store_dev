@@ -21,7 +21,7 @@
 }
 
 .formatted-date-label {
-	@apply text-gray-500 text-sm italic whitespace-nowrap;
+	@apply text-accent dark:text-accent-dark text-sm italic whitespace-nowrap;
 }
 
 .logo-container {

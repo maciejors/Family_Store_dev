@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/buttons/Button';
+import Card from '@/components/wrappers/Card';
 import MainContainer from '@/components/wrappers/MainContainer';
 import useAccess from '@/hooks/useAccess';
 import { useTranslations } from 'next-intl';
@@ -21,7 +22,7 @@ export default function AuthPage() {
 	return (
 		canViewPage && (
 			<MainContainer fillScreen>
-				<div className="p-10 shadow-md rounded-sm bg-white w-96">
+				<Card className="p-10 w-96">
 					<header>
 						<Image
 							className="mx-auto mb-5 h-auto w-auto"
@@ -40,7 +41,7 @@ export default function AuthPage() {
 							{t(isLogin ? 'noAccount' : 'haveAccount')}
 						</Button>
 					</footer>
-				</div>
+				</Card>
 			</MainContainer>
 		)
 	);

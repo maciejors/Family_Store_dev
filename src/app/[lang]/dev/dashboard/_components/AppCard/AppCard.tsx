@@ -39,10 +39,10 @@ export default function AppCard({ app }: AppCardProps) {
 				/>
 				<div className="app-details">
 					<h3>{app.name}</h3>
-					<p className="text-base text-gray-600">
+					<p className="text-base text-accent dark:text-accent-dark">
 						{t('version', { version: app.version })}
 					</p>
-					<span className="text-base text-gray-600">
+					<span className="text-base text-accent dark:text-accent-dark">
 						{t('lastUpdatedDate', {
 							date: format.dateTime(app.lastUpdated, dateFormattingOptions),
 						})}

@@ -2,6 +2,7 @@
 
 import Button from '@/components/buttons/Button';
 import ConditionalSpinner from '@/components/loading/ConditionalSpinner';
+import ThemeToggle from '@/components/ThemeToggle';
 import Dialog from '@/components/wrappers/Dialog';
 import MainContainer from '@/components/wrappers/MainContainer';
 import useAccess from '@/hooks/useAccess';
@@ -39,6 +40,7 @@ export default function DashboardPage() {
 				<header className="flex flex-row justify-between mt-4 mb-8 w-full">
 					<h2>{t('myApps')}</h2>
 					<div className="flex flex-row gap-4">
+						<ThemeToggle />
 						<>
 							<Button className="h-full" onClick={() => setIsBrandsDialogOpen(true)}>
 								{t('manageBrands')}

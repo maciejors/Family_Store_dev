@@ -1,12 +1,12 @@
 'use client';
 
-import Icon from '@mdi/react';
-import { mdiClose } from '@mdi/js';
-import { ReactNode, useEffect } from 'react';
 import IconButton from '@/components/buttons/IconButton';
+import { mdiClose } from '@mdi/js';
+import Icon from '@mdi/react';
+import clsx from 'clsx';
+import { ReactNode, useEffect } from 'react';
 import Card from '../Card';
 import Overlay from '../Overlay';
-import clsx from 'clsx';
 
 export type DialogProps = {
 	open: boolean;
@@ -43,7 +43,7 @@ export default function Dialog({
 	return (
 		open && (
 			<Overlay>
-				<Card className={clsx('p-2 z-10 overflow-y-auto', className)}>
+				<Card className={clsx('p-2 z-10 overflow-y-auto dark:bg-md-grey-900', className)}>
 					<header className="flex justify-between gap-4 items-start">
 						<h3>{title}</h3>
 						<IconButton

@@ -48,7 +48,7 @@ export default function AppFormTemplate({
 
 	const submitFeedbackClassName = clsx(
 		'flex flex-row gap-1 items-center text-sm',
-		isUploadError ? 'text-red-500' : 'text-green-500'
+		isUploadError ? 'text-md-red-500' : 'text-md-green-500'
 	);
 
 	return (
@@ -59,7 +59,7 @@ export default function AppFormTemplate({
 				aria-label={name}
 			>
 				{children}
-				<p className="text-red-600 w-full text-base">{t('requiredField')}</p>
+				<p className="text-md-red-600 w-full text-base">{t('requiredField')}</p>
 				{!isUploading && wasSubmitted && (
 					<div className={submitFeedbackClassName}>
 						{isUploadError ? (
