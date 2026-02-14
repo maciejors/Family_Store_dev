@@ -44,10 +44,10 @@ export default function AppView({ app }: AppViewProps) {
 					</div>
 					<div className="col-span-4 flex flex-col">
 						<h2 className="text-2xl sm:text-4xl">{app.name}</h2>
-						<p className="text-gray-600 sm:text-lg text-sm">
+						<p className="text-accent dark:text-accent-dark sm:text-lg text-sm">
 							{t('version', { version: app.version })}
 						</p>
-						<p className="text-gray-600 sm:text-xl text-base">
+						<p className="text-accent dark:text-accent-dark sm:text-xl text-base">
 							{t('author', { brandName: app.brandName })}
 						</p>
 					</div>

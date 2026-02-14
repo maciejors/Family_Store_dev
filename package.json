@@ -28,6 +28,7 @@
 		"react-dom": "19.2.3",
 		"react-hook-form": "^7.69.0",
 		"react-redux": "^9.2.0",
+		"tailwind-md-colors": "^1.0.0",
 		"tailwindcss": "^4.1.13",
 		"zod": "^4.2.1"
 	},

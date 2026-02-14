@@ -26,11 +26,11 @@
 }
 
 .btn-secondary {
-	@apply text-primary border-primary bg-white;
+	@apply text-primary border-primary bg-white dark:bg-md-grey-900;
 }
 
 .btn-secondary:hover {
-	@apply text-primary-hover border-primary-hover bg-gray-50;
+	@apply text-primary-hover border-primary-hover bg-md-grey-50 dark:bg-md-grey-800/25;
 }
 
 .btn-secondary:hover:disabled {
@@ -38,11 +38,11 @@
 }
 
 .btn-secondary:active {
-	@apply text-primary-active border-primary-active bg-gray-100;
+	@apply text-primary-active border-primary-active bg-md-grey-100;
 }
 
 .icon-button-color-text {
-	@apply text-inherit hover:text-gray-700;
+	@apply text-inherit hover:text-md-grey-700 dark:hover:text-md-grey-300;
 }
 
 .icon-button-color-primary {
