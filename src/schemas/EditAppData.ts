@@ -1,17 +1,22 @@
+import Translator from '@/models/Translator';
 import z from 'zod';
-import { fileListToFileArray, fileListToSingleFile, uploadableImage } from './util/files';
+import { fileListToFileArray, fileListToSingleFile, ZodFileExtras } from './util/files';
 
-export const editAppSchema = z.object({
-	newName: z.string().trim().min(1, 'Nazwa aplikacji jest wymagana'),
-	newLogoFile: z.preprocess(
-		fileListToSingleFile,
-		uploadableImage('Logo aplikacji jest wymagane').optional()
-	),
-	newDescription: z.string().trim(),
-	newChangelog: z.string().trim(),
-	newPicturesFiles: z.preprocess(fileListToFileArray, z.array(uploadableImage())),
-	picturesToDeleteNames: z.array(z.string()).default([]),
-});
+export const createEditAppSchema = (t: Translator) => {
+	const zFile = new ZodFileExtras(t);
 
-type EditAppData = z.infer<typeof editAppSchema>;
+	return z.object({
+		newName: z.string().trim().min(1, t('nameRequired')),
+		newLogoFile: z.preprocess(
+			fileListToSingleFile,
+			zFile.image(t('logoRequired')).optional()
+		),
+		newDescription: z.string().trim(),
+		newChangelog: z.string().trim(),
+		newPicturesFiles: z.preprocess(fileListToFileArray, z.array(zFile.image())),
+		picturesToDeleteNames: z.array(z.string()).default([]),
+	});
+};
+
+type EditAppData = z.infer<ReturnType<typeof createEditAppSchema>>;
 export default EditAppData;

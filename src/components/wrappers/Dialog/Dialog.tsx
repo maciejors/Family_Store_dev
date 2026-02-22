@@ -1,12 +1,12 @@
 'use client';
 
-import Icon from '@mdi/react';
-import { mdiClose } from '@mdi/js';
-import { ReactNode, useEffect } from 'react';
 import IconButton from '@/components/buttons/IconButton';
+import { mdiClose } from '@mdi/js';
+import Icon from '@mdi/react';
+import clsx from 'clsx';
+import { ReactNode, useEffect } from 'react';
 import Card from '../Card';
 import Overlay from '../Overlay';
-import clsx from 'clsx';
 
 export type DialogProps = {
 	open: boolean;

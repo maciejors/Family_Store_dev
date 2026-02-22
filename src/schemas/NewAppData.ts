@@ -1,26 +1,20 @@
+import Translator from '@/models/Translator';
 import z from 'zod';
-import {
-	fileListToFileArray,
-	fileListToSingleFile,
-	uploadableApk,
-	uploadableImage,
-} from './util/files';
+import { fileListToFileArray, fileListToSingleFile, ZodFileExtras } from './util/files';
 
-export const newAppSchema = z.object({
-	name: z.string().trim().min(1, 'Nazwa aplikacji jest wymagana'),
-	brandId: z.coerce.number('Marka jest wymagana'),
-	apkFile: z.preprocess(
-		fileListToSingleFile,
-		uploadableApk('Plik instalacyjny jest wymagany')
-	),
-	logoFile: z.preprocess(
-		fileListToSingleFile,
-		uploadableImage('Logo aplikacji jest wymagane')
-	),
-	version: z.string().trim().min(1, 'ID wersji aplikacji jest wymagane'),
-	description: z.string().trim(),
-	appPicturesFiles: z.preprocess(fileListToFileArray, z.array(uploadableImage())),
-});
+export const createNewAppSchema = (t: Translator) => {
+	const zFile = new ZodFileExtras(t);
 
-type NewAppData = z.infer<typeof newAppSchema>;
+	return z.object({
+		name: z.string().trim().min(1, t('nameRequired')),
+		brandId: z.coerce.number(t('brandRequired')),
+		apkFile: z.preprocess(fileListToSingleFile, zFile.apk(t('apkRequired'))),
+		logoFile: z.preprocess(fileListToSingleFile, zFile.image(t('logoRequired'))),
+		version: z.string().trim().min(1, t('versionRequired')),
+		description: z.string().trim(),
+		appPicturesFiles: z.preprocess(fileListToFileArray, z.array(zFile.image())),
+	});
+};
+
+type NewAppData = z.infer<ReturnType<typeof createNewAppSchema>>;
 export default NewAppData;

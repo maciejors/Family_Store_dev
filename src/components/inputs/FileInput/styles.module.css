@@ -8,7 +8,7 @@
 	@apply cursor-pointer;
 	@apply w-full p-10 block;
 	@apply border-4 border-dashed border-primary rounded-xl;
-	@apply hover:bg-gray-200 transition-colors;
+	@apply hover:bg-md-grey-200 dark:hover:bg-md-grey-800/25 transition-colors;
 	@apply text-primary font-semibold text-xl;
 	@apply flex flex-col justify-center items-center;
 }

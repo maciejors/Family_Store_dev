@@ -1,3 +1,4 @@
+import Translator from '@/models/Translator';
 import z, { ZodFile } from 'zod';
 
 export function fileListToFileArray(obj: unknown): unknown {
@@ -15,25 +16,33 @@ export function fileListToSingleFile(obj: unknown): unknown {
 	return obj;
 }
 
-export function uploadableApk(message?: string): ZodFile {
-	return constraintFileSize(
-		z
-			.file(message)
-			.mime(
-				['application/vnd.android.package-archive', 'application/octet-stream'],
-				'Plik instalacyjny musi być plikiem .apk'
-			)
-	);
-}
+export class ZodFileExtras {
+	t: Translator;
 
-export function uploadableImage(message?: string): ZodFile {
-	return constraintFileSize(
-		z
-			.file(message)
-			.mime(['image/jpeg', 'image/png'], 'Zdjęcie musi być w formacie .png lub .jpg')
-	);
-}
+	constructor(t: Translator) {
+		this.t = t;
+	}
 
-function constraintFileSize(zodFile: ZodFile): ZodFile {
-	return zodFile.max(50_000_000, 'Plik jest zbyt duży');
+	apk(messageNotProvided?: string): ZodFile {
+		return this.constraintFileSize(
+			z
+				.file(messageNotProvided)
+				.mime(
+					['application/vnd.android.package-archive', 'application/octet-stream'],
+					this.t('apkWrongMime')
+				)
+		);
+	}
+
+	image(messageNotProvided?: string): ZodFile {
+		return this.constraintFileSize(
+			z
+				.file(messageNotProvided)
+				.mime(['image/jpeg', 'image/png'], this.t('imageWrongMime'))
+		);
+	}
+
+	private constraintFileSize(zodFile: ZodFile): ZodFile {
+		return zodFile.max(50_000_000, this.t('fileTooLarge'));
+	}
 }
